@@ -110,11 +110,12 @@ const featuredGames = [
     ],
     platforms: ["android", "ios"] as const,
     category: "game" as const,
-    status: "launched" as const,
+    status: "released" as const,
     play_store_url:
       "https://play.google.com/store/apps/details?id=com.pasakasa.teenpatti",
     app_store_url: "https://apps.apple.com",
     featured: true,
+    is_published: true,
     created_at: "",
     updated_at: "",
   },
@@ -133,10 +134,11 @@ const featuredGames = [
     ],
     platforms: ["android"] as const,
     category: "game" as const,
-    status: "launched" as const,
+    status: "released" as const,
     play_store_url:
       "https://play.google.com/store/apps/details?id=com.pasakasa.callbreak",
     featured: true,
+    is_published: true,
     created_at: "",
     updated_at: "",
   },
@@ -467,11 +469,11 @@ export default function Home() {
                 </p>
 
                 <p className="text-muted-foreground leading-relaxed">
-                  With 7+ years of experience and 100+ successful projects, we've
-                  helped startups, SMEs, and enterprises transform their ideas
-                  into powerful digital solutions. We're also passionate about
-                  education—teaching the next generation of developers through
-                  live, hands-on classes.
+                  With 7+ years of experience and 100+ successful projects,
+                  we've helped startups, SMEs, and enterprises transform their
+                  ideas into powerful digital solutions. We're also passionate
+                  about education—teaching the next generation of developers
+                  through live, hands-on classes.
                 </p>
 
                 <div className="space-y-3 pt-4">

@@ -18,6 +18,7 @@ import {
   Target,
   Award,
 } from "lucide-react";
+import { getAllJobs } from "@/lib/api/jobs";
 
 export const metadata: Metadata = {
   title: "Careers - Pasakasa Creations",
@@ -25,72 +26,73 @@ export const metadata: Metadata = {
     "Join our team and help shape the future of games and education",
 };
 
-const openPositions = [
-  {
-    id: "1",
-    slug: "unity-game-developer",
-    title: "Unity Game Developer",
-    department: "Game Development",
-    location: "Remote",
-    type: "Full-time",
-    description:
-      "We're looking for an experienced Unity developer to create engaging 2D and 3D games. You'll work on exciting projects and collaborate with a passionate team.",
-    requirements: [
-      "3+ years of Unity experience",
-      "Strong C# programming skills",
-      "Portfolio of published games",
-      "Team player with good communication",
-    ],
-  },
-  {
-    id: "2",
-    slug: "backend-engineer",
-    title: "Backend Engineer",
-    department: "Engineering",
-    location: "Remote",
-    type: "Full-time",
-    description:
-      "Join us to build scalable backend systems for our games and learning platform. Experience with Node.js and cloud services required.",
-    requirements: [
-      "4+ years backend development",
-      "Experience with Node.js, TypeScript",
-      "Cloud platforms (AWS/GCP)",
-      "Database design expertise",
-    ],
-  },
-  {
-    id: "3",
-    slug: "ui-ux-designer",
-    title: "UI/UX Designer",
-    department: "Design",
-    location: "Hybrid",
-    type: "Full-time",
-    description:
-      "Create beautiful and intuitive user interfaces for our games and educational products. Must have a strong portfolio and eye for detail.",
-    requirements: [
-      "3+ years UI/UX design experience",
-      "Proficiency in Figma/Adobe XD",
-      "Game UI design experience",
-      "Strong portfolio",
-    ],
-  },
-  {
-    id: "4",
-    slug: "game-design-intern",
-    title: "Game Design Intern",
-    department: "Game Development",
-    location: "Remote",
-    type: "Internship",
-    description:
-      "Learn game development from industry professionals. Work on real projects and gain hands-on experience in a supportive environment.",
-    requirements: [
-      "Passion for game development",
-      "Basic Unity or Unreal knowledge",
-      "Strong creative thinking",
-      "Currently pursuing relevant degree",
-    ],
-  },
-];
+// Mock data - COMMENTED OUT - Now using Supabase
+// const openPositions = [
+//   {
+//     id: "1",
+//     slug: "unity-game-developer",
+//     title: "Unity Game Developer",
+//     department: "Game Development",
+//     location: "Remote",
+//     type: "Full-time",
+//     description:
+//       "We're looking for an experienced Unity developer to create engaging 2D and 3D games. You'll work on exciting projects and collaborate with a passionate team.",
+//     requirements: [
+//       "3+ years of Unity experience",
+//       "Strong C# programming skills",
+//       "Portfolio of published games",
+//       "Team player with good communication",
+//     ],
+//   },
+//   {
+//     id: "2",
+//     slug: "backend-engineer",
+//     title: "Backend Engineer",
+//     department: "Engineering",
+//     location: "Remote",
+//     type: "Full-time",
+//     description:
+//       "Join us to build scalable backend systems for our games and learning platform. Experience with Node.js and cloud services required.",
+//     requirements: [
+//       "4+ years backend development",
+//       "Experience with Node.js, TypeScript",
+//       "Cloud platforms (AWS/GCP)",
+//       "Database design expertise",
+//     ],
+//   },
+//   {
+//     id: "3",
+//     slug: "ui-ux-designer",
+//     title: "UI/UX Designer",
+//     department: "Design",
+//     location: "Hybrid",
+//     type: "Full-time",
+//     description:
+//       "Create beautiful and intuitive user interfaces for our games and educational products. Must have a strong portfolio and eye for detail.",
+//     requirements: [
+//       "3+ years UI/UX design experience",
+//       "Proficiency in Figma/Adobe XD",
+//       "Game UI design experience",
+//       "Strong portfolio",
+//     ],
+//   },
+//   {
+//     id: "4",
+//     slug: "game-design-intern",
+//     title: "Game Design Intern",
+//     department: "Game Development",
+//     location: "Remote",
+//     type: "Internship",
+//     description:
+//       "Learn game development from industry professionals. Work on real projects and gain hands-on experience in a supportive environment.",
+//     requirements: [
+//       "Passion for game development",
+//       "Basic Unity or Unreal knowledge",
+//       "Strong creative thinking",
+//       "Currently pursuing relevant degree",
+//     ],
+//   },
+// ];
 
 const benefits = [
   {
@@ -137,7 +139,10 @@ const benefits = [
   },
 ];
 
-export default function CareersPage() {
+export default async function CareersPage() {
+  // Fetch all job postings from Supabase
+  const openPositions = await getAllJobs();
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -335,7 +340,7 @@ export default function CareersPage() {
                           Requirements:
                         </h4>
                         <ul className="space-y-2">
-                          {position.requirements.map((req, idx) => (
+                          {position.requirements.map((req: string, idx: number) => (
                             <li key={idx} className="flex items-start gap-3">
                               <div className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-orange-500 to-blue-500 mt-2 flex-shrink-0" />
                               <span className="text-sm">{req}</span>

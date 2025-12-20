@@ -9,11 +9,12 @@ export interface Product extends BaseEntity {
   screenshots: readonly string[];
   platforms: readonly Platform[];
   category: "game" | "tool" | "service";
-  status: "launched" | "coming_soon" | "in_development";
+  status: "released" | "coming_soon" | "in_development";
   play_store_url?: string;
   app_store_url?: string;
   web_url?: string;
   featured: boolean;
+  is_published: boolean;
 }
 
 export interface GameStats {

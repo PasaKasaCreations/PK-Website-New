@@ -90,10 +90,11 @@ export function Navbar() {
                 </Link>
               ))}
               <div className="pt-2">
-                <Link href={ROUTES.COURSES} onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full font-medium">
-                    Join Classes
-                  </Button>
+                <Link
+                  href={ROUTES.COURSES}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Button className="w-full font-medium">Join Classes</Button>
                 </Link>
               </div>
             </div>

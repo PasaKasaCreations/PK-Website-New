@@ -56,9 +56,7 @@ export function ConsultationModal({
               <Sparkles className="h-5 w-5 text-primary" />
             </div>
           </div>
-          <DialogTitle className="text-2xl">
-            Get Free Consultation
-          </DialogTitle>
+          <DialogTitle className="text-2xl">Get Free Consultation</DialogTitle>
           <DialogDescription className="text-base">
             {courseName
               ? `Interested in ${courseName}? Fill in your details and our team will guide you through the course details, pricing, and enrollment process.`
@@ -150,9 +148,7 @@ export function ConsultationModal({
               </svg>
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-2">
-                Request Submitted!
-              </h3>
+              <h3 className="text-xl font-semibold mb-2">Request Submitted!</h3>
               <p className="text-muted-foreground">
                 Thank you! Our team will contact you soon.
               </p>

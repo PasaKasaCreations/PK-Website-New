@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { AnimatedWrapper } from "@/components/shared/AnimatedWrapper";
 import { ProductCard } from "@/components/shared/ProductCard";
 import { Gamepad2, Sparkles, Trophy, Users } from "lucide-react";
+import { getAllGames } from "@/lib/api/games";
 
 export const metadata: Metadata = {
   title: "Our Games - Pasakasa Creations",
@@ -9,60 +10,61 @@ export const metadata: Metadata = {
     "Strategic multiplayer card games from Nepal. Play Teen Patti Friends and Callbreak Multiplayer on Android and iOS. Free to download.",
 };
 
-// Mock data - Replace with actual Supabase queries
-const games = [
-  {
-    id: "1",
-    name: "Teen Patti Friends",
-    slug: "teen-patti-friends",
-    tagline: "Play with friends, win big!",
-    description:
-      "Experience the thrill of Teen Patti with your friends. Join tables, compete in tournaments, and enjoy the ultimate Indian card game experience with daily rewards, fortune wheel, and emoji inventory to express yourself during gameplay.",
-    thumbnail_url: "/images/TeenPattiFriendsLogo.png",
-    screenshots: [
-      "/images/TeenPatti_Dashboard.png",
-      "/images/TeenPatti_Gameplay.png",
-      "/images/TeenPatti_FortuneWheel.png",
-      "/images/TeenPatti_DailyReward.png",
-      "/images/TeenPatti_EmojiInventory.png",
-    ],
-    platforms: ["android", "ios"] as const,
-    category: "game" as const,
-    status: "launched" as const,
-    play_store_url: "https://play.google.com/store/apps/details?id=com.pasakasa.teenpatti",
-    app_store_url: "https://apps.apple.com",
-    featured: true,
-    created_at: "",
-    updated_at: "",
-  },
-  {
-    id: "2",
-    name: "Callbreak Multiplayer",
-    slug: "callbreak-multiplayer",
-    tagline: "Master the tricks, win the game",
-    description:
-      "Play the classic Callbreak card game online with players worldwide. Strategic gameplay with stunning visuals, multiplayer lobbies, and competitive matches. Challenge your friends or compete with global players in this addictive trick-taking card game.",
-    thumbnail_url: "/images/callbreaklogo.webp",
-    screenshots: [
-      "/images/CallbreakBanner.webp",
-      "/images/callbreakLoginScreen.webp",
-      "/images/callbreakMainTable.webp",
-      "/images/callbreakMultiplayerLobby.webp",
-      "/images/victoryCallbreak.webp",
-    ],
-    platforms: ["android"] as const,
-    category: "game" as const,
-    status: "launched" as const,
-    play_store_url: "https://play.google.com/store/apps/details?id=com.pasakasa.callbreak",
-    featured: true,
-    created_at: "",
-    updated_at: "",
-  },
-];
+// Mock data - COMMENTED OUT - Now using Supabase
+// const games = [
+//   {
+//     id: "1",
+//     name: "Teen Patti Friends",
+//     slug: "teen-patti-friends",
+//     tagline: "Play with friends, win big!",
+//     description:
+//       "Experience the thrill of Teen Patti with your friends. Join tables, compete in tournaments, and enjoy the ultimate Indian card game experience with daily rewards, fortune wheel, and emoji inventory to express yourself during gameplay.",
+//     thumbnail_url: "/images/TeenPattiFriendsLogo.png",
+//     screenshots: [
+//       "/images/TeenPatti_Dashboard.png",
+//       "/images/TeenPatti_Gameplay.png",
+//       "/images/TeenPatti_FortuneWheel.png",
+//       "/images/TeenPatti_DailyReward.png",
+//       "/images/TeenPatti_EmojiInventory.png",
+//     ],
+//     platforms: ["android", "ios"] as const,
+//     category: "game" as const,
+//     status: "launched" as const,
+//     play_store_url: "https://play.google.com/store/apps/details?id=com.pasakasa.teenpatti",
+//     app_store_url: "https://apps.apple.com",
+//     featured: true,
+//     created_at: "",
+//     updated_at: "",
+//   },
+//   {
+//     id: "2",
+//     name: "Callbreak Multiplayer",
+//     slug: "callbreak-multiplayer",
+//     tagline: "Master the tricks, win the game",
+//     description:
+//       "Play the classic Callbreak card game online with players worldwide. Strategic gameplay with stunning visuals, multiplayer lobbies, and competitive matches. Challenge your friends or compete with global players in this addictive trick-taking card game.",
+//     thumbnail_url: "/images/callbreaklogo.webp",
+//     screenshots: [
+//       "/images/CallbreakBanner.webp",
+//       "/images/callbreakLoginScreen.webp",
+//       "/images/callbreakMainTable.webp",
+//       "/images/callbreakMultiplayerLobby.webp",
+//       "/images/victoryCallbreak.webp",
+//     ],
+//     platforms: ["android"] as const,
+//     category: "game" as const,
+//     status: "launched" as const,
+//     play_store_url: "https://play.google.com/store/apps/details?id=com.pasakasa.callbreak",
+//     featured: true,
+//     created_at: "",
+//     updated_at: "",
+//   },
+// ];
 
-const launchedGames = games.filter((game) => game.status === "launched");
-
-export default function GamesPage() {
+export default async function GamesPage() {
+  // Fetch all games from Supabase
+  const games = await getAllGames();
+  const releasedGames = games.filter((game) => game.is_published === true);
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -122,7 +124,7 @@ export default function GamesPage() {
 
           {/* Games Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {launchedGames.map((game, index) => (
+            {releasedGames.map((game, index) => (
               <AnimatedWrapper key={game.id} delay={0.3 + index * 0.1}>
                 <ProductCard product={game} />
               </AnimatedWrapper>
@@ -136,7 +138,9 @@ export default function GamesPage() {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-100 dark:bg-orange-900/20 rounded-full mb-4">
                   <Gamepad2 className="h-8 w-8 text-orange-600 dark:text-orange-400" />
                 </div>
-                <h2 className="text-3xl font-bold mb-4">More Games Coming Soon</h2>
+                <h2 className="text-3xl font-bold mb-4">
+                  More Games Coming Soon
+                </h2>
                 <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
                   We're constantly working on new exciting games. Stay tuned for
                   more multiplayer experiences, strategic gameplay, and fun

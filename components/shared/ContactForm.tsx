@@ -25,21 +25,29 @@ export function ContactForm() {
     setSubmitStatus("idle");
 
     try {
-      // TODO: Implement Supabase submission
-      // await createClient().from('inquiries').insert({
-      //   name: formData.name,
-      //   email: formData.email,
-      //   phone: formData.phone,
-      //   message: formData.message,
-      //   inquiry_type: 'general'
-      // });
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || null,
+          message: formData.message,
+        }),
+      });
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to send message");
+      }
 
       setSubmitStatus("success");
       setFormData({ name: "", email: "", phone: "", message: "" });
     } catch (error) {
+      console.error("Error submitting contact form:", error);
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);

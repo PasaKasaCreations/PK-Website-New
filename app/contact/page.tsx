@@ -22,8 +22,8 @@ const contactInfo = [
   {
     icon: Mail,
     title: "Email",
-    value: "info@pasakasacreations.com",
-    href: "mailto:info@pasakasacreations.com",
+    value: "contact@pasakasacreations.com",
+    href: "mailto:contact@pasakasacreations.com",
     color: "text-blue-600 dark:text-blue-400",
     bgColor: "bg-blue-100 dark:bg-blue-900/20",
   },

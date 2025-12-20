@@ -1,0 +1,495 @@
+{
+  "info": {
+    "name": "Pasakasa Creations Admin API",
+    "_postman_id": "pasakasa-admin-api",
+    "description": "Admin API for managing courses, games, job postings, and inquiries",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "api_key",
+      "value": "your-admin-api-key-here",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Courses",
+      "item": [
+        {
+          "name": "List All Courses",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/courses",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "courses"]
+            }
+          }
+        },
+        {
+          "name": "Get Course by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/courses/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "courses", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "course-uuid-here"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Course",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Unity Game Development for Beginners\",\n  \"slug\": \"unity-game-dev-beginners\",\n  \"description\": \"Learn to create 2D/3D games with Unity\",\n  \"long_description\": \"Comprehensive Unity course covering C#, game mechanics, and publishing\",\n  \"instructor\": \"Pasakasa Team\",\n  \"duration\": \"12 weeks\",\n  \"skill_level\": \"beginner\",\n  \"thumbnail_url\": \"https://example.com/image.jpg\",\n  \"syllabus\": [],\n  \"learning_outcomes\": [\"Build 2D/3D games\", \"Write C# scripts\"],\n  \"prerequisites\": [\"Computer with 8GB RAM\"],\n  \"location\": \"Online (Live Classes)\",\n  \"price\": 4999,\n  \"currency\": \"INR\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/courses",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "courses"]
+            }
+          }
+        },
+        {
+          "name": "Update Course",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_published\": true,\n  \"current_students\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/courses/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "courses", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "course-uuid-here"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Course",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/courses/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "courses", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "course-uuid-here"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Games",
+      "item": [
+        {
+          "name": "List All Games",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/games",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "games"]
+            }
+          }
+        },
+        {
+          "name": "Get Game by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/games/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "games", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "game-uuid-here"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Game",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Mystic Runner\",\n  \"slug\": \"mystic-runner\",\n  \"description\": \"Endless runner adventure\",\n  \"long_description\": \"Embark on an epic journey through enchanted forests\",\n  \"genre\": \"Casual / Arcade\",\n  \"thumbnail_url\": \"https://example.com/game.jpg\",\n  \"screenshots\": [\"https://example.com/screenshot1.jpg\"],\n  \"play_store_url\": \"https://play.google.com/store/apps/details?id=...\",\n  \"status\": \"released\",\n  \"is_published\": true,\n  \"featured\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/games",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "games"]
+            }
+          }
+        },
+        {
+          "name": "Update Game",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"released\",\n  \"is_published\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/games/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "games", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "game-uuid-here"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Game",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/games/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "games", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "game-uuid-here"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Job Postings",
+      "item": [
+        {
+          "name": "List All Job Postings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/job-postings",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "job-postings"]
+            }
+          }
+        },
+        {
+          "name": "Create Job Posting",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Unity Game Developer\",\n  \"slug\": \"unity-game-developer\",\n  \"department\": \"Game Development\",\n  \"location\": \"Bangalore, India (Hybrid)\",\n  \"employment_type\": \"full_time\",\n  \"description\": \"We are looking for a passionate Unity developer\",\n  \"requirements\": [\"2+ years Unity experience\"],\n  \"responsibilities\": [\"Develop game features\"],\n  \"nice_to_have\": [\"Multiplayer experience\"],\n  \"is_published\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/job-postings",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "job-postings"]
+            }
+          }
+        },
+        {
+          "name": "Update Job Posting",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_published\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/job-postings/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "job-postings", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "job-uuid-here"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Job Posting",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/job-postings/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "job-postings", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "job-uuid-here"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inquiries",
+      "item": [
+        {
+          "name": "List All Inquiries",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/inquiries",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "inquiries"]
+            }
+          }
+        },
+        {
+          "name": "List Inquiries by Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/inquiries?status=new",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "inquiries"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "new",
+                  "description": "Options: new, in_progress, resolved"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Inquiry Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"in_progress\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/admin/inquiries/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "inquiries", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "inquiry-uuid-here"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contact Messages",
+      "item": [
+        {
+          "name": "List All Contact Messages",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/admin/contact-messages",
+              "host": ["{{base_url}}"],
+              "path": ["api", "admin", "contact-messages"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

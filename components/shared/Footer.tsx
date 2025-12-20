@@ -46,23 +46,43 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { name: "Twitter", icon: Twitter, href: "https://twitter.com", color: "hover:text-blue-400" },
-  { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com", color: "hover:text-blue-600" },
-  { name: "GitHub", icon: Github, href: "https://github.com", color: "hover:text-gray-600" },
-  { name: "Facebook", icon: Mail, href: "https://facebook.com", color: "hover:text-blue-500" },
+  {
+    name: "Twitter",
+    icon: Twitter,
+    href: "https://twitter.com",
+    color: "hover:text-blue-400",
+  },
+  {
+    name: "LinkedIn",
+    icon: Linkedin,
+    href: "https://linkedin.com",
+    color: "hover:text-blue-600",
+  },
+  {
+    name: "GitHub",
+    icon: Github,
+    href: "https://github.com",
+    color: "hover:text-gray-600",
+  },
+  {
+    name: "Facebook",
+    icon: Mail,
+    href: "https://facebook.com",
+    color: "hover:text-blue-500",
+  },
 ];
 
 const contactInfo = [
   {
     icon: Mail,
     label: "Email",
-    value: "info@pasakasacreations.com",
-    href: "mailto:info@pasakasacreations.com",
+    value: "contact@pasakasacreations.com",
+    href: "mailto:contact@pasakasacreations.com",
   },
   {
     icon: Phone,
     label: "Phone",
-    value: "+977 984-0000000",
+    value: "+977-986-2751805",
     href: "tel:+9779840000000",
   },
   {
@@ -89,9 +109,9 @@ export function Footer() {
               className="h-12 w-auto mb-4"
             />
             <p className="text-sm text-muted-foreground max-w-md mb-6 leading-relaxed">
-              Your trusted software development partner. Building web apps, mobile
-              apps, CRM systems, games, and training the next generation of
-              developers in Nepal.
+              Your trusted software development partner. Building web apps,
+              mobile apps, CRM systems, games, and training the next generation
+              of developers in Nepal.
             </p>
 
             {/* Contact Info */}
