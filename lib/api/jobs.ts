@@ -1,5 +1,5 @@
-import { createClient } from '@/lib/supabase/server';
-import { Job } from '@/types/job.interface';
+import { createClient } from "@/lib/supabase/server";
+import { Job } from "@/types/job.interface";
 
 /**
  * Fetch all active job postings from Supabase
@@ -9,12 +9,12 @@ export async function getAllJobs(): Promise<Job[]> {
   const supabase = createClient();
 
   const { data, error } = await supabase
-    .from('job_postings')
-    .select('*')
-    .order('created_at', { ascending: false });
+    .from("job_postings")
+    .select("*")
+    .order("created_at", { ascending: false });
 
   if (error) {
-    console.error('Error fetching jobs:', error);
+    console.error("Error fetching jobs:", error);
     return [];
   }
 
@@ -29,13 +29,13 @@ export async function getJobBySlug(slug: string): Promise<Job | null> {
   const supabase = createClient();
 
   const { data, error } = await supabase
-    .from('job_postings')
-    .select('*')
-    .eq('slug', slug)
+    .from("job_postings")
+    .select("*")
+    .eq("slug", slug)
     .single();
 
   if (error) {
-    console.error('Error fetching job:', error);
+    console.error("Error fetching job:", error);
     return null;
   }
 
@@ -49,13 +49,13 @@ export async function getJobsByDepartment(department: string): Promise<Job[]> {
   const supabase = createClient();
 
   const { data, error } = await supabase
-    .from('job_postings')
-    .select('*')
-    .eq('department', department)
-    .order('created_at', { ascending: false });
+    .from("job_postings")
+    .select("*")
+    .eq("department", department)
+    .order("created_at", { ascending: false });
 
   if (error) {
-    console.error('Error fetching jobs by department:', error);
+    console.error("Error fetching jobs by department:", error);
     return [];
   }
 
@@ -69,12 +69,10 @@ export async function getJobsByDepartment(department: string): Promise<Job[]> {
 export async function getAllJobSlugs(): Promise<string[]> {
   const supabase = createClient();
 
-  const { data, error } = await supabase
-    .from('job_postings')
-    .select('slug');
+  const { data, error } = await supabase.from("job_postings").select("slug");
 
   if (error) {
-    console.error('Error fetching job slugs:', error);
+    console.error("Error fetching job slugs:", error);
     return [];
   }
 

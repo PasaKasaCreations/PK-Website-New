@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { AnimatedWrapper } from "@/components/shared/AnimatedWrapper";
 import { JobContact } from "@/components/shared/JobContact";
 import { Job } from "@/types/job.interface";
-import { MapPin, Briefcase, Clock, DollarSign, FileText } from "lucide-react";
+import { MapPin, Briefcase, DollarSign } from "lucide-react";
 import { getJobBySlug, getAllJobSlugs } from "@/lib/api/jobs";
+import { formatEmploymentType } from "@/lib/utils";
 
 // Mock data - COMMENTED OUT - Now using Supabase
 // const jobs: Job[] = [
@@ -323,7 +324,7 @@ export default async function JobDetailPage({
                 <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                   <div className="flex items-center gap-1.5">
                     <Briefcase className="h-4 w-4" />
-                    <span>{job.type}</span>
+                    <span>{formatEmploymentType(job.employment_type)}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <MapPin className="h-4 w-4" />
@@ -331,16 +332,16 @@ export default async function JobDetailPage({
                   </div>
                   {job.salary && (
                     <div className="flex items-center gap-1.5">
-                      <DollarSign className="h-4 w-4" />
+                      <DollarSign className="h-3 w-3" />
                       <span>{job.salary}</span>
                     </div>
                   )}
-                  {job.visaRequirements && (
+                  {/* {job.visaRequirements && (
                     <div className="flex items-center gap-1.5">
                       <FileText className="h-4 w-4" />
                       <span>{job.visaRequirements}</span>
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
             </AnimatedWrapper>
@@ -382,9 +383,7 @@ export default async function JobDetailPage({
             <AnimatedWrapper delay={0.3}>
               <Card>
                 <CardContent className="p-6">
-                  <h2 className="text-2xl font-bold mb-4">
-                    Job Requirements
-                  </h2>
+                  <h2 className="text-2xl font-bold mb-4">Job Requirements</h2>
                   <ul className="space-y-3">
                     {job.requirements.map((item: string, index: number) => (
                       <li key={index} className="flex items-start gap-3">
@@ -451,26 +450,33 @@ export default async function JobDetailPage({
                   <CardContent className="p-6">
                     <h3 className="text-lg font-bold mb-4">Similar Jobs</h3>
                     <div className="space-y-4">
-                      {job.similarJobs.map((similarJob: { id: string; title: string; location: string; salary?: string }) => (
-                        <div
-                          key={similarJob.id}
-                          className="block p-4 border rounded-lg"
-                        >
-                          <h4 className="font-semibold mb-1">
-                            {similarJob.title}
-                          </h4>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <MapPin className="h-3 w-3" />
-                            <span>{similarJob.location}</span>
-                          </div>
-                          {similarJob.salary && (
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
-                              <DollarSign className="h-3 w-3" />
-                              <span>{similarJob.salary}</span>
+                      {job.similarJobs.map(
+                        (similarJob: {
+                          id: string;
+                          title: string;
+                          location: string;
+                          salary?: string;
+                        }) => (
+                          <div
+                            key={similarJob.id}
+                            className="block p-4 border rounded-lg"
+                          >
+                            <h4 className="font-semibold mb-1">
+                              {similarJob.title}
+                            </h4>
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <MapPin className="h-3 w-3" />
+                              <span>{similarJob.location}</span>
                             </div>
-                          )}
-                        </div>
-                      ))}
+                            {similarJob.salary && (
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
+                                <DollarSign className="h-3 w-3" />
+                                <span>{similarJob.salary}</span>
+                              </div>
+                            )}
+                          </div>
+                        )
+                      )}
                     </div>
                   </CardContent>
                 </Card>

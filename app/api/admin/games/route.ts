@@ -15,6 +15,7 @@ import type { Database } from "@/types/database.types";
 const GameSchema = z.object({
   name: z.string().min(1),
   slug: z.string().min(1),
+  tagline: z.string().min(1),
   description: z.string().min(1),
   long_description: z.string().min(1),
   genre: z.string().min(1),
@@ -77,6 +78,7 @@ export const POST = withAuth(async (req: NextRequest) => {
     const insertData: Database["public"]["Tables"]["games"]["Insert"] = {
       name: validatedData.name,
       slug: validatedData.slug,
+      tagline: validatedData.tagline,
       description: validatedData.description,
       long_description: validatedData.long_description,
       genre: validatedData.genre,

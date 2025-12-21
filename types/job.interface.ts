@@ -1,10 +1,12 @@
+import type { Enums } from "./database.types";
+
 export interface Job {
   id: string;
   slug: string;
   title: string;
   department: string;
   location: string;
-  type: "Full-time" | "Part-time" | "Contract" | "Internship";
+  employment_type: Enums<"employment_type">;
   salary?: string;
   visaRequirements?: string;
   description: string;

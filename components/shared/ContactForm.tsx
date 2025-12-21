@@ -18,11 +18,13 @@ export function ContactForm() {
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus("idle");
+    setErrorMessage("");
 
     try {
       const response = await fetch("/api/contact", {
@@ -41,13 +43,24 @@ export function ContactForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to send message");
+        // Handle validation errors
+        if (data.details && Array.isArray(data.details)) {
+          const errorMessages = data.details
+            .map((issue: { message: string }) => issue.message)
+            .join(", ");
+          setErrorMessage(errorMessages);
+        } else {
+          setErrorMessage(data.error || "Failed to send message");
+        }
+        setSubmitStatus("error");
+        return;
       }
 
       setSubmitStatus("success");
       setFormData({ name: "", email: "", phone: "", message: "" });
     } catch (error) {
       console.error("Error submitting contact form:", error);
+      setErrorMessage("An unexpected error occurred. Please try again.");
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -172,7 +185,7 @@ export function ContactForm() {
           {submitStatus === "error" && (
             <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20">
               <p className="text-red-600 dark:text-red-400 font-medium">
-                Something went wrong. Please try again.
+                {errorMessage || "Something went wrong. Please try again."}
               </p>
             </div>
           )}

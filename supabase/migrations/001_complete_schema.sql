@@ -1,8 +1,11 @@
 -- =====================================================
--- Pasakasa Creations - Initial Database Schema
+-- Pasakasa Creations - Complete Database Schema
 -- =====================================================
--- This migration creates all tables and enforces RLS
--- Run this in your Supabase SQL Editor
+-- This migration creates the complete database schema with:
+-- - All tables with complete fields
+-- - Row Level Security (RLS) policies
+-- - Indexes for performance
+-- - Triggers for automation
 -- =====================================================
 
 -- Enable UUID extension
@@ -74,17 +77,23 @@ CREATE TABLE IF NOT EXISTS games (
   -- Basic Info
   name TEXT NOT NULL,
   slug TEXT NOT NULL UNIQUE,
+  tagline TEXT NOT NULL,
   description TEXT NOT NULL,
   long_description TEXT NOT NULL,
   genre TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT 'game' CHECK (category IN ('game', 'tool', 'service')),
 
   -- Media
   thumbnail_url TEXT NOT NULL,
   screenshots TEXT[] NOT NULL DEFAULT '{}',
 
+  -- Platforms
+  platforms TEXT[] NOT NULL DEFAULT '{}',
+
   -- Store Links
   play_store_url TEXT,
   app_store_url TEXT,
+  web_url TEXT,
 
   -- Publishing
   is_published BOOLEAN NOT NULL DEFAULT FALSE,
@@ -122,7 +131,7 @@ CREATE TABLE IF NOT EXISTS contact_messages (
   -- User Info
   name TEXT NOT NULL CHECK (char_length(name) >= 2 AND char_length(name) <= 100),
   email TEXT NOT NULL CHECK (char_length(email) >= 5 AND char_length(email) <= 255),
-  subject TEXT CHECK (char_length(subject) <= 200),
+  phone TEXT CHECK (phone IS NULL OR (char_length(phone) >= 7 AND char_length(phone) <= 20)),
   message TEXT NOT NULL CHECK (char_length(message) >= 10 AND char_length(message) <= 2000),
 
   -- Security & Tracking
@@ -149,6 +158,35 @@ CREATE TABLE IF NOT EXISTS job_postings (
   responsibilities TEXT[] NOT NULL DEFAULT '{}',
   nice_to_have TEXT[] NOT NULL DEFAULT '{}',
 
+  -- Compensation & Requirements
+  salary TEXT,
+  visa_requirements TEXT,
+
+  -- Additional Info
+  posted_date DATE,
+  company JSONB NOT NULL DEFAULT jsonb_build_object(
+    'name', 'Pasakasa Creations',
+    'description', 'At Pasakasa Creations, we''re building the future of games and education. Our team is passionate about creating experiences that inspire, educate, and entertain. We combine cutting-edge technology with creative storytelling to deliver products that make a real impact.'
+  ),
+  benefits TEXT[] NOT NULL DEFAULT ARRAY[
+    'Competitive base salary with performance bonuses',
+    'Comprehensive health insurance',
+    'Flexible remote work options',
+    'Annual learning and development budget',
+    'Latest hardware and software tools',
+    'Paid time off and holidays',
+    'Team building activities and events',
+    'Career growth opportunities'
+  ],
+  contact JSONB NOT NULL DEFAULT jsonb_build_object(
+    'name', 'HR Team',
+    'title', 'Human Resources',
+    'email', 'careers@pasakasa.com',
+    'photo', '',
+    'linkedin', ''
+  ),
+  similar_jobs JSONB NOT NULL DEFAULT '[]',
+
   -- Publishing
   is_published BOOLEAN NOT NULL DEFAULT FALSE,
   application_deadline DATE
@@ -158,22 +196,30 @@ CREATE TABLE IF NOT EXISTS job_postings (
 -- INDEXES (Performance)
 -- =====================================================
 
+-- Courses indexes
 CREATE INDEX idx_courses_slug ON courses(slug);
 CREATE INDEX idx_courses_published ON courses(is_published) WHERE is_published = TRUE;
 CREATE INDEX idx_courses_featured ON courses(featured) WHERE featured = TRUE;
 
+-- Games indexes
 CREATE INDEX idx_games_slug ON games(slug);
 CREATE INDEX idx_games_published ON games(is_published) WHERE is_published = TRUE;
 CREATE INDEX idx_games_featured ON games(featured) WHERE featured = TRUE;
+CREATE INDEX idx_games_category ON games(category);
+CREATE INDEX idx_games_platforms ON games USING GIN(platforms);
 
+-- Inquiries indexes
 CREATE INDEX idx_inquiries_created_at ON inquiries(created_at DESC);
 CREATE INDEX idx_inquiries_status ON inquiries(status);
 CREATE INDEX idx_inquiries_type ON inquiries(inquiry_type);
 
+-- Contact messages indexes
 CREATE INDEX idx_contact_messages_created_at ON contact_messages(created_at DESC);
 
+-- Job postings indexes
 CREATE INDEX idx_job_postings_slug ON job_postings(slug);
 CREATE INDEX idx_job_postings_published ON job_postings(is_published) WHERE is_published = TRUE;
+CREATE INDEX idx_job_postings_posted_date ON job_postings(posted_date DESC);
 
 -- =====================================================
 -- UPDATED_AT TRIGGERS
@@ -203,6 +249,101 @@ CREATE TRIGGER update_job_postings_updated_at
   EXECUTE FUNCTION update_updated_at_column();
 
 -- =====================================================
--- NEXT STEP:
--- Run the 002_rls_policies.sql migration to enable security
+-- ROW LEVEL SECURITY (RLS)
+-- =====================================================
+
+-- Enable RLS on all tables
+ALTER TABLE courses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE games ENABLE ROW LEVEL SECURITY;
+ALTER TABLE inquiries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE contact_messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE job_postings ENABLE ROW LEVEL SECURITY;
+
+-- =====================================================
+-- RLS POLICIES
+-- =====================================================
+
+-- COURSES POLICIES
+-- Public can READ published courses (SEO-friendly)
+CREATE POLICY "Public can read published courses"
+  ON courses
+  FOR SELECT
+  USING (is_published = TRUE);
+
+-- GAMES POLICIES
+-- Public can READ published games
+CREATE POLICY "Public can read published games"
+  ON games
+  FOR SELECT
+  USING (is_published = TRUE);
+
+-- INQUIRIES POLICIES
+-- Public can INSERT inquiries (with strict validation)
+CREATE POLICY "Public can submit inquiries"
+  ON inquiries
+  FOR INSERT
+  WITH CHECK (
+    char_length(name) >= 2 AND char_length(name) <= 100
+    AND char_length(email) >= 5 AND char_length(email) <= 255
+    AND char_length(message) >= 10 AND char_length(message) <= 2000
+    AND inquiry_type IN ('general', 'course', 'career', 'partnership')
+    AND status = 'new'
+  );
+
+-- CONTACT MESSAGES POLICIES
+-- Public can INSERT contact messages (with validation)
+-- Handles NULL, empty strings, and valid phone numbers
+CREATE POLICY "Public can submit contact messages"
+  ON contact_messages
+  FOR INSERT
+  WITH CHECK (
+    char_length(name) >= 2 AND char_length(name) <= 100
+    AND char_length(email) >= 5 AND char_length(email) <= 255
+    AND char_length(message) >= 10 AND char_length(message) <= 2000
+    AND (phone IS NULL OR phone = '' OR (char_length(phone) >= 7 AND char_length(phone) <= 20))
+  );
+
+-- JOB POSTINGS POLICIES
+-- Public can READ published job postings
+CREATE POLICY "Public can read published job postings"
+  ON job_postings
+  FOR SELECT
+  USING (is_published = TRUE);
+
+-- =====================================================
+-- COLUMN COMMENTS (Documentation)
+-- =====================================================
+
+-- Games table comments
+COMMENT ON COLUMN games.tagline IS 'Short one-line description of the game/product';
+COMMENT ON COLUMN games.platforms IS 'Array of platforms: android, ios, web, windows, mac, linux';
+COMMENT ON COLUMN games.category IS 'Product category: game, tool, or service';
+COMMENT ON COLUMN games.web_url IS 'URL for web-based games or demo';
+
+-- Job postings table comments
+COMMENT ON COLUMN job_postings.salary IS 'Salary range or compensation details';
+COMMENT ON COLUMN job_postings.visa_requirements IS 'Visa or work permit requirements';
+COMMENT ON COLUMN job_postings.posted_date IS 'Date when job was posted publicly';
+COMMENT ON COLUMN job_postings.company IS 'Company information JSON: {name, description}';
+COMMENT ON COLUMN job_postings.benefits IS 'Array of job benefits and perks';
+COMMENT ON COLUMN job_postings.contact IS 'Contact person JSON: {name, title, email, photo, linkedin}';
+COMMENT ON COLUMN job_postings.similar_jobs IS 'Array of similar job postings: [{id, title, location, salary}]';
+
+-- =====================================================
+-- MIGRATION COMPLETE
+-- =====================================================
+-- What's included:
+-- ✅ All tables with complete schema
+-- ✅ All enums and types
+-- ✅ Performance indexes
+-- ✅ Auto-update triggers
+-- ✅ Row Level Security enabled
+-- ✅ Security policies configured
+-- ✅ Documentation comments
+--
+-- Security model:
+-- ✅ Public can only read published content
+-- ✅ Public can submit forms (with validation)
+-- ✅ No unauthorized data access
+-- ✅ Admin access via service role key
 -- =====================================================

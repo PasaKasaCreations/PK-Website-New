@@ -19,11 +19,11 @@ import {
   Award,
 } from "lucide-react";
 import { getAllJobs } from "@/lib/api/jobs";
+import { formatEmploymentType } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Careers - Pasakasa Creations",
-  description:
-    "Join our team and help shape the future of games and education",
+  description: "Join our team and help shape the future of games and education",
 };
 
 // Mock data - COMMENTED OUT - Now using Supabase
@@ -323,7 +323,7 @@ export default async function CareersPage() {
                             <div className="flex items-center gap-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/20 rounded-full">
                               <Clock className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                               <span className="font-medium">
-                                {position.type}
+                                {formatEmploymentType(position.employment_type)}
                               </span>
                             </div>
                           </div>
@@ -340,12 +340,14 @@ export default async function CareersPage() {
                           Requirements:
                         </h4>
                         <ul className="space-y-2">
-                          {position.requirements.map((req: string, idx: number) => (
-                            <li key={idx} className="flex items-start gap-3">
-                              <div className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-orange-500 to-blue-500 mt-2 flex-shrink-0" />
-                              <span className="text-sm">{req}</span>
-                            </li>
-                          ))}
+                          {position.requirements.map(
+                            (req: string, idx: number) => (
+                              <li key={idx} className="flex items-start gap-3">
+                                <div className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-orange-500 to-blue-500 mt-2 flex-shrink-0" />
+                                <span className="text-sm">{req}</span>
+                              </li>
+                            )
+                          )}
                         </ul>
                       </div>
 

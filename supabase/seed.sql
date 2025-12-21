@@ -1,8 +1,7 @@
 -- =====================================================
--- Pasakasa Creations - Example Seed Data
+-- Pasakasa Creations - Seed Data
 -- =====================================================
--- This file contains example data with all fields properly populated
--- Use this as a reference for inserting your own data
+-- This file contains data with all fields properly populated
 -- =====================================================
 
 -- =====================================================
@@ -440,6 +439,5 @@ INSERT INTO job_postings (
 -- =====================================================
 -- SEED COMPLETE
 -- =====================================================
--- You can now query these tables to see the example data
--- Use this structure as a template for adding your own data
+-- You can now query these tables to see the data
 -- =====================================================
