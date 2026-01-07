@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { AnimatedWrapper } from "@/components/shared/AnimatedWrapper";
 import { CourseCard } from "@/components/shared/CourseCard";
 import { ProductCard } from "@/components/shared/ProductCard";
+import { Hero } from "@/components/shared/Hero";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants/routes.constants";
@@ -19,21 +20,18 @@ import {
   Trophy,
   MapPin,
   Star,
-  Rocket,
   Code,
   Target,
   ArrowRight,
-  Play,
   BookOpen,
   Heart,
   Globe,
   Smartphone,
-  Layout,
   Database,
   Palette,
   Zap,
   Award,
-  TrendingUp,
+  Rocket,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -359,66 +357,7 @@ export default async function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-600 via-orange-600 to-blue-900 text-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <AnimatedWrapper>
-            <div className="space-y-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500 rounded-full text-sm font-semibold">
-                <Sparkles className="h-4 w-4" />
-                NEPAL'S PREMIUM SOFTWARE DEVELOPMENT COMPANY
-              </div>
-
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
-                Building Digital Solutions
-                <br />
-                That Transform Businesses
-              </h1>
-
-              <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto">
-                From web and mobile apps to games and CRM systems—we deliver
-                cutting-edge software solutions and train the next generation of
-                developers in Nepal.
-              </p>
-
-              <div className="flex flex-wrap items-center justify-center gap-8 pt-4">
-                <div className="flex items-center gap-2">
-                  <Rocket className="h-6 w-6" />
-                  <span className="text-lg">100+ Projects Delivered</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Award className="h-6 w-6" />
-                  <span className="text-lg">7+ Years Experience</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-6 w-6" />
-                  <span className="text-lg">Based in Kathmandu</span>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-                <Link href={ROUTES.CONTACT}>
-                  <Button
-                    size="lg"
-                    className="bg-white text-blue-900 hover:bg-blue-50 h-14 px-10 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all"
-                  >
-                    <Rocket className="h-5 w-5 mr-2" />
-                    Start Your Project
-                  </Button>
-                </Link>
-                <Link href={ROUTES.COURSES}>
-                  <Button
-                    size="lg"
-                    className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-900 h-14 px-10 text-lg font-semibold transition-all shadow-lg"
-                  >
-                    <GraduationCap className="h-5 w-5 mr-2" />
-                    Join Live Classes
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </AnimatedWrapper>
-        </div>
-      </section>
+      <Hero />
 
       {/* Stats Section */}
       <section className="py-16 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-background">
