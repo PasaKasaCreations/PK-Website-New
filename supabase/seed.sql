@@ -25,36 +25,42 @@ INSERT INTO games (
   web_url,
   is_published,
   featured,
-  release_date
+  release_date,
+  hero_background_image,
+  hero_stats,
+  accent_color
 ) VALUES
 (
   'Teen Patti Friends',
   'teen-patti-friends',
-  'Play Teen Patti with friends & real players',
-  'A fun and social Teen Patti card game with friends and online players.',
+  'Play with friends, win big!',
+  'Experience the thrill of Teen Patti with your friends. Join tables, compete in tournaments, and enjoy the ultimate Indian card game experience with daily rewards and exciting gameplay.',
   'Teen Patti Friends is a multiplayer Indian card game where players can enjoy classic Teen Patti gameplay with friends and real players online. Featuring smooth gameplay, social interaction, and competitive tables, the game delivers an authentic casino-style experience on mobile.',
   'Card',
   '/games/teen-patti/TeenPattiFriendsLogo.png',
-  ARRAY['/games/teen-patti/screen1.jpg', '/games/teen-patti/screen2.jpg'],
-  ARRAY['android'],
+  ARRAY['/games/teen-patti/TeenPatti_Dashboard.png', '/games/teen-patti/TeenPatti_Gameplay.png', '/games/teen-patti/TeenPatti_FortuneWheel.png'],
+  ARRAY['android', 'ios'],
   'game',
   'released',
   'https://play.google.com/store/apps/details?id=com.PasakasaCreations.TeenpattiFriends',
-  NULL,
+  'https://apps.apple.com/app/teen-patti-friends',
   NULL,
   TRUE,
   TRUE,
-  '2023-11-01'
+  '2023-11-01',
+  '/games/teen-patti/TeenPatti_Gameplay.png',
+  '{"players": "50K+", "rating": "4.5", "feature": "Live Tables"}'::jsonb,
+  'orange'
 ),
 (
   'CallBreak Friends',
   'callbreak-friends',
-  'Strategic Call Break card game with friends',
-  'Classic Call Break card game with online multiplayer and friends.',
+  'Master the tricks, win the game',
+  'Play the classic Callbreak card game online with players worldwide. Strategic gameplay with stunning visuals, multiplayer lobbies, and competitive matches.',
   'CallBreak Friends brings the popular trick-taking card game to mobile with online multiplayer, private tables, smooth UI, and competitive gameplay. Play with friends or challenge real players anytime, anywhere.',
   'Card',
   '/games/callbreak/callbreaklogo.webp',
-  ARRAY['/games/callbreak/screen1.jpg', '/games/callbreak/screen2.jpg'],
+  ARRAY['/games/callbreak/CallbreakBanner.webp', '/games/callbreak/callbreakMainTable.webp', '/games/callbreak/callbreakMultiplayerLobby.webp'],
   ARRAY['android'],
   'game',
   'released',
@@ -63,7 +69,10 @@ INSERT INTO games (
   NULL,
   TRUE,
   TRUE,
-  '2023-10-01'
+  '2023-10-01',
+  '/games/callbreak/CallbreakBanner.webp',
+  '{"players": "100K+", "rating": "4.6", "feature": "Tournaments"}'::jsonb,
+  'blue'
 ),
 (
   'Space Defender VR',
@@ -82,7 +91,10 @@ INSERT INTO games (
   NULL,
   TRUE,
   FALSE,
-  '2025-06-01'
+  '2025-06-01',
+  NULL,
+  '{"players": "0", "rating": "0", "feature": "Coming Soon"}'::jsonb,
+  'purple'
 );
 
 -- =====================================================

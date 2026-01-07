@@ -1,14 +1,12 @@
 import { Metadata } from "next";
 import { AnimatedWrapper } from "@/components/shared/AnimatedWrapper";
 import { ContactForm } from "@/components/shared/ContactForm";
+import { ContactHeroSwitcher } from "@/components/contact";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Mail,
   MapPin,
   Phone,
-  Sparkles,
-  MessageCircle,
-  Clock,
   Send,
 } from "lucide-react";
 
@@ -71,41 +69,8 @@ const faqs = [
 export default function ContactPage() {
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-orange-600 via-blue-700 to-blue-900 text-white py-20 md:py-28">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedWrapper>
-            <div className="max-w-4xl mx-auto text-center space-y-6">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 rounded-full text-sm font-semibold">
-                <Sparkles className="h-4 w-4" />
-                GET IN TOUCH
-              </div>
-
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-                Let's Build Something
-                <br />
-                Amazing Together
-              </h1>
-
-              <p className="text-xl md:text-2xl text-blue-100">
-                Have questions about our courses or games? Want to collaborate?
-                We'd love to hear from you!
-              </p>
-
-              <div className="flex flex-wrap items-center justify-center gap-8 pt-4">
-                <div className="flex items-center gap-2">
-                  <Clock className="h-6 w-6" />
-                  <span className="text-lg">24-Hour Response</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MessageCircle className="h-6 w-6" />
-                  <span className="text-lg">Friendly Support</span>
-                </div>
-              </div>
-            </div>
-          </AnimatedWrapper>
-        </div>
-      </div>
+      {/* Hero Section - Switchable Variants */}
+      <ContactHeroSwitcher />
 
       {/* Main Content */}
       <div className="py-16 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-background">

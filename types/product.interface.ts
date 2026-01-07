@@ -1,5 +1,11 @@
 import { BaseEntity, Platform } from "./common.interface";
 
+export interface HeroStats {
+  players: string;
+  rating: string;
+  feature: string;
+}
+
 export interface Product extends BaseEntity {
   name: string;
   slug: string;
@@ -15,6 +21,10 @@ export interface Product extends BaseEntity {
   web_url?: string;
   featured: boolean;
   is_published: boolean;
+  // Hero section fields
+  hero_background_image?: string;
+  hero_stats?: HeroStats;
+  accent_color?: string;
 }
 
 export interface GameStats {

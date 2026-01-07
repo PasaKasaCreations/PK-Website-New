@@ -140,8 +140,8 @@ export default async function CoursesPage() {
               </h1>
 
               <p className="text-xl md:text-2xl text-blue-100">
-                Live, hands-on training by industry experts. Build real projects,
-                get certified, and launch your career.
+                Live, hands-on training by industry experts. Build real
+                projects, get certified, and launch your career.
               </p>
 
               <div className="flex flex-wrap items-center justify-center gap-8 pt-4">

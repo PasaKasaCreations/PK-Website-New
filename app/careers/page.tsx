@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { AnimatedWrapper } from "@/components/shared/AnimatedWrapper";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,7 +7,6 @@ import {
   MapPin,
   Briefcase,
   Clock,
-  Sparkles,
   Users,
   Heart,
   Zap,
@@ -20,6 +18,7 @@ import {
 } from "lucide-react";
 import { getAllJobs } from "@/lib/api/jobs";
 import { formatEmploymentType } from "@/lib/utils";
+import { CareersHero } from "@/components/shared/CareersHero";
 
 export const metadata: Metadata = {
   title: "Careers - Pasakasa Creations",
@@ -146,44 +145,7 @@ export default async function CareersPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-blue-600 via-purple-700 to-orange-600 text-white py-20 md:py-28">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedWrapper>
-            <div className="max-w-4xl mx-auto text-center space-y-6">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500 rounded-full text-sm font-semibold">
-                <Sparkles className="h-4 w-4" />
-                WE'RE HIRING
-              </div>
-
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-                Build the Future with
-                <br />
-                Pasakasa Creations
-              </h1>
-
-              <p className="text-xl md:text-2xl text-blue-100">
-                Join a passionate team creating innovative games and educational
-                experiences that make a difference.
-              </p>
-
-              <div className="flex flex-wrap items-center justify-center gap-8 pt-4">
-                <div className="flex items-center gap-2">
-                  <Users className="h-6 w-6" />
-                  <span className="text-lg">Remote-First</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Heart className="h-6 w-6" />
-                  <span className="text-lg">Work-Life Balance</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Award className="h-6 w-6" />
-                  <span className="text-lg">Competitive Pay</span>
-                </div>
-              </div>
-            </div>
-          </AnimatedWrapper>
-        </div>
-      </div>
+      <CareersHero />
 
       {/* Company Culture Section with Image Placeholder */}
       <div className="py-16 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-background">

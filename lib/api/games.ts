@@ -64,3 +64,27 @@ export async function getGamesByStatus(
 
   return data as unknown as Product[];
 }
+
+/**
+ * Fetch games for hero carousel
+ * Returns released games with hero_background_image, sorted by featured first
+ */
+export async function getGamesForHero(): Promise<Product[]> {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from("games")
+    .select("*")
+    .eq("is_published", true)
+    .eq("status", "released")
+    .not("hero_background_image", "is", null)
+    .order("featured", { ascending: false })
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching games for hero:", error);
+    return [];
+  }
+
+  return data as unknown as Product[];
+}
