@@ -9,7 +9,11 @@ import { ROUTES } from "@/lib/constants/routes.constants";
 import { supabase } from "@/lib/supabase/server";
 import type { Tables } from "@/types/database.types";
 import type { Product } from "@/types/product.interface";
-import type { Course, SyllabusItem, Testimonial } from "@/types/course.interface";
+import type {
+  Course,
+  SyllabusItem,
+  Testimonial,
+} from "@/types/course.interface";
 import type { Platform } from "@/types/common.interface";
 import {
   CheckCircle2,
@@ -62,10 +66,14 @@ function convertToCourse(dbCourse: Tables<"courses">): Course {
     ...dbCourse,
     next_batch_date: dbCourse.next_batch_date || "",
     current_students: dbCourse.current_students ?? undefined,
-    syllabus: (Array.isArray(dbCourse.syllabus) ? dbCourse.syllabus : []) as unknown as readonly SyllabusItem[],
+    syllabus: (Array.isArray(dbCourse.syllabus)
+      ? dbCourse.syllabus
+      : []) as unknown as readonly SyllabusItem[],
     learning_outcomes: dbCourse.learning_outcomes as readonly string[],
     prerequisites: dbCourse.prerequisites as readonly string[],
-    testimonials: (Array.isArray(dbCourse.testimonials) ? dbCourse.testimonials : []) as unknown as readonly Testimonial[],
+    testimonials: (Array.isArray(dbCourse.testimonials)
+      ? dbCourse.testimonials
+      : []) as unknown as readonly Testimonial[],
   };
 }
 
@@ -77,7 +85,8 @@ const fallbackCourses: Tables<"courses">[] = [
     slug: "unity-game-development",
     description:
       "Build 2D and 3D games from scratch. Learn Unity, C#, game design, and publish to Play Store.",
-    long_description: "Complete bootcamp covering Unity game development from basics to advanced.",
+    long_description:
+      "Complete bootcamp covering Unity game development from basics to advanced.",
     instructor: "Pasakasa Dev Team",
     duration: "12 weeks",
     skill_level: "beginner",
@@ -105,7 +114,8 @@ const fallbackCourses: Tables<"courses">[] = [
     slug: "fullstack-web-development",
     description:
       "Master modern web development with React, Node.js, databases, and deployment. Build production-ready applications.",
-    long_description: "Comprehensive full-stack web development course covering modern frameworks and tools.",
+    long_description:
+      "Comprehensive full-stack web development course covering modern frameworks and tools.",
     instructor: "Pasakasa Dev Team",
     duration: "16 weeks",
     skill_level: "beginner",
@@ -137,7 +147,8 @@ const fallbackGames: Tables<"games">[] = [
     tagline: "Play with friends, win big!",
     description:
       "Experience the thrill of Teen Patti with your friends. Join tables, compete, and enjoy the ultimate Indian card game experience.",
-    long_description: "A complete multiplayer Teen Patti experience with real-time gameplay, chat, and tournaments.",
+    long_description:
+      "A complete multiplayer Teen Patti experience with real-time gameplay, chat, and tournaments.",
     genre: "Card Game",
     thumbnail_url: "/images/TeenPattiFriendsLogo.png",
     screenshots: [
@@ -165,7 +176,8 @@ const fallbackGames: Tables<"games">[] = [
     tagline: "Master the tricks, win the game",
     description:
       "Play the classic Callbreak card game online with players worldwide. Strategic gameplay with stunning visuals.",
-    long_description: "The ultimate Callbreak multiplayer experience with tournaments, leaderboards, and daily challenges.",
+    long_description:
+      "The ultimate Callbreak multiplayer experience with tournaments, leaderboards, and daily challenges.",
     genre: "Card Game",
     thumbnail_url: "/images/callbreaklogo.webp",
     screenshots: [
@@ -188,36 +200,36 @@ const fallbackGames: Tables<"games">[] = [
   },
 ];
 
-const stats = [
-  {
-    icon: Users,
-    value: "50+",
-    label: "Happy Clients",
-    color: "text-blue-600 dark:text-blue-400",
-    bgColor: "bg-blue-100 dark:bg-blue-900/20",
-  },
-  {
-    icon: Award,
-    value: "100+",
-    label: "Projects Delivered",
-    color: "text-orange-600 dark:text-orange-400",
-    bgColor: "bg-orange-100 dark:bg-orange-900/20",
-  },
-  {
-    icon: GraduationCap,
-    value: "500+",
-    label: "Students Trained",
-    color: "text-blue-600 dark:text-blue-400",
-    bgColor: "bg-blue-100 dark:bg-blue-900/20",
-  },
-  {
-    icon: Trophy,
-    value: "7+",
-    label: "Years Experience",
-    color: "text-orange-600 dark:text-orange-400",
-    bgColor: "bg-orange-100 dark:bg-orange-900/20",
-  },
-];
+// const stats = [
+//   {
+//     icon: Users,
+//     value: "50+",
+//     label: "Happy Clients",
+//     color: "text-blue-600 dark:text-blue-400",
+//     bgColor: "bg-blue-100 dark:bg-blue-900/20",
+//   },
+//   {
+//     icon: Award,
+//     value: "100+",
+//     label: "Projects Delivered",
+//     color: "text-orange-600 dark:text-orange-400",
+//     bgColor: "bg-orange-100 dark:bg-orange-900/20",
+//   },
+//   {
+//     icon: GraduationCap,
+//     value: "500+",
+//     label: "Students Trained",
+//     color: "text-blue-600 dark:text-blue-400",
+//     bgColor: "bg-blue-100 dark:bg-blue-900/20",
+//   },
+//   {
+//     icon: Trophy,
+//     value: "7+",
+//     label: "Years Experience",
+//     color: "text-orange-600 dark:text-orange-400",
+//     bgColor: "bg-orange-100 dark:bg-orange-900/20",
+//   },
+// ];
 
 const services = [
   {
@@ -339,7 +351,8 @@ export default async function Home() {
     .order("created_at", { ascending: false })
     .limit(2);
 
-  const dbCourses = coursesData && coursesData.length > 0 ? coursesData : fallbackCourses;
+  const dbCourses =
+    coursesData && coursesData.length > 0 ? coursesData : fallbackCourses;
   const featuredCourses: Course[] = dbCourses.map(convertToCourse);
 
   // Fetch featured games from Supabase
@@ -360,7 +373,7 @@ export default async function Home() {
       <Hero />
 
       {/* Stats Section */}
-      <section className="py-16 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-background">
+      {/* <section className="py-16 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat, index) => {
@@ -387,7 +400,7 @@ export default async function Home() {
             })}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Services Section */}
       <section className="py-20 bg-white dark:bg-background">

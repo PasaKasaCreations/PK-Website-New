@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { AnimatedWrapper } from "@/components/shared/AnimatedWrapper";
 import { ProductCard } from "@/components/shared/ProductCard";
-import { GamesHero } from "@/components/games/GamesHero";
+import { GamesHero } from "@/components/shared/GamesHero";
 import { Gamepad2 } from "lucide-react";
 import { getAllGames, getGamesForHero } from "@/lib/api/games";
 
