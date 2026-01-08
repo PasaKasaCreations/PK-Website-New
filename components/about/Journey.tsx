@@ -5,12 +5,10 @@ import { motion, useInView } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 
 /**
- * JourneyV2 - Zigzag Path Timeline
+ * Journey - Zigzag Path Timeline
  *
  * Alternating left/right cards with animated SVG path.
  * Premium, engaging design with flowing connector.
- *
- * DELETE THIS FILE if not selected as final design.
  */
 
 const milestones = [
@@ -23,7 +21,8 @@ const milestones = [
   {
     year: "2020",
     title: "First Launch",
-    description: "Callbreak Multiplayer hits Play Store—our first published game",
+    description:
+      "Callbreak Multiplayer hits Play Store—our first published game",
   },
   {
     year: "2022",
@@ -77,7 +76,7 @@ function ZigzagConnector() {
   );
 }
 
-export function JourneyV2() {
+export function Journey() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
 
@@ -109,7 +108,6 @@ export function JourneyV2() {
           <div className="space-y-12 md:space-y-16">
             {milestones.map((milestone, index) => {
               const isLeft = index % 2 === 0;
-              const colorClass = isLeft ? "blue" : "orange";
 
               return (
                 <motion.div
@@ -142,7 +140,10 @@ export function JourneyV2() {
                       isLeft ? "md:pr-12" : "md:pl-12"
                     }`}
                   >
-                    <motion.div whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+                    <motion.div
+                      whileHover={{ y: -5 }}
+                      transition={{ duration: 0.2 }}
+                    >
                       <Card
                         className={`border-2 transition-all duration-300 hover:shadow-xl ${
                           isLeft
@@ -159,7 +160,9 @@ export function JourneyV2() {
                               isLeft
                                 ? "bg-gradient-to-bl from-blue-100 dark:from-blue-900/20"
                                 : "bg-gradient-to-br from-orange-100 dark:from-orange-900/20"
-                            } rounded-bl-3xl ${isLeft ? "rounded-tr-xl" : "rounded-tl-xl"}`}
+                            } rounded-bl-3xl ${
+                              isLeft ? "rounded-tr-xl" : "rounded-tl-xl"
+                            }`}
                           />
 
                           <div className="relative">

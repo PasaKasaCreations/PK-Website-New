@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import { AnimatedWrapper } from "@/components/shared/AnimatedWrapper";
 import { Card, CardContent } from "@/components/ui/card";
-import { AboutHero } from "@/components/about/AboutHeroV1";
-import { JourneySwitcher } from "@/components/about/JourneySwitcher";
+import { AboutHero } from "@/components/about/AboutHero";
+import { Journey } from "@/components/about/Journey";
 import {
   Gamepad2,
   Users,
@@ -155,9 +155,9 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Journey Timeline - Switcher with 3 variants */}
+      {/* Journey Timeline */}
       <div className="bg-gradient-to-b from-white to-gray-50 dark:from-background dark:to-gray-900">
-        <JourneySwitcher />
+        <Journey />
       </div>
 
       {/* Why Learn With Us */}

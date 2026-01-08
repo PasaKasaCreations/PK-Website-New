@@ -22,7 +22,8 @@ import { CareersHero } from "@/components/shared/CareersHero";
 
 export const metadata: Metadata = {
   title: "Careers - Pasakasa Creations",
-  description: "Join our team and help shape the future of games and education",
+  description:
+    "Work with us in Kathmandu. We build card games, teach coding, and ship real software.",
 };
 
 // Mock data - COMMENTED OUT - Now using Supabase
@@ -97,42 +98,46 @@ const benefits = [
   {
     icon: Zap,
     title: "Flexible Work",
-    description: "Remote-first culture with flexible hours",
+    description:
+      "Work from home or the office—your choice. Just be available for team calls.",
     color: "text-orange-600 dark:text-orange-400",
     bgColor: "bg-orange-100 dark:bg-orange-900/20",
   },
   {
     icon: GraduationCap,
     title: "Learning Budget",
-    description: "Annual budget for courses and conferences",
+    description:
+      "We'll pay for courses, books, or conference tickets if they help you grow.",
     color: "text-blue-600 dark:text-blue-400",
     bgColor: "bg-blue-100 dark:bg-blue-900/20",
   },
   {
     icon: Heart,
     title: "Health Insurance",
-    description: "Comprehensive health coverage",
+    description: "Health insurance for you. We handle the paperwork.",
     color: "text-orange-600 dark:text-orange-400",
     bgColor: "bg-orange-100 dark:bg-orange-900/20",
   },
   {
     icon: Target,
     title: "Creative Freedom",
-    description: "Work on innovative projects with autonomy",
+    description:
+      "Pick how you solve problems. We care about results, not micromanaging.",
     color: "text-blue-600 dark:text-blue-400",
     bgColor: "bg-blue-100 dark:bg-blue-900/20",
   },
   {
     icon: Coffee,
     title: "Team Events",
-    description: "Regular team building and social activities",
+    description: "Team lunches, occasional outings. Nothing forced.",
     color: "text-orange-600 dark:text-orange-400",
     bgColor: "bg-orange-100 dark:bg-orange-900/20",
   },
   {
     icon: TrendingUp,
     title: "Growth Opportunities",
-    description: "Clear career progression paths",
+    description:
+      "We'll help you figure out what's next—whether that's here or elsewhere.",
     color: "text-blue-600 dark:text-blue-400",
     bgColor: "bg-blue-100 dark:bg-blue-900/20",
   },
@@ -159,25 +164,24 @@ export default async function CareersPage() {
                     Why Join Our Team?
                   </h2>
                   <p className="text-lg text-muted-foreground">
-                    At Pasakasa Creations, we're not just building games—we're
-                    creating experiences that inspire and educate. Our team is
-                    passionate, creative, and driven by a shared vision of
-                    making a positive impact.
+                    We're small on purpose. Everyone here writes code, talks to
+                    customers, and ships features. No layers of management, no
+                    endless meetings. Just building stuff.
                   </p>
                   <p className="text-muted-foreground">
-                    We believe in fostering a culture of innovation, learning,
-                    and collaboration. Every team member has a voice, and we
-                    encourage experimentation and creative thinking.
+                    We're based in Kathmandu, but we work flexibly. What matters
+                    is that you do good work and communicate clearly. If
+                    something breaks, we fix it together.
                   </p>
 
                   <div className="space-y-3 pt-4">
-                    <h3 className="text-xl font-bold">Our Values</h3>
+                    <h3 className="text-xl font-bold">How We Work</h3>
                     {[
-                      "Innovation & Creativity",
-                      "Continuous Learning",
-                      "Collaboration & Respect",
-                      "Quality & Excellence",
-                      "Work-Life Balance",
+                      "Ship code, not slide decks",
+                      "Learn by building real things",
+                      "Say what you mean",
+                      "Help each other out",
+                      "Take breaks when you need them",
                     ].map((value, index) => (
                       <div key={index} className="flex items-center gap-3">
                         <div className="h-2 w-2 rounded-full bg-gradient-to-r from-orange-500 to-blue-500" />
@@ -215,8 +219,7 @@ export default async function CareersPage() {
                   Benefits & Perks
                 </h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  We take care of our team with competitive benefits and a
-                  supportive work environment
+                  Here's what you get when you work with us
                 </p>
               </div>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -255,7 +258,7 @@ export default async function CareersPage() {
                   Open Positions
                 </h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Find your perfect role and join our growing team
+                  See if anything fits. If not, scroll down.
                 </p>
               </div>
             </AnimatedWrapper>
@@ -339,8 +342,9 @@ export default async function CareersPage() {
                   Don't See a Position for You?
                 </h2>
                 <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                  We're always looking for talented people. Send us your resume
-                  and tell us how you can contribute to Pasakasa Creations.
+                  Send us your resume anyway. Tell us what you're good at and
+                  what you want to work on. We'll reach out if something opens
+                  up.
                 </p>
                 <Button
                   size="lg"

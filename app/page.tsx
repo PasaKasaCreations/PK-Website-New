@@ -19,11 +19,9 @@ import {
   CheckCircle2,
   Sparkles,
   Gamepad2,
-  Users,
   GraduationCap,
   Trophy,
   MapPin,
-  Star,
   Code,
   Target,
   ArrowRight,
@@ -34,15 +32,14 @@ import {
   Database,
   Palette,
   Zap,
-  Award,
   Rocket,
 } from "lucide-react";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Pasakasa Creations - Software Development & Live Classes in Nepal",
+  title: "Pasakasa Creations - Software Development Company in Nepal",
   description:
-    "Nepal-based software development company offering Web Development, Mobile Apps, CRM Solutions, UI/UX Design, Game Development, and live programming classes.",
+    "We build web apps, mobile apps, and multiplayer games from Kathmandu. Our card games have 15K+ downloads. We also teach programming through hands-on classes.",
 };
 
 // Type conversion helpers
@@ -144,9 +141,9 @@ const fallbackGames: Tables<"games">[] = [
     id: "1",
     name: "Teen Patti Friends",
     slug: "teen-patti-friends",
-    tagline: "Play with friends, win big!",
+    tagline: "10K+ downloads • 4.5★ rating",
     description:
-      "Experience the thrill of Teen Patti with your friends. Join tables, compete, and enjoy the ultimate Indian card game experience.",
+      "Play Teen Patti with friends online. Join tables, compete in tournaments, and enjoy real-time multiplayer card games.",
     long_description:
       "A complete multiplayer Teen Patti experience with real-time gameplay, chat, and tournaments.",
     genre: "Card Game",
@@ -173,9 +170,9 @@ const fallbackGames: Tables<"games">[] = [
     id: "2",
     name: "Callbreak Multiplayer",
     slug: "callbreak-multiplayer",
-    tagline: "Master the tricks, win the game",
+    tagline: "5K+ downloads • 4.5★ rating",
     description:
-      "Play the classic Callbreak card game online with players worldwide. Strategic gameplay with stunning visuals.",
+      "The classic Callbreak card game, now online. Play with friends or match with players worldwide.",
     long_description:
       "The ultimate Callbreak multiplayer experience with tournaments, leaderboards, and daily challenges.",
     genre: "Card Game",
@@ -236,15 +233,15 @@ const services = [
     icon: Globe,
     title: "Web Development",
     description:
-      "Full-stack web applications with modern frameworks. Responsive, scalable, and optimized for performance.",
+      "We build websites and web apps using React, Next.js, and Node.js. Clean code, fast load times, works on every device.",
     color: "text-blue-600 dark:text-blue-400",
     bgColor: "bg-blue-100 dark:bg-blue-900/20",
   },
   {
     icon: Smartphone,
-    title: "Mobile Applications",
+    title: "Mobile Apps",
     description:
-      "Native and cross-platform mobile apps for Android and iOS. User-friendly interfaces with robust functionality.",
+      "Android and iOS apps that actually get used. We handle everything from UI design to Play Store submission.",
     color: "text-orange-600 dark:text-orange-400",
     bgColor: "bg-orange-100 dark:bg-orange-900/20",
   },
@@ -252,7 +249,7 @@ const services = [
     icon: Database,
     title: "CRM Software",
     description:
-      "Custom CRM solutions to manage customer relationships, streamline operations, and boost productivity.",
+      "Custom systems to track your customers, sales, and operations. Built around how your business actually works.",
     color: "text-blue-600 dark:text-blue-400",
     bgColor: "bg-blue-100 dark:bg-blue-900/20",
   },
@@ -260,7 +257,7 @@ const services = [
     icon: Palette,
     title: "UI/UX Design",
     description:
-      "Beautiful, intuitive interfaces that users love. From wireframes to high-fidelity designs and prototypes.",
+      "Interfaces people enjoy using. We design with your users in mind—not just what looks good in a mockup.",
     color: "text-orange-600 dark:text-orange-400",
     bgColor: "bg-orange-100 dark:bg-orange-900/20",
   },
@@ -268,7 +265,7 @@ const services = [
     icon: Gamepad2,
     title: "Game Development",
     description:
-      "Strategic multiplayer games with engaging gameplay. Published on Play Store and App Store with thousands of players.",
+      "Multiplayer card games are our specialty. Our games have 15K+ downloads on Play Store with 4.5★ ratings.",
     color: "text-blue-600 dark:text-blue-400",
     bgColor: "bg-blue-100 dark:bg-blue-900/20",
   },
@@ -276,7 +273,7 @@ const services = [
     icon: GraduationCap,
     title: "Live Training",
     description:
-      "In-person programming classes in Kathmandu. Learn web dev, mobile dev, and game development from industry experts.",
+      "In-person coding classes in Kathmandu. You'll write real code from day one—no death by PowerPoint.",
     color: "text-orange-600 dark:text-orange-400",
     bgColor: "bg-orange-100 dark:bg-orange-900/20",
   },
@@ -285,59 +282,35 @@ const services = [
 const features = [
   {
     icon: Code,
-    title: "Modern Technology Stack",
+    title: "We Ship Real Products",
     description:
-      "We use cutting-edge technologies and frameworks to build scalable, maintainable solutions.",
+      "Our games are on the Play Store with thousands of downloads. We build things that people actually use.",
     color: "text-blue-600 dark:text-blue-400",
     bgColor: "bg-blue-100 dark:bg-blue-900/20",
   },
   {
     icon: Zap,
-    title: "Fast Turnaround",
+    title: "No Bloated Teams",
     description:
-      "Agile development process with quick iterations. We deliver quality projects on time, every time.",
+      "You'll talk directly to the developers working on your project. No account managers, no telephone game.",
     color: "text-orange-600 dark:text-orange-400",
     bgColor: "bg-orange-100 dark:bg-orange-900/20",
   },
   {
     icon: Target,
-    title: "Client-Focused Approach",
+    title: "We Finish What We Start",
     description:
-      "Your success is our success. We work closely with you to understand and exceed your expectations.",
+      "Every project gets shipped. We don't disappear halfway through or leave you with half-built software.",
     color: "text-blue-600 dark:text-blue-400",
     bgColor: "bg-blue-100 dark:bg-blue-900/20",
   },
   {
     icon: MapPin,
-    title: "Made in Nepal",
+    title: "Based in Kathmandu",
     description:
-      "Based in Kathmandu, serving clients worldwide. Building Nepal's tech ecosystem one project at a time.",
+      "Local team, local timezone. Easy to meet in person if you're in Nepal, or hop on a call if you're not.",
     color: "text-orange-600 dark:text-orange-400",
     bgColor: "bg-orange-100 dark:bg-orange-900/20",
-  },
-];
-
-const testimonials = [
-  {
-    name: "Rajesh Kumar",
-    role: "Startup Founder",
-    image: "/placeholder-avatar.jpg",
-    rating: 5,
-    text: "Pasakasa built our entire web platform from scratch. Their technical expertise and professionalism are outstanding. Highly recommended!",
-  },
-  {
-    name: "Priya Sharma",
-    role: "E-commerce Manager",
-    image: "/placeholder-avatar.jpg",
-    rating: 5,
-    text: "The mobile app they developed for our business exceeded expectations. User-friendly, fast, and exactly what we needed.",
-  },
-  {
-    name: "Anil Thapa",
-    role: "Unity Developer",
-    image: "/placeholder-avatar.jpg",
-    rating: 5,
-    text: "I took their game development course and now I'm working as a professional developer. The training was practical and industry-focused.",
   },
 ];
 
@@ -412,11 +385,11 @@ export default async function Home() {
                 OUR SERVICES
               </div>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Complete Software Solutions Under One Roof
+                What We Build
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                From concept to deployment, we handle every aspect of your
-                digital needs with expertise and precision.
+                Games, apps, websites—if it runs on code, we can build it.
+                Here's what we do best.
               </p>
             </div>
           </AnimatedWrapper>
@@ -480,30 +453,30 @@ export default async function Home() {
                 </div>
 
                 <h2 className="text-3xl md:text-4xl font-bold">
-                  Your Trusted Technology Partner in Nepal
+                  The Team Behind the Code
                 </h2>
 
                 <p className="text-lg text-muted-foreground leading-relaxed">
-                  Pasakasa Creations is a full-service software development
-                  company based in Kathmandu, Nepal. We specialize in building
-                  web applications, mobile apps, CRM systems, games, and
-                  beautiful UI/UX designs.
+                  We're Pasakasa Creations—a software development company based
+                  in Kathmandu, Nepal. We build web apps, mobile apps, games,
+                  and custom business software. Our card games alone have been
+                  downloaded over 15,000 times.
                 </p>
 
                 <p className="text-muted-foreground leading-relaxed">
-                  With 7+ years of experience and 100+ successful projects,
-                  we've helped startups, SMEs, and enterprises transform their
-                  ideas into powerful digital solutions. We're also passionate
-                  about education—teaching the next generation of developers
-                  through live, hands-on classes.
+                  We started because we love building things that work. Whether
+                  it's a multiplayer game or a business dashboard, we care about
+                  the details. We also run programming classes because we
+                  believe Nepal needs more developers—and we want to help train
+                  them.
                 </p>
 
                 <div className="space-y-3 pt-4">
                   {[
-                    "Experienced team of full-stack developers and designers",
-                    "End-to-end project delivery from concept to launch",
-                    "Modern tech stack with proven frameworks",
-                    "Live training programs for aspiring developers",
+                    "Small team, direct communication—no middlemen",
+                    "We handle design, development, deployment, and support",
+                    "React, Next.js, Unity, Node.js—tools that work",
+                    "Live coding classes in Kathmandu for beginners",
                   ].map((reason, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <div
@@ -551,11 +524,11 @@ export default async function Home() {
                 WHY CHOOSE US
               </div>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Excellence in Every Project
+                Why Work With Us
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                We combine technical expertise with creative thinking to deliver
-                solutions that drive real results
+                We're not for everyone. But if you want a team that actually
+                builds and ships, here's what you get.
               </p>
             </div>
           </AnimatedWrapper>
@@ -597,11 +570,11 @@ export default async function Home() {
                 OUR GAMES
               </div>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Published Games
+                Games We've Built
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Strategic multiplayer games with thousands of active players on
-                Play Store and App Store
+                15K+ downloads and counting. Our card games are played daily
+                across South Asia.
               </p>
             </div>
           </AnimatedWrapper>
@@ -641,11 +614,11 @@ export default async function Home() {
                 LIVE TRAINING
               </div>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Learn From Industry Experts
+                Learn to Code With Us
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                In-person programming classes in Kathmandu. Build real projects,
-                get mentorship, launch your career.
+                Hands-on classes in Kathmandu. No boring lectures—you'll build
+                real projects from week one.
               </p>
             </div>
           </AnimatedWrapper>
@@ -674,59 +647,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-background">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedWrapper>
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-100 dark:bg-orange-900/20 rounded-full text-sm font-semibold text-orange-600 dark:text-orange-400 mb-4">
-                <Star className="h-4 w-4" />
-                CLIENT TESTIMONIALS
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                What Our Clients Say
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Real feedback from businesses and students who worked with us
-              </p>
-            </div>
-          </AnimatedWrapper>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {testimonials.map((testimonial, index) => (
-              <AnimatedWrapper key={index} delay={0.2 + index * 0.1}>
-                <Card className="border-2 hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300 hover:shadow-lg h-full">
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="relative h-16 w-16 rounded-full overflow-hidden border-2 border-orange-200 dark:border-orange-800 bg-gradient-to-br from-blue-100 to-orange-100 dark:from-blue-900 dark:to-orange-900 flex items-center justify-center">
-                        <Users className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold">{testimonial.name}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          {testimonial.role}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex gap-1 mb-4">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="h-4 w-4 fill-orange-500 text-orange-500"
-                        />
-                      ))}
-                    </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      "{testimonial.text}"
-                    </p>
-                  </CardContent>
-                </Card>
-              </AnimatedWrapper>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="py-20 relative overflow-hidden bg-gradient-to-br from-blue-600 via-orange-600 to-blue-900 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -734,16 +654,16 @@ export default async function Home() {
             <div className="max-w-4xl mx-auto space-y-8">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500 rounded-full text-sm font-semibold">
                 <Rocket className="h-4 w-4" />
-                LET'S BUILD SOMETHING AMAZING
+                START A PROJECT
               </div>
 
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
-                Ready to Transform Your Business with Technology?
+                Have an idea? Let's talk.
               </h2>
 
               <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-                Whether you need a website, mobile app, CRM system, or want to
-                learn programming—we're here to help you succeed.
+                Tell us what you're building. We'll figure out the rest
+                together.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">

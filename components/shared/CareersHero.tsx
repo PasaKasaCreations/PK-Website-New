@@ -174,10 +174,10 @@ export function CareersHero() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-white mb-6"
           >
-            Build the Future with
+            Come Work
             <br />
             <span className="bg-gradient-to-r from-yellow-200 via-orange-200 to-pink-200 bg-clip-text text-transparent">
-              Pasakasa Creations
+              With Us
             </span>
           </motion.h1>
 
@@ -188,8 +188,9 @@ export function CareersHero() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xl md:text-2xl text-blue-100 max-w-2xl mx-auto mb-10"
           >
-            Join a passionate team creating innovative games and educational
-            experiences that make a difference.
+            We're a small team in Kathmandu. We make card games, build software
+            for clients, and teach people to code. If that sounds interesting,
+            keep reading.
           </motion.p>
 
           {/* Value Props */}

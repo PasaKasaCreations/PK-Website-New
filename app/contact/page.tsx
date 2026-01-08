@@ -1,19 +1,14 @@
 import { Metadata } from "next";
 import { AnimatedWrapper } from "@/components/shared/AnimatedWrapper";
 import { ContactForm } from "@/components/shared/ContactForm";
-import { ContactHeroSwitcher } from "@/components/contact";
+import { ContactHero } from "@/components/contact";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Mail,
-  MapPin,
-  Phone,
-  Send,
-} from "lucide-react";
+import { Mail, MapPin, Phone, Send } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Contact Us - Pasakasa Creations",
+  title: "Contact Us | Pasakasa Creations - Game Development Studio in Nepal",
   description:
-    "Get in touch with Pasakasa Creations in Kathmandu. Ask about our live game development classes, games, or collaboration opportunities.",
+    "Reach out to Pasakasa Creations in Kathmandu, Nepal. Questions about game development courses, our mobile games, or partnership opportunities? We respond within 24 hours.",
 };
 
 const contactInfo = [
@@ -21,6 +16,7 @@ const contactInfo = [
     icon: Mail,
     title: "Email",
     value: "contact@pasakasacreations.com",
+    subtitle: "Best for detailed inquiries",
     href: "mailto:contact@pasakasacreations.com",
     color: "text-blue-600 dark:text-blue-400",
     bgColor: "bg-blue-100 dark:bg-blue-900/20",
@@ -29,6 +25,7 @@ const contactInfo = [
     icon: Phone,
     title: "Phone",
     value: "+977 9840000000",
+    subtitle: "Mon-Fri, 10am-6pm NPT",
     href: "tel:+9779840000000",
     color: "text-orange-600 dark:text-orange-400",
     bgColor: "bg-orange-100 dark:bg-orange-900/20",
@@ -37,6 +34,7 @@ const contactInfo = [
     icon: MapPin,
     title: "Location",
     value: "Kathmandu, Nepal",
+    subtitle: "Visits by appointment",
     href: null,
     color: "text-blue-600 dark:text-blue-400",
     bgColor: "bg-blue-100 dark:bg-blue-900/20",
@@ -47,30 +45,30 @@ const faqs = [
   {
     question: "How do I join a live class?",
     answer:
-      "Check our Courses page for upcoming batches. Contact us to reserve your spot or fill the inquiry form. Classes are held physically in Kathmandu.",
+      "Head over to our Courses page to see upcoming batches, then reach out to reserve your spot. All our classes are in-person right here in Kathmandu — no Zoom calls, just real face-to-face learning.",
   },
   {
     question: "Are the classes beginner-friendly?",
     answer:
-      "Absolutely! We offer classes for complete beginners to intermediate developers. If you can use a computer, you can learn game dev with us.",
+      "Absolutely! Whether you're just starting out or have some coding experience, we've got you covered. If you can use a computer and have a genuine interest in games, you're ready to learn with us.",
   },
   {
     question: "Where are the classes held?",
     answer:
-      "All our classes are in-person, held in Kathmandu, Nepal. Small batch sizes mean personalized attention and real instructor interaction.",
+      "We teach in-person at our location in Kathmandu, Nepal. We keep our classes small intentionally — this means you get personalized attention, direct feedback, and genuine connections with your instructors and fellow learners.",
   },
   {
     question: "Can I download your games for free?",
     answer:
-      "Yes! Teen Patti Friends and Callbreak Multiplayer are free to download on Play Store and App Store. Give them a try!",
+      "Yes — our games Teen Patti Friends and Callbreak Multiplayer are completely free to play! Download them from the Play Store or App Store and see what we've been building.",
   },
 ];
 
 export default function ContactPage() {
   return (
     <div className="min-h-screen">
-      {/* Hero Section - Switchable Variants */}
-      <ContactHeroSwitcher />
+      {/* Hero Section */}
+      <ContactHero />
 
       {/* Main Content */}
       <div className="py-16 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-background">
@@ -80,12 +78,13 @@ export default function ContactPage() {
             <AnimatedWrapper delay={0.2}>
               <div className="space-y-8">
                 <div>
-                  <h2 className="text-3xl font-bold mb-4">Get in Touch</h2>
+                  <h2 className="text-3xl font-bold mb-4">Let's Connect</h2>
                   <p className="text-lg text-muted-foreground">
-                    Got questions about our live classes? Want to know more
-                    about our games? Interested in collaboration? Just drop us a
-                    message. We're gamers too, we get it—we'll get back to you
-                    within 24 hours.
+                    Have questions about our in-person game development classes?
+                    Curious about our mobile games? Thinking about a
+                    collaboration? We'd love to hear from you. As fellow gamers,
+                    we understand how important quick responses are — expect to
+                    hear back from us within 24 hours.
                   </p>
                 </div>
 
@@ -120,6 +119,9 @@ export default function ContactPage() {
                                   {info.value}
                                 </p>
                               )}
+                              <p className="text-sm text-muted-foreground/70 mt-1">
+                                {info.subtitle}
+                              </p>
                             </div>
                           </div>
                         </CardContent>
@@ -129,10 +131,10 @@ export default function ContactPage() {
                 </div>
 
                 <div className="pt-4">
-                  <h3 className="font-semibold text-lg mb-4">Follow Us</h3>
+                  <h3 className="font-semibold text-lg mb-4">Stay in the Loop</h3>
                   <p className="text-muted-foreground mb-6">
-                    Stay connected with us on social media for the latest
-                    updates, announcements, and more.
+                    Follow along for game updates, behind-the-scenes peeks,
+                    course announcements, and more from our team.
                   </p>
                   <div className="flex gap-4">
                     {[
@@ -169,10 +171,10 @@ export default function ContactPage() {
             <section className="mt-20">
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  Frequently Asked Questions
+                  Questions? We've Got Answers
                 </h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Quick answers to common questions
+                  Here are some things people often ask us
                 </p>
               </div>
               <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
@@ -212,12 +214,13 @@ export default function ContactPage() {
                   <Send className="h-8 w-8 text-blue-600 dark:text-blue-400" />
                 </div>
                 <h2 className="text-3xl font-bold mb-4">
-                  Ready to Start Your Journey?
+                  Ready to Take the Next Step?
                 </h2>
                 <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                  Whether you want to learn game development or have a business
-                  inquiry, we're here to help. Fill out the form above and let's
-                  get started!
+                  Whether you're looking to master game development, explore
+                  partnership opportunities, or simply have a question — we're
+                  here for you. Scroll up, fill out the form, and let's start a
+                  conversation.
                 </p>
               </div>
             </section>

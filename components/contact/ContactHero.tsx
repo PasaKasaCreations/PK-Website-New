@@ -4,29 +4,18 @@ import { motion } from "framer-motion";
 import {
   Sparkles,
   Clock,
-  MessageCircle,
   Zap,
   Heart,
-  Users,
   Gamepad2,
   BookOpen,
   Handshake,
   ChevronDown,
 } from "lucide-react";
 
-/**
- * ContactHeroV3 - Layered Cards Stack Hero
- *
- * Premium design with 3D stacked cards creating depth.
- * High-end, sophisticated aesthetic with dimensional feel.
- *
- * DELETE THIS FILE if not selected as final design.
- */
-
 const cardLayers = [
   {
-    title: "We Reply Fast",
-    description: "Usually within a few hours, always within 24",
+    title: "Reply Within 24 Hours",
+    description: "Your inbox, not your spam folder.",
     icon: Clock,
     rotate: -8,
     translateX: -50,
@@ -35,8 +24,8 @@ const cardLayers = [
     gradient: "from-blue-500 to-blue-600",
   },
   {
-    title: "We're Gamers Too",
-    description: "We speak your language, no corporate jargon",
+    title: "We Speak Gamer",
+    description: "No jargon. Just straight talk.",
     icon: Gamepad2,
     rotate: 5,
     translateX: 50,
@@ -45,8 +34,8 @@ const cardLayers = [
     gradient: "from-orange-500 to-orange-600",
   },
   {
-    title: "Real Conversations",
-    description: "Humans only, bots are boring",
+    title: "Every Message Counts",
+    description: "Big question or small — we're listening.",
     icon: Heart,
     rotate: -2,
     translateX: 0,
@@ -59,23 +48,23 @@ const cardLayers = [
 const reasonsToReach = [
   {
     icon: BookOpen,
-    title: "Course Inquiries",
-    description: "Want to learn game dev with us?",
+    title: "Course Questions",
+    description: "Fees, schedule, or anything else",
   },
   {
     icon: Gamepad2,
     title: "Game Feedback",
-    description: "Played our games? Share your thoughts!",
+    description: "Tell us what you think",
   },
   {
     icon: Handshake,
     title: "Partnerships",
-    description: "Let's build something together",
+    description: "Let's explore together",
   },
   {
     icon: Heart,
     title: "Just Saying Hi",
-    description: "We love hearing from fellow devs",
+    description: "We love that too",
   },
 ];
 
@@ -139,8 +128,12 @@ function StackedCard({
             <Icon className="h-6 w-6 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="font-bold text-white text-lg leading-tight">{title}</h3>
-            <p className="text-white/80 text-sm mt-2 leading-relaxed">{description}</p>
+            <h3 className="font-bold text-white text-lg leading-tight">
+              {title}
+            </h3>
+            <p className="text-white/80 text-sm mt-2 leading-relaxed">
+              {description}
+            </p>
           </div>
         </div>
         <div className="absolute bottom-4 right-4">
@@ -153,9 +146,9 @@ function StackedCard({
   );
 }
 
-export function ContactHeroV3() {
+export function ContactHero() {
   return (
-    <div className="relative min-h-[90vh] bg-gradient-to-b from-slate-50 via-white to-blue-50/50 dark:from-slate-900 dark:via-background dark:to-blue-950/20 overflow-hidden flex items-center">
+    <div className="relative min-h-[90vh] pt-16 lg:pt-20 bg-gradient-to-b from-slate-50 via-white to-blue-50/50 dark:from-slate-900 dark:via-background dark:to-blue-950/20 overflow-hidden flex items-center">
       {/* Subtle Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
@@ -172,7 +165,9 @@ export function ContactHeroV3() {
         {[...Array(6)].map((_, i) => (
           <motion.div
             key={i}
-            className={`absolute w-2 h-2 rounded-full ${i % 2 === 0 ? 'bg-blue-400/30' : 'bg-orange-400/30'}`}
+            className={`absolute w-2 h-2 rounded-full ${
+              i % 2 === 0 ? "bg-blue-400/30" : "bg-orange-400/30"
+            }`}
             style={{
               left: `${15 + i * 15}%`,
               top: `${20 + (i % 3) * 25}%`,
@@ -207,7 +202,7 @@ export function ContactHeroV3() {
               transition={{ delay: 0.2 }}
             >
               <Sparkles className="h-4 w-4" />
-              LET'S TALK
+              Hey, We're Listening
             </motion.div>
 
             <motion.h1
@@ -216,10 +211,10 @@ export function ContactHeroV3() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              We're a small team
+              Got something
               <br />
               <span className="bg-gradient-to-r from-blue-600 via-purple-500 to-orange-500 bg-clip-text text-transparent">
-                with big ears.
+                on your mind?
               </span>
             </motion.h1>
 
@@ -229,9 +224,12 @@ export function ContactHeroV3() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
-              Whether you're thinking about joining our courses, curious about our games,
-              or just want to chat about game development — we're all ears.
-              <span className="text-orange-500 font-medium"> No question is too small.</span>
+              We're a small team based in Kathmandu who genuinely loves what we
+              do. Whether you're curious about learning game development, have
+              feedback on our games, or just want to connect —{" "}
+              <span className="text-orange-500 font-medium">
+                we'd love to hear from you.
+              </span>
             </motion.p>
 
             {/* Reasons to Reach Out - Grid */}
@@ -253,8 +251,20 @@ export function ContactHeroV3() {
                     transition={{ delay: 0.6 + i * 0.1 }}
                   >
                     <div className="flex items-start gap-3">
-                      <div className={`h-10 w-10 rounded-lg flex items-center justify-center flex-shrink-0 ${i % 2 === 0 ? 'bg-blue-100 dark:bg-blue-900/30' : 'bg-orange-100 dark:bg-orange-900/30'}`}>
-                        <Icon className={`h-5 w-5 ${i % 2 === 0 ? 'text-blue-600 dark:text-blue-400' : 'text-orange-600 dark:text-orange-400'}`} />
+                      <div
+                        className={`h-10 w-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                          i % 2 === 0
+                            ? "bg-blue-100 dark:bg-blue-900/30"
+                            : "bg-orange-100 dark:bg-orange-900/30"
+                        }`}
+                      >
+                        <Icon
+                          className={`h-5 w-5 ${
+                            i % 2 === 0
+                              ? "text-blue-600 dark:text-blue-400"
+                              : "text-orange-600 dark:text-orange-400"
+                          }`}
+                        />
                       </div>
                       <div>
                         <h3 className="font-semibold text-slate-800 dark:text-white text-sm">
@@ -265,39 +275,6 @@ export function ContactHeroV3() {
                         </p>
                       </div>
                     </div>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-
-            {/* Feature Pills */}
-            <motion.div
-              className="flex flex-wrap justify-center lg:justify-start gap-3 pt-2"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-            >
-              {[
-                { icon: Clock, text: "24h Response", color: "blue" },
-                { icon: MessageCircle, text: "Friendly Chat", color: "orange" },
-                { icon: Users, text: "Real Humans", color: "blue" },
-              ].map((item, i) => {
-                const Icon = item.icon;
-                const isBlue = item.color === "blue";
-                return (
-                  <motion.div
-                    key={item.text}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full shadow-sm border ${
-                      isBlue
-                        ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800'
-                        : 'bg-orange-50 dark:bg-orange-900/20 border-orange-100 dark:border-orange-800'
-                    }`}
-                    whileHover={{ scale: 1.05, y: -2 }}
-                  >
-                    <Icon className={`h-4 w-4 ${isBlue ? 'text-blue-500' : 'text-orange-500'}`} />
-                    <span className={`text-sm font-medium ${isBlue ? 'text-blue-700 dark:text-blue-300' : 'text-orange-700 dark:text-orange-300'}`}>
-                      {item.text}
-                    </span>
                   </motion.div>
                 );
               })}
@@ -324,7 +301,9 @@ export function ContactHeroV3() {
                 </div>
                 <ChevronDown className="h-4 w-4 -mt-1 text-slate-300" />
               </motion.div>
-              <span className="text-sm">Scroll down to send us a message</span>
+              <span className="text-sm">
+                Scroll down — we can't wait to hear from you
+              </span>
             </motion.div>
           </motion.div>
 
@@ -369,8 +348,12 @@ export function ContactHeroV3() {
                       <Icon className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-white text-lg">{card.title}</h3>
-                      <p className="text-white/80 text-sm">{card.description}</p>
+                      <h3 className="font-bold text-white text-lg">
+                        {card.title}
+                      </h3>
+                      <p className="text-white/80 text-sm">
+                        {card.description}
+                      </p>
                     </div>
                   </div>
                 </motion.div>

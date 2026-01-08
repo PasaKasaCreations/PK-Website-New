@@ -71,9 +71,10 @@ export function ContactForm() {
     <Card className="border-2 bg-gradient-to-br from-white to-blue-50/30 dark:from-gray-900 dark:to-blue-950/10">
       <CardContent className="p-8">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold mb-2">Send us a Message</h2>
+          <h2 className="text-2xl font-bold mb-2">Drop Us a Line</h2>
           <p className="text-muted-foreground">
-            Fill out the form below and we'll get back to you within 24 hours.
+            Share what's on your mind — we read every message personally and
+            respond within 24 hours.
           </p>
         </div>
 
@@ -94,7 +95,7 @@ export function ContactForm() {
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
-              placeholder="Your name"
+              placeholder="What should we call you?"
               className="h-11"
             />
           </div>
@@ -135,7 +136,7 @@ export function ContactForm() {
               onChange={(e) =>
                 setFormData({ ...formData, phone: e.target.value })
               }
-              placeholder="+977 98XXXXXXXX"
+              placeholder="Your phone number (optional)"
               className="h-11"
             />
           </div>
@@ -155,7 +156,7 @@ export function ContactForm() {
               onChange={(e) =>
                 setFormData({ ...formData, message: e.target.value })
               }
-              placeholder="How can we help you?"
+              placeholder="Tell us what's on your mind..."
               rows={6}
               className="resize-none"
             />
@@ -176,7 +177,8 @@ export function ContactForm() {
                   <path d="M5 13l4 4L19 7"></path>
                 </svg>
                 <p className="text-green-600 dark:text-green-400 font-medium">
-                  Message sent successfully! We'll get back to you soon.
+                  Thanks for reaching out! Your message is in our inbox and
+                  we'll get back to you within 24 hours.
                 </p>
               </div>
             </div>
