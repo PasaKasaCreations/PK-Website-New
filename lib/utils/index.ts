@@ -17,7 +17,9 @@ export function cn(...inputs: ClassValue[]) {
  * formatEmploymentType("contract") // "Contract"
  * formatEmploymentType("internship") // "Internship"
  */
-export function formatEmploymentType(employmentType: Enums<"employment_type">): string {
+export function formatEmploymentType(
+  employmentType: Enums<"employment_type">
+): string {
   const formatMap: Record<Enums<"employment_type">, string> = {
     full_time: "Full-Time",
     part_time: "Part-Time",

@@ -132,42 +132,42 @@ function ServiceCard({
         zIndex: 10,
         transition: { duration: 0.2 },
       }}
-      className={`relative bg-white rounded-2xl p-6 border-2 ${colors.border} shadow-lg hover:shadow-xl transition-all cursor-pointer group`}
+      className={`relative bg-white rounded-xl p-4 border-2 ${colors.border} shadow-md hover:shadow-lg transition-all cursor-pointer group`}
     >
       <Link href={card.link} className="block">
         <span
-          className={`inline-block px-3 py-1 ${colors.badge} rounded-full text-xs font-semibold mb-4`}
+          className={`inline-block px-2.5 py-0.5 ${colors.badge} rounded-full text-xs font-semibold mb-2`}
         >
           {card.category}
         </span>
 
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex-1 min-w-0 pr-4">
-            <h3 className="text-xl font-bold text-slate-900 mb-2">
+        <div className="flex items-start justify-between mb-2">
+          <div className="flex-1 min-w-0 pr-3">
+            <h3 className="text-base font-bold text-slate-900 mb-1">
               {card.title}
             </h3>
-            <p className="text-sm text-slate-500 leading-relaxed">
+            <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
               {card.description}
             </p>
           </div>
           <div
-            className={`h-12 w-12 rounded-xl ${colors.iconBg} flex items-center justify-center flex-shrink-0`}
+            className={`h-9 w-9 rounded-lg ${colors.iconBg} flex items-center justify-center flex-shrink-0`}
           >
-            <Icon className={`h-6 w-6 ${colors.icon}`} />
+            <Icon className={`h-5 w-5 ${colors.icon}`} />
           </div>
         </div>
 
-        <div className="flex items-center justify-end mt-4 pt-4 border-t border-slate-100">
+        <div className="flex items-center justify-end mt-2 pt-2 border-t border-slate-100">
           <span
-            className={`text-sm font-medium ${colors.icon} group-hover:underline`}
+            className={`text-xs font-medium ${colors.icon} group-hover:underline`}
           >
             Learn more
           </span>
           <motion.div
-            className={`ml-2 h-6 w-6 rounded-full ${colors.iconBg} flex items-center justify-center group-hover:scale-110 transition-transform`}
+            className={`ml-1.5 h-5 w-5 rounded-full ${colors.iconBg} flex items-center justify-center group-hover:scale-110 transition-transform`}
             whileHover={{ x: 2 }}
           >
-            <ArrowRight className={`h-3.5 w-3.5 ${colors.icon}`} />
+            <ArrowRight className={`h-3 w-3 ${colors.icon}`} />
           </motion.div>
         </div>
       </Link>
@@ -330,7 +330,7 @@ export function Hero() {
 
           {/* Right: Service Cards */}
           <div className="relative lg:pl-4">
-            <div className="space-y-4">
+            <div className="space-y-3">
               {serviceCards.map((card, index) => (
                 <ServiceCard key={card.id} card={card} index={index} />
               ))}

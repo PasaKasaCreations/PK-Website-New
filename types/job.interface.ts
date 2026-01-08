@@ -16,8 +16,8 @@ export interface Job {
   };
   responsibilities: string[];
   requirements: string[];
-  benefits: string[];
-  contact: {
+  benefits?: string[];
+  contact?: {
     name: string;
     title: string;
     email: string;

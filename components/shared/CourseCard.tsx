@@ -32,7 +32,12 @@ export function CourseCard({ course }: CourseCardProps) {
             <div className="flex items-center gap-2 text-white text-sm">
               <Calendar className="h-4 w-4" />
               <span className="font-medium">
-                Next: {new Date(course.next_batch_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                Next:{" "}
+                {new Date(course.next_batch_date).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
               </span>
             </div>
           </div>
@@ -61,7 +66,7 @@ export function CourseCard({ course }: CourseCardProps) {
         <CardFooter className="p-6 pt-0 bg-gradient-to-b from-blue-50/30 to-white dark:from-blue-950/10 dark:to-gray-900">
           <Link href={`/courses/${course.slug}`} className="w-full">
             <Button
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white group/btn"
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white group/btn"
               size="lg"
             >
               <span>View Course Details</span>

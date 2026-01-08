@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { AnimatedWrapper } from "@/components/shared/AnimatedWrapper";
-import { CourseCard } from "@/components/shared/CourseCard";
+import { ExploreCoursesSection } from "@/components/courses/ExploreCoursesSection";
 import { GraduationCap, Sparkles, BookOpen } from "lucide-react";
 import { getPublishedCourses } from "@/lib/api/courses";
 
@@ -160,30 +160,7 @@ export default async function CoursesPage() {
       </div>
 
       {/* Courses Section */}
-      <div className="py-16 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-background">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedWrapper delay={0.2}>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Explore Our Courses
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Choose from our carefully designed courses that combine theory
-                with extensive hands-on practice
-              </p>
-            </div>
-          </AnimatedWrapper>
-
-          {/* Courses Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {allCourses.map((course, index) => (
-              <AnimatedWrapper key={course.id} delay={0.3 + index * 0.1}>
-                <CourseCard course={course} />
-              </AnimatedWrapper>
-            ))}
-          </div>
-        </div>
-      </div>
+      <ExploreCoursesSection courses={allCourses} />
     </div>
   );
 }

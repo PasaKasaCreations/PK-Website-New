@@ -10,6 +10,8 @@ interface JobContactProps {
 }
 
 export function JobContact({ contact }: JobContactProps) {
+  if (!contact) return null;
+
   const initials = contact.name
     .split(" ")
     .map((n) => n[0])

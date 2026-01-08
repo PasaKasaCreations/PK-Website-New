@@ -195,7 +195,7 @@ export function ContactForm() {
           <Button
             type="submit"
             size="lg"
-            className="w-full bg-gradient-to-r from-orange-600 to-blue-600 hover:from-orange-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all"
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl transition-all"
             disabled={isSubmitting}
           >
             {isSubmitting ? "Sending..." : "Send Message"}

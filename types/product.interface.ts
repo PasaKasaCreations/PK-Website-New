@@ -25,6 +25,8 @@ export interface Product extends BaseEntity {
   hero_background_image?: string;
   hero_stats?: HeroStats;
   accent_color?: string;
+  // Trailer/Preview video
+  trailer_url?: string;
 }
 
 export interface GameStats {

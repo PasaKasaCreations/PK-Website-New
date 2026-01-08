@@ -58,7 +58,7 @@ export function ProductCard({ product }: ProductCardProps) {
               >
                 <Button
                   size="lg"
-                  className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white group/btn shadow-md hover:shadow-lg"
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white group/btn shadow-md hover:shadow-lg"
                 >
                   <Smartphone className="h-4 w-4 mr-2" />
                   <span>Play Store</span>
@@ -74,7 +74,7 @@ export function ProductCard({ product }: ProductCardProps) {
               >
                 <Button
                   size="lg"
-                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white group/btn shadow-md hover:shadow-lg"
+                  className="w-full bg-blue-500 hover:bg-blue-600 text-white group/btn shadow-md hover:shadow-lg"
                 >
                   <Apple className="h-4 w-4 mr-2" />
                   <span>App Store</span>
