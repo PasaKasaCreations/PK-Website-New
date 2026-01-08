@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 
 /**
  * Formats employment type from database format to human-readable format
- * @param employmentType - Database employment type value
+ * @param employmentType - Database employment type valu e
  * @returns Formatted employment type string
  *
  * @example
