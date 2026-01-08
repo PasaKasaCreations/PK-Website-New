@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/types/product.interface";
 import { motion } from "framer-motion";
-import { Download, Smartphone, Apple } from "lucide-react";
+import { Smartphone, Apple, Shield } from "lucide-react";
 
 interface ProductCardProps {
   product: Product;
@@ -47,37 +47,48 @@ export function ProductCard({ product }: ProductCardProps) {
           </p>
         </CardContent>
 
-        <CardFooter className="p-6 pt-0 flex gap-3 bg-gradient-to-b from-orange-50/30 to-white dark:from-orange-950/10 dark:to-gray-900">
-          {product.play_store_url && (
-            <Link
-              href={product.play_store_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1"
-            >
-              <Button
-                size="lg"
-                className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white group/btn shadow-md hover:shadow-lg"
+        <CardFooter className="p-6 pt-0 flex flex-col gap-3 bg-gradient-to-b from-orange-50/30 to-white dark:from-orange-950/10 dark:to-gray-900">
+          <div className="flex gap-3 w-full">
+            {product.play_store_url && (
+              <Link
+                href={product.play_store_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1"
               >
-                <Smartphone className="h-4 w-4 mr-2" />
-                <span>Play Store</span>
-              </Button>
-            </Link>
-          )}
-          {product.app_store_url && (
-            <Link
-              href={product.app_store_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1"
-            >
-              <Button
-                size="lg"
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white group/btn shadow-md hover:shadow-lg"
+                <Button
+                  size="lg"
+                  className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white group/btn shadow-md hover:shadow-lg"
+                >
+                  <Smartphone className="h-4 w-4 mr-2" />
+                  <span>Play Store</span>
+                </Button>
+              </Link>
+            )}
+            {product.app_store_url && (
+              <Link
+                href={product.app_store_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1"
               >
-                <Apple className="h-4 w-4 mr-2" />
-                <span>App Store</span>
-              </Button>
+                <Button
+                  size="lg"
+                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white group/btn shadow-md hover:shadow-lg"
+                >
+                  <Apple className="h-4 w-4 mr-2" />
+                  <span>App Store</span>
+                </Button>
+              </Link>
+            )}
+          </div>
+          {product.category === "game" && (
+            <Link
+              href={`/games/${product.slug}/privacy-policy`}
+              className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              <Shield className="h-3 w-3" />
+              <span>Privacy Policy</span>
             </Link>
           )}
         </CardFooter>

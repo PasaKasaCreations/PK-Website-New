@@ -38,7 +38,7 @@ const footerLinks = {
     { label: "Become an Instructor", href: ROUTES.CONTACT },
   ],
   Legal: [
-    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Privacy Policy", href: "/privacy-policy" },
     { label: "Terms of Service", href: "/terms" },
     { label: "Cookie Policy", href: "/cookies" },
     { label: "Refund Policy", href: "/refund" },
