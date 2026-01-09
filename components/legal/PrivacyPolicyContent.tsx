@@ -1,7 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Shield, Mail, Trash2, Settings, AlertCircle } from "lucide-react";
+import Link from "next/link";
+import {
+  Shield,
+  Mail,
+  Trash2,
+  Settings,
+  AlertCircle,
+  ArrowRight,
+} from "lucide-react";
 
 interface PrivacyPolicyContentProps {
   gameName?: string;
@@ -62,7 +70,7 @@ export function PrivacyPolicyContent({
               {description}
             </p>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-4">
-              Last Updated: January 8, 2026
+              Last Updated: 8 January, 2026
             </p>
           </motion.div>
         </div>
@@ -319,6 +327,43 @@ export function PrivacyPolicyContent({
                     </div>
                   </div>
                 </div>
+
+                {/* Account Deletion Guides */}
+                <div className="mt-6">
+                  <h4 className="font-semibold text-slate-800 dark:text-white mb-4">
+                    Detailed Account Deletion Guides
+                  </h4>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <Link
+                      href="/games/teen-patti-friends/account-deletion"
+                      className="group flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-orange-400 dark:hover:border-orange-600 transition-colors"
+                    >
+                      <div>
+                        <h5 className="font-medium text-slate-800 dark:text-white">
+                          Teen Patti Friends
+                        </h5>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">
+                          Account deletion guide
+                        </p>
+                      </div>
+                      <ArrowRight className="h-5 w-5 text-slate-400 group-hover:text-orange-500 transition-colors" />
+                    </Link>
+                    <Link
+                      href="/games/callbreak-friends/account-deletion"
+                      className="group flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-600 transition-colors"
+                    >
+                      <div>
+                        <h5 className="font-medium text-slate-800 dark:text-white">
+                          Callbreak Friends
+                        </h5>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">
+                          Account deletion guide
+                        </p>
+                      </div>
+                      <ArrowRight className="h-5 w-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                    </Link>
+                  </div>
+                </div>
               </PolicySection>
 
               {/* Use of Information */}
@@ -337,9 +382,7 @@ export function PrivacyPolicyContent({
                   <li>Communicate changes to Services or policies</li>
                   <li>Conduct internal analytics and business purposes</li>
                   <li>Serve targeted ads linked to anonymous cookie IDs</li>
-                  <li>
-                    Send push or local notifications with your consent
-                  </li>
+                  <li>Send push or local notifications with your consent</li>
                 </ul>
               </PolicySection>
 
@@ -481,7 +524,9 @@ function PolicySection({
 }) {
   return (
     <motion.section
-      className={`${!isLast ? "pb-10 border-b border-slate-200 dark:border-slate-800" : ""}`}
+      className={`${
+        !isLast ? "pb-10 border-b border-slate-200 dark:border-slate-800" : ""
+      }`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}

@@ -28,7 +28,8 @@ INSERT INTO games (
   release_date,
   hero_background_image,
   hero_stats,
-  accent_color
+  accent_color,
+  trailer_url
 ) VALUES
 (
   'Teen Patti Friends',
@@ -50,7 +51,8 @@ INSERT INTO games (
   '2023-11-01',
   '/games/teen-patti/TeenPatti_Gameplay.png',
   '{"players": "50K+", "rating": "4.5", "feature": "Live Tables"}'::jsonb,
-  'orange'
+  'orange',
+  'https://www.youtube.com/watch?v=JgPu6f3X3U8'
 ),
 (
   'CallBreak Friends',
@@ -72,7 +74,8 @@ INSERT INTO games (
   '2023-10-01',
   '/games/callbreak/CallbreakBanner.webp',
   '{"players": "100K+", "rating": "4.6", "feature": "Tournaments"}'::jsonb,
-  'blue'
+  'blue',
+  'https://www.youtube.com/watch?v=Z1p4-qBKqIc'
 ),
 (
   'Space Defender VR',
@@ -94,7 +97,8 @@ INSERT INTO games (
   '2025-06-01',
   NULL,
   '{"players": "0", "rating": "0", "feature": "Coming Soon"}'::jsonb,
-  'purple'
+  'purple',
+  NULL
 );
 
 -- =====================================================

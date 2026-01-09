@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { getAllJobs } from "@/lib/api/jobs";
-// import { CareersHero } from "@/components/shared/CareersHero";
-import { CareersHeroSwitcher } from "@/components/careers/CareersHeroSwitcher";
+import { CareersHero } from "@/components/careers/CareersHero";
 import { WhyJoinUsSection } from "@/components/careers/WhyJoinUsSection";
 import { BenefitsSection } from "@/components/careers/BenefitsSection";
 import { OpenPositionsSection } from "@/components/careers/OpenPositionsSection";
@@ -19,8 +18,8 @@ export default async function CareersPage() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section - Switcher for previewing variants */}
-      <CareersHeroSwitcher />
+      {/* Hero Section */}
+      <CareersHero />
 
       {/* Why Join Us Section */}
       <WhyJoinUsSection />

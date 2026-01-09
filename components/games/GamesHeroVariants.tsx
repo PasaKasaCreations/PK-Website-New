@@ -15,7 +15,6 @@ import {
   Smartphone,
   Apple,
   Clock,
-  Shield,
   X,
 } from "lucide-react";
 
@@ -203,22 +202,6 @@ export function GamesHeroVariants({ games }: GamesHeroVariantsProps) {
                       </span>
                       <span className="text-gray-400 text-sm">Downloads</span>
                     </div>
-
-                    {/* Divider */}
-                    <div className="h-12 w-px bg-gray-600 hidden sm:block" />
-
-                    {/* Privacy Policy */}
-                    <Link
-                      href={`/games/${currentGame.slug}/privacy-policy`}
-                      className="flex flex-col items-center hover:opacity-80 transition-opacity"
-                    >
-                      <div className="flex items-center justify-center w-10 h-10 border border-gray-500 rounded-lg">
-                        <Shield className="h-5 w-5 text-white" />
-                      </div>
-                      <span className="text-gray-400 text-sm mt-1">
-                        Privacy Policy
-                      </span>
-                    </Link>
 
                     {/* Status Badge */}
                     {currentGame.status === "coming_soon" && (

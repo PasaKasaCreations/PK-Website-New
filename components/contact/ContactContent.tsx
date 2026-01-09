@@ -25,9 +25,9 @@ const contactMethods = [
   {
     icon: Phone,
     label: "Call Us",
-    value: "+977 9840000000",
+    value: "+977-986-2751805",
     description: "Mon-Fri, 10am-6pm NPT",
-    href: "tel:+9779840000000",
+    href: "tel:+9779862751805",
     gradient: "from-orange-500 to-orange-600",
     rotate: 2,
   },

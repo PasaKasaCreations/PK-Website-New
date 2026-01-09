@@ -1,11 +1,15 @@
 -- =====================================================
--- Pasakasa Creations - Complete Database Schema
+-- Pasakasa Creations - Final Consolidated Database Schema
 -- =====================================================
--- This migration creates the complete database schema with:
+-- This is the single source of truth for the database schema.
+-- Consolidated from migrations 001-005.
+--
+-- Includes:
 -- - All tables with complete fields
 -- - Row Level Security (RLS) policies
 -- - Indexes for performance
 -- - Triggers for automation
+-- - Proper permissions for public form submissions
 -- =====================================================
 
 -- Enable UUID extension
@@ -69,6 +73,7 @@ CREATE TABLE IF NOT EXISTS courses (
 );
 
 -- Games Table (Public Read)
+-- Includes hero section fields and trailer support
 CREATE TABLE IF NOT EXISTS games (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -86,6 +91,12 @@ CREATE TABLE IF NOT EXISTS games (
   -- Media
   thumbnail_url TEXT NOT NULL,
   screenshots TEXT[] NOT NULL DEFAULT '{}',
+  trailer_url TEXT,
+
+  -- Hero Section (for dynamic games hero carousel)
+  hero_background_image TEXT,
+  hero_stats JSONB NOT NULL DEFAULT '{"players": "0", "rating": "0", "feature": ""}'::jsonb,
+  accent_color TEXT NOT NULL DEFAULT 'orange',
 
   -- Platforms
   platforms TEXT[] NOT NULL DEFAULT '{}',
@@ -107,10 +118,10 @@ CREATE TABLE IF NOT EXISTS inquiries (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
-  -- User Info
+  -- User Info (with validation constraints)
   name TEXT NOT NULL CHECK (char_length(name) >= 2 AND char_length(name) <= 100),
   email TEXT NOT NULL CHECK (char_length(email) >= 5 AND char_length(email) <= 255),
-  phone TEXT CHECK (char_length(phone) <= 20),
+  phone TEXT CHECK (phone IS NULL OR phone = '' OR (char_length(phone) >= 7 AND char_length(phone) <= 20)),
   message TEXT NOT NULL CHECK (char_length(message) >= 10 AND char_length(message) <= 2000),
 
   -- Inquiry Details
@@ -128,10 +139,10 @@ CREATE TABLE IF NOT EXISTS contact_messages (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
-  -- User Info
+  -- User Info (with validation constraints)
   name TEXT NOT NULL CHECK (char_length(name) >= 2 AND char_length(name) <= 100),
   email TEXT NOT NULL CHECK (char_length(email) >= 5 AND char_length(email) <= 255),
-  phone TEXT CHECK (phone IS NULL OR (char_length(phone) >= 7 AND char_length(phone) <= 20)),
+  phone TEXT CHECK (phone IS NULL OR phone = '' OR (char_length(phone) >= 7 AND char_length(phone) <= 20)),
   message TEXT NOT NULL CHECK (char_length(message) >= 10 AND char_length(message) <= 2000),
 
   -- Security & Tracking
@@ -260,6 +271,15 @@ ALTER TABLE contact_messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE job_postings ENABLE ROW LEVEL SECURITY;
 
 -- =====================================================
+-- PERMISSIONS
+-- =====================================================
+-- Grant INSERT permissions to anon and authenticated roles
+-- for public form submissions
+
+GRANT INSERT ON TABLE contact_messages TO anon, authenticated;
+GRANT INSERT ON TABLE inquiries TO anon, authenticated;
+
+-- =====================================================
 -- RLS POLICIES
 -- =====================================================
 
@@ -279,23 +299,27 @@ CREATE POLICY "Public can read published games"
 
 -- INQUIRIES POLICIES
 -- Public can INSERT inquiries (with strict validation)
+-- Note: No SELECT policy - form submissions are write-only for security
 CREATE POLICY "Public can submit inquiries"
   ON inquiries
   FOR INSERT
+  TO anon, authenticated
   WITH CHECK (
     char_length(name) >= 2 AND char_length(name) <= 100
     AND char_length(email) >= 5 AND char_length(email) <= 255
     AND char_length(message) >= 10 AND char_length(message) <= 2000
+    AND (phone IS NULL OR phone = '' OR (char_length(phone) >= 7 AND char_length(phone) <= 20))
     AND inquiry_type IN ('general', 'course', 'career', 'partnership')
     AND status = 'new'
   );
 
 -- CONTACT MESSAGES POLICIES
 -- Public can INSERT contact messages (with validation)
--- Handles NULL, empty strings, and valid phone numbers
+-- Note: No SELECT policy - form submissions are write-only for security
 CREATE POLICY "Public can submit contact messages"
   ON contact_messages
   FOR INSERT
+  TO anon, authenticated
   WITH CHECK (
     char_length(name) >= 2 AND char_length(name) <= 100
     AND char_length(email) >= 5 AND char_length(email) <= 255
@@ -319,6 +343,10 @@ COMMENT ON COLUMN games.tagline IS 'Short one-line description of the game/produ
 COMMENT ON COLUMN games.platforms IS 'Array of platforms: android, ios, web, windows, mac, linux';
 COMMENT ON COLUMN games.category IS 'Product category: game, tool, or service';
 COMMENT ON COLUMN games.web_url IS 'URL for web-based games or demo';
+COMMENT ON COLUMN games.hero_background_image IS 'Full-width background image URL for hero carousel section';
+COMMENT ON COLUMN games.hero_stats IS 'JSON object with stats: {players: string, rating: string, feature: string}';
+COMMENT ON COLUMN games.accent_color IS 'Theme accent color: orange, blue, purple, green, etc.';
+COMMENT ON COLUMN games.trailer_url IS 'YouTube video URL for game trailer/preview';
 
 -- Job postings table comments
 COMMENT ON COLUMN job_postings.salary IS 'Salary range or compensation details';
@@ -333,17 +361,19 @@ COMMENT ON COLUMN job_postings.similar_jobs IS 'Array of similar job postings: [
 -- MIGRATION COMPLETE
 -- =====================================================
 -- What's included:
--- ✅ All tables with complete schema
--- ✅ All enums and types
--- ✅ Performance indexes
--- ✅ Auto-update triggers
--- ✅ Row Level Security enabled
--- ✅ Security policies configured
--- ✅ Documentation comments
+-- [x] All tables with complete schema
+-- [x] All enums and types
+-- [x] Performance indexes
+-- [x] Auto-update triggers
+-- [x] Row Level Security enabled
+-- [x] Security policies configured
+-- [x] Permissions for form submissions
+-- [x] Documentation comments
 --
 -- Security model:
--- ✅ Public can only read published content
--- ✅ Public can submit forms (with validation)
--- ✅ No unauthorized data access
--- ✅ Admin access via service role key
+-- [x] Public can only read published content
+-- [x] Public can submit forms (with validation)
+-- [x] No unauthorized data access
+-- [x] Form submissions are write-only (no public SELECT)
+-- [x] Admin access via service role key
 -- =====================================================

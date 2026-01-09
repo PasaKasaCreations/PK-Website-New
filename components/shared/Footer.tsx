@@ -5,14 +5,14 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ROUTES } from "@/lib/constants/routes.constants";
 import {
-  Github,
-  Twitter,
+  Instagram,
+  Youtube,
   Linkedin,
+  Facebook,
   Mail,
   Phone,
   MapPin,
   ArrowUpRight,
-  Heart,
 } from "lucide-react";
 
 const footerLinks = {
@@ -38,17 +38,16 @@ const footerLinks = {
   ],
   Legal: [
     { label: "Privacy Policy", href: "/privacy-policy" },
-    { label: "Terms of Service", href: "/terms" },
-    { label: "Cookie Policy", href: "/cookies" },
-    { label: "Refund Policy", href: "/refund" },
+    { label: "Terms of Service", href: "/terms-of-service" },
+    { label: "EULA", href: "/eula" },
   ],
 };
 
 const socialLinks = [
-  { name: "Twitter", icon: Twitter, href: "https://twitter.com", color: "blue" },
-  { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com", color: "orange" },
-  { name: "GitHub", icon: Github, href: "https://github.com", color: "blue" },
-  { name: "Facebook", icon: Mail, href: "https://facebook.com", color: "orange" },
+  { name: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/company/pasakasa-creations/", color: "blue" },
+  { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/pasakasacreations", color: "orange" },
+  { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/pasaKasaCreations/", color: "blue" },
+  { name: "YouTube", icon: Youtube, href: "https://www.youtube.com/@pasakasacreations", color: "orange" },
 ];
 
 const contactInfo = [
@@ -302,20 +301,11 @@ export function Footer() {
         />
 
         {/* Bottom Bar */}
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-sm text-slate-500 dark:text-slate-500">
+        <div className="flex justify-center items-center text-sm text-slate-500 dark:text-slate-500">
           <p>
             &copy; {new Date().getFullYear()} Pasakasa Creations. All rights
             reserved.
           </p>
-          <div className="flex items-center gap-2">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-            </span>
-            Made with{" "}
-            <Heart className="h-3.5 w-3.5 text-red-500 animate-pulse" /> in
-            Nepal
-          </div>
         </div>
       </div>
     </footer>

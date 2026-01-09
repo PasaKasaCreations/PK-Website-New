@@ -35,7 +35,7 @@ export function ContactForm() {
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          phone: formData.phone || null,
+          phone: formData.phone,
           message: formData.message,
         }),
       });
@@ -43,11 +43,18 @@ export function ContactForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        // Handle validation errors
+        // Handle validation errors with user-friendly messages
         if (data.details && Array.isArray(data.details)) {
           const errorMessages = data.details
-            .map((issue: { message: string }) => issue.message)
-            .join(", ");
+            .map((issue: { path: string[]; message: string }) => {
+              const field = issue.path[0];
+              const fieldName = field === "phone" ? "Phone number" :
+                               field === "name" ? "Name" :
+                               field === "email" ? "Email" :
+                               field === "message" ? "Message" : field;
+              return `${fieldName}: ${issue.message}`;
+            })
+            .join(". ");
           setErrorMessage(errorMessages);
         } else {
           setErrorMessage(data.error || "Failed to send message");
@@ -127,17 +134,20 @@ export function ContactForm() {
               className="text-sm font-medium mb-2 flex items-center gap-2"
             >
               <Phone className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-              Phone (Optional)
+              Phone *
             </label>
             <Input
               id="phone"
               type="tel"
+              required
               value={formData.phone}
               onChange={(e) =>
                 setFormData({ ...formData, phone: e.target.value })
               }
-              placeholder="Your phone number (optional)"
+              placeholder="+977 98XXXXXXXX"
               className="h-11"
+              minLength={10}
+              maxLength={20}
             />
           </div>
 

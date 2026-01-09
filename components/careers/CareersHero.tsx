@@ -16,222 +16,9 @@ import {
   Lightbulb,
   Gamepad2,
   GraduationCap,
-  Laptop,
 } from "lucide-react";
 
-/**
- * CAREERS HERO VARIANTS
- *
- * Following the same design theme as Home (Hero.tsx) and About (AboutHero.tsx):
- * - Light gradient background (slate-50 → white → blue-50)
- * - Soft blur decorations (blue/orange)
- * - Gradient badge & text accents
- * - Subtle Framer Motion animations
- */
-
-// ============================================================================
-// VARIANT 1: Stacked Center Layout with Horizontal Scroll Benefits
-// Unique design different from homepage - centered with horizontal benefits strip
-// ============================================================================
-
-const teamHighlights = [
-  { icon: Code, label: "Developers", color: "text-blue-500" },
-  { icon: Gamepad2, label: "Game Designers", color: "text-orange-500" },
-  { icon: GraduationCap, label: "Instructors", color: "text-purple-500" },
-  { icon: Laptop, label: "Engineers", color: "text-blue-500" },
-];
-
-const perks = [
-  {
-    icon: Users,
-    title: "Remote-First",
-    description: "Work from anywhere",
-    gradient: "from-blue-500 to-blue-600",
-  },
-  {
-    icon: Heart,
-    title: "Work-Life Balance",
-    description: "Flexible schedules",
-    gradient: "from-orange-500 to-orange-600",
-  },
-  {
-    icon: Award,
-    title: "Career Growth",
-    description: "Learn & advance",
-    gradient: "from-purple-500 to-purple-600",
-  },
-  {
-    icon: Zap,
-    title: "Exciting Work",
-    description: "Games & software",
-    gradient: "from-blue-500 to-blue-600",
-  },
-];
-
-export function CareersHeroVariant1() {
-  return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-b from-slate-50 via-white to-blue-50/50 dark:from-slate-900 dark:via-slate-900 dark:to-blue-950">
-      {/* Unique animated grid pattern background */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px]" />
-        <motion.div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-to-b from-blue-200/40 via-purple-200/30 to-transparent dark:from-blue-500/10 dark:via-purple-500/5 rounded-full blur-3xl"
-          animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.7, 0.5] }}
-          transition={{ duration: 10, repeat: Infinity }}
-        />
-      </div>
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
-        {/* Centered Content Stack */}
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-6"
-          >
-            <span className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-orange-500 rounded-full text-sm font-semibold text-white shadow-lg">
-              <Briefcase className="h-4 w-4" />
-              CAREERS AT PASAKASA
-            </span>
-          </motion.div>
-
-          {/* Large Heading */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6"
-          >
-            <span className="text-slate-900 dark:text-white">
-              We're Looking for
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-blue-600 via-purple-500 to-orange-500 bg-clip-text text-transparent">
-              Creative Minds
-            </span>
-          </motion.h1>
-
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mb-8 leading-relaxed"
-          >
-            Join our Kathmandu-based team building games, creating software, and
-            teaching the next generation of developers.
-          </motion.p>
-
-          {/* Animated Team Roles - Horizontal Scroll */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex items-center justify-center gap-6 mb-10 flex-wrap"
-          >
-            {teamHighlights.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <motion.div
-                  key={item.label}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.4 + index * 0.1 }}
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 rounded-full shadow-md border border-slate-100 dark:border-slate-700"
-                >
-                  <Icon className={`h-5 w-5 ${item.color}`} />
-                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
-                    {item.label}
-                  </span>
-                </motion.div>
-              );
-            })}
-          </motion.div>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
-          >
-            <Link href="#open-positions">
-              <Button
-                size="lg"
-                className="bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900 text-white h-14 px-8 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all"
-              >
-                <Briefcase className="h-5 w-5 mr-2" />
-                View Open Positions
-              </Button>
-            </Link>
-            <Link href="#culture">
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-2 border-slate-300 dark:border-slate-600 hover:border-slate-900 dark:hover:border-white h-14 px-8 text-lg font-semibold transition-all"
-              >
-                <Sparkles className="h-5 w-5 mr-2" />
-                Our Culture
-              </Button>
-            </Link>
-          </motion.div>
-
-          {/* Perks Cards - Unique Horizontal Strip */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="relative"
-          >
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {perks.map((perk, index) => {
-                const Icon = perk.icon;
-                return (
-                  <motion.div
-                    key={perk.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6 + index * 0.1 }}
-                    whileHover={{ y: -6, scale: 1.02 }}
-                    className="group relative bg-white dark:bg-slate-800/80 rounded-2xl p-5 shadow-lg border border-slate-100 dark:border-slate-700 overflow-hidden"
-                  >
-                    {/* Gradient overlay on hover */}
-                    <div
-                      className={`absolute inset-0 bg-gradient-to-br ${perk.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}
-                    />
-                    <div className="relative z-10 flex flex-col items-center text-center">
-                      <div
-                        className={`h-10 w-10 rounded-xl bg-gradient-to-br ${perk.gradient} flex items-center justify-center mb-3 shadow-md`}
-                      >
-                        <Icon className="h-5 w-5 text-white" />
-                      </div>
-                      <h3 className="font-bold text-slate-900 dark:text-white text-sm mb-1">
-                        {perk.title}
-                      </h3>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">
-                        {perk.description}
-                      </p>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ============================================================================
-// VARIANT 2: Centered Layout with Evenly Distributed Floating Icons
-// ============================================================================
-
 const floatingIcons = [
-  // Top left
   {
     Icon: Code,
     position: "top-[15%] left-[8%]",
@@ -240,7 +27,6 @@ const floatingIcons = [
     animation: { y: [0, -12, 0], rotate: [0, 8, 0] },
     duration: 5,
   },
-  // Top right
   {
     Icon: Gamepad2,
     position: "top-[12%] right-[10%]",
@@ -249,7 +35,6 @@ const floatingIcons = [
     animation: { y: [0, 10, 0], rotate: [0, -6, 0] },
     duration: 6,
   },
-  // Middle left
   {
     Icon: GraduationCap,
     position: "top-[45%] left-[6%]",
@@ -258,7 +43,6 @@ const floatingIcons = [
     animation: { x: [0, 8, 0], y: [0, -8, 0] },
     duration: 6,
   },
-  // Bottom left
   {
     Icon: Rocket,
     position: "bottom-[15%] left-[12%]",
@@ -267,7 +51,6 @@ const floatingIcons = [
     animation: { y: [0, -14, 0], rotate: [0, 10, 0] },
     duration: 5.5,
   },
-  // Bottom right
   {
     Icon: Lightbulb,
     position: "bottom-[18%] right-[10%]",
@@ -329,7 +112,7 @@ const colorVariants = {
   },
 } as const;
 
-export function CareersHeroVariant2() {
+export function CareersHero() {
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-900 dark:to-blue-950">
       {/* Background decorations */}
@@ -351,7 +134,7 @@ export function CareersHeroVariant2() {
         />
       </div>
 
-      {/* Floating Icons - Evenly Distributed */}
+      {/* Floating Icons */}
       {floatingIcons.map(
         ({ Icon, position, color, size, animation, duration }, index) => (
           <motion.div

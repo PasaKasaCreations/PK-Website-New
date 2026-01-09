@@ -7,10 +7,8 @@ const ContactMessageSchema = z.object({
   email: z.string().email("Invalid email address").max(100),
   phone: z
     .string()
-    .min(10, "Phone must be at least 10 digits")
-    .max(20)
-    .optional()
-    .nullable(),
+    .min(10, "Phone number must be at least 10 digits")
+    .max(20, "Phone number must not exceed 20 digits"),
   message: z
     .string()
     .min(10, "Message must be at least 10 characters")
@@ -27,18 +25,14 @@ export async function POST(request: NextRequest) {
     const supabase = createClient();
 
     // Insert contact message into database
-    const { data, error } = await supabase
-      .from("contact_messages")
-      .insert([
-        {
-          name: validatedData.name,
-          email: validatedData.email,
-          phone: validatedData.phone,
-          message: validatedData.message,
-        },
-      ])
-      .select()
-      .single();
+    const { error } = await supabase.from("contact_messages").insert([
+      {
+        name: validatedData.name,
+        email: validatedData.email,
+        phone: validatedData.phone,
+        message: validatedData.message,
+      },
+    ]);
 
     if (error) {
       console.error("Error creating contact message:", error);
@@ -52,7 +46,6 @@ export async function POST(request: NextRequest) {
       {
         success: true,
         message: "Thank you for contacting us! We will get back to you soon.",
-        data,
       },
       { status: 201 }
     );

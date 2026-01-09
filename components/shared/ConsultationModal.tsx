@@ -11,39 +11,86 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Phone, Mail, User, Sparkles } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Phone, Mail, User, Sparkles, MessageSquare } from "lucide-react";
 
 interface ConsultationModalProps {
   trigger: React.ReactNode;
   courseName?: string;
+  courseId?: string;
 }
 
 export function ConsultationModal({
   trigger,
   courseName,
+  courseId,
 }: ConsultationModalProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
+    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
 
-    // TODO: Implement Supabase submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      // Generate default message if not provided
+      const message =
+        formData.message.trim() ||
+        `I am interested in ${courseName || "your courses"} and would like to request a free consultation.`;
 
-    setIsSubmitted(true);
-    setIsSubmitting(false);
+      const response = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message,
+          inquiry_type: "course",
+          course_id: courseId || null,
+        }),
+      });
 
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ name: "", email: "", phone: "" });
-    }, 3000);
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Parse validation errors for user-friendly messages
+        if (data.details && Array.isArray(data.details)) {
+          const errorMessages = data.details
+            .map((issue: { path: string[]; message: string }) => {
+              const field = issue.path[0];
+              const fieldName = field === "phone" ? "Phone number" :
+                               field === "name" ? "Name" :
+                               field === "email" ? "Email" :
+                               field === "message" ? "Message" : field;
+              return `${fieldName}: ${issue.message}`;
+            })
+            .join("\n");
+          throw new Error(errorMessages);
+        }
+        throw new Error(data.error || "Failed to submit request");
+      }
+
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormData({ name: "", email: "", phone: "", message: "" });
+      }, 3000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -66,6 +113,12 @@ export function ConsultationModal({
 
         {!isSubmitted ? (
           <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+            {error && (
+              <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
+                <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+              </div>
+            )}
+
             <div className="space-y-2">
               <label className="text-sm font-medium flex items-center gap-2">
                 <User className="h-4 w-4 text-primary" />
@@ -79,6 +132,8 @@ export function ConsultationModal({
                   setFormData({ ...formData, name: e.target.value })
                 }
                 className="h-11"
+                minLength={2}
+                maxLength={100}
               />
             </div>
 
@@ -96,6 +151,7 @@ export function ConsultationModal({
                   setFormData({ ...formData, email: e.target.value })
                 }
                 className="h-11"
+                maxLength={100}
               />
             </div>
 
@@ -113,6 +169,25 @@ export function ConsultationModal({
                   setFormData({ ...formData, phone: e.target.value })
                 }
                 className="h-11"
+                minLength={10}
+                maxLength={20}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium flex items-center gap-2">
+                <MessageSquare className="h-4 w-4 text-primary" />
+                Additional Notes
+                <span className="text-xs text-muted-foreground">(Optional)</span>
+              </label>
+              <Textarea
+                placeholder="Any specific questions or requirements?"
+                value={formData.message}
+                onChange={(e) =>
+                  setFormData({ ...formData, message: e.target.value })
+                }
+                className="min-h-[80px] resize-none"
+                maxLength={1000}
               />
             </div>
 

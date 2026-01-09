@@ -285,6 +285,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                     </Button>
                   }
                   courseName={course.title}
+                  courseId={course.id}
                 />
                 <Button
                   size="lg"
@@ -333,6 +334,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                   </Button>
                 }
                 courseName={course.title}
+                courseId={course.id}
               />
             </div>
 
@@ -409,6 +411,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                             </Button>
                           }
                           courseName={course.title}
+                          courseId={course.id}
                         />
                       </CardContent>
                     </Card>
