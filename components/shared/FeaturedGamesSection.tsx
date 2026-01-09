@@ -122,7 +122,7 @@ export function FeaturedGamesSection({ games }: FeaturedGamesSectionProps) {
                 {/* Card glow effect */}
                 <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 to-orange-600 rounded-3xl opacity-0 group-hover:opacity-15 blur-xl transition-all duration-500" />
                 <div className="relative">
-                  <ProductCard product={game} showPrivacyPolicy={false} />
+                  <ProductCard product={game} />
                 </div>
               </motion.div>
             ))}
