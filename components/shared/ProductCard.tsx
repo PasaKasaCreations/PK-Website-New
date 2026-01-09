@@ -10,9 +10,10 @@ import { Smartphone, Apple, Shield } from "lucide-react";
 
 interface ProductCardProps {
   product: Product;
+  showPrivacyPolicy?: boolean;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, showPrivacyPolicy = true }: ProductCardProps) {
   return (
     <motion.div
       whileHover={{ y: -8 }}
@@ -82,7 +83,7 @@ export function ProductCard({ product }: ProductCardProps) {
               </Link>
             )}
           </div>
-          {product.category === "game" && (
+          {product.category === "game" && showPrivacyPolicy && (
             <Link
               href={`/games/${product.slug}/privacy-policy`}
               className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
