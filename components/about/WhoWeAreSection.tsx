@@ -15,15 +15,15 @@ const carouselImages = [
     alt: "Team exploring new technologies",
   },
   {
-    src: "/career-page-2.jpg",
+    src: "/career-page-2.JPG",
     alt: "Team collaboration",
   },
   {
-    src: "/career-page-3.jpg",
+    src: "/career-page-3.JPG",
     alt: "Creative workspace",
   },
   {
-    src: "/CareersPage.png",
+    src: "/career-page-1.png",
     alt: "Team at work",
   },
 ];

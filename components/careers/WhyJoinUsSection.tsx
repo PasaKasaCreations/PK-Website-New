@@ -21,19 +21,14 @@ const carouselImages = [
     caption: "Exploring New Technologies",
   },
   {
-    src: "/career-page-2.jpg",
+    src: "/career-page-2.JPG",
     alt: "Team collaboration",
     caption: "Building Together",
   },
   {
-    src: "/career-page-3.jpg",
+    src: "/career-page-3.JPG",
     alt: "Creative workspace",
     caption: "Where Ideas Come to Life",
-  },
-  {
-    src: "/CareersPage.png",
-    alt: "Team celebration",
-    caption: "Celebrating Wins",
   },
 ];
 
