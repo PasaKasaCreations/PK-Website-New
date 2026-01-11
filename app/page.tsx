@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { Hero } from "@/components/shared/Hero";
 import { ServicesSection } from "@/components/shared/ServicesSection";
-import { AboutSection } from "@/components/shared/AboutSection";
+import { AboutSectionVariants } from "@/components/shared/AboutSectionVariants";
 import { WhyChooseUsSection } from "@/components/shared/WhyChooseUsSection";
 import { FeaturedGamesSection } from "@/components/shared/FeaturedGamesSection";
 import { FeaturedCoursesSection } from "@/components/shared/FeaturedCoursesSection";
@@ -211,8 +211,8 @@ export default async function Home() {
       {/* Services Section */}
       <ServicesSection />
 
-      {/* About Section */}
-      <AboutSection />
+      {/* About Section - With Concept Switcher */}
+      <AboutSectionVariants />
 
       {/* Why Choose Us */}
       <WhyChooseUsSection />

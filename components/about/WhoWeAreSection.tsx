@@ -1,12 +1,86 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Sparkles, Users, ArrowRight } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Sparkles, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants/routes.constants";
 
+// Images for the carousel
+const carouselImages = [
+  {
+    src: "/career-page-1.png",
+    alt: "Team exploring new technologies",
+  },
+  {
+    src: "/career-page-2.jpg",
+    alt: "Team collaboration",
+  },
+  {
+    src: "/career-page-3.jpg",
+    alt: "Creative workspace",
+  },
+  {
+    src: "/CareersPage.png",
+    alt: "Team at work",
+  },
+];
+
 export function WhoWeAreSection() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [direction, setDirection] = useState(0);
+
+  const nextSlide = useCallback(() => {
+    setDirection(1);
+    setCurrentIndex((prev) => (prev + 1) % carouselImages.length);
+  }, []);
+
+  const prevSlide = useCallback(() => {
+    setDirection(-1);
+    setCurrentIndex(
+      (prev) => (prev - 1 + carouselImages.length) % carouselImages.length
+    );
+  }, []);
+
+  const goToSlide = (index: number) => {
+    setDirection(index > currentIndex ? 1 : -1);
+    setCurrentIndex(index);
+  };
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, nextSlide]);
+
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 300 : -300,
+      opacity: 0,
+      scale: 0.95,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+      scale: 1,
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 300 : -300,
+      opacity: 0,
+      scale: 0.95,
+    }),
+  };
+
   return (
     <section className="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-background overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,57 +110,110 @@ export function WhoWeAreSection() {
 
           {/* Two Column Layout */}
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10">
-            {/* Left: Image */}
+            {/* Left: Carousel */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="relative group order-2 lg:order-1"
+              className="relative order-2 lg:order-1"
+              onMouseEnter={() => setIsAutoPlaying(false)}
+              onMouseLeave={() => setIsAutoPlaying(true)}
             >
-              <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-orange-500 rounded-3xl opacity-0 group-hover:opacity-15 blur-2xl transition-all duration-500" />
+              <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-orange-500 rounded-3xl opacity-10 blur-2xl" />
 
-              {/* Image Container - Replace placeholder with your actual image */}
-              <div className="relative h-[450px] rounded-2xl overflow-hidden border-2 border-blue-200 dark:border-blue-800 shadow-xl bg-gradient-to-br from-blue-100 via-purple-50 to-orange-100 dark:from-blue-950 dark:via-purple-950 dark:to-orange-950">
-                {/* Decorative corners */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-bl-[100px]" />
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-orange-500/10 rounded-tr-[80px]" />
+              {/* Carousel Container */}
+              <div className="relative h-[450px] rounded-2xl overflow-hidden border-2 border-blue-200 dark:border-blue-800 shadow-xl bg-slate-900">
+                <AnimatePresence initial={false} custom={direction} mode="wait">
+                  <motion.div
+                    key={currentIndex}
+                    custom={direction}
+                    variants={slideVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{
+                      x: { type: "spring", stiffness: 300, damping: 30 },
+                      opacity: { duration: 0.3 },
+                      scale: { duration: 0.3 },
+                    }}
+                    className="absolute inset-0"
+                  >
+                    <Image
+                      src={carouselImages[currentIndex].src}
+                      alt={carouselImages[currentIndex].alt}
+                      fill
+                      className="object-cover"
+                      priority={currentIndex === 0}
+                    />
+                  </motion.div>
+                </AnimatePresence>
 
-                {/* Placeholder - Replace this div with next/image when you have the photo */}
-                <div className="flex items-center justify-center h-full relative z-10">
-                  <div className="text-center space-y-4 px-8">
-                    <motion.div
-                      animate={{ y: [0, -10, 0] }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
+                {/* Navigation Arrows */}
+                <button
+                  onClick={prevSlide}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 transition-all z-10 group"
+                >
+                  <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
+                </button>
+                <button
+                  onClick={nextSlide}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 transition-all z-10 group"
+                >
+                  <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+                </button>
+
+                {/* Dots Indicator */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
+                  {carouselImages.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => goToSlide(index)}
+                      className="group relative"
                     >
-                      <div className="w-20 h-20 mx-auto bg-gradient-to-br from-blue-500 to-orange-500 rounded-2xl shadow-xl shadow-blue-500/30 flex items-center justify-center">
-                        <Users className="h-10 w-10 text-white" />
-                      </div>
-                    </motion.div>
-                    <p className="text-lg font-semibold text-slate-700 dark:text-slate-300">
-                      Team at Work
-                    </p>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 max-w-xs mx-auto">
-                      Add a real photo here: team working, whiteboard sessions,
-                      or casual office moments
-                    </p>
-                  </div>
+                      <span
+                        className={`block h-2 rounded-full transition-all duration-300 ${
+                          index === currentIndex
+                            ? "bg-white w-6"
+                            : "bg-white/40 hover:bg-white/60 w-2"
+                        }`}
+                      />
+                    </button>
+                  ))}
                 </div>
 
-                {/*
-                  When you have the image, replace the placeholder div above with:
-
-                  <Image
-                    src="/images/about/team-working.jpg"
-                    alt="Pasakasa team working together"
-                    fill
-                    className="object-cover"
+                {/* Progress bar */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-white/10">
+                  <motion.div
+                    key={currentIndex}
+                    initial={{ width: "0%" }}
+                    animate={{ width: isAutoPlaying ? "100%" : "0%" }}
+                    transition={{ duration: 4, ease: "linear" }}
+                    className="h-full bg-gradient-to-r from-blue-500 to-orange-500"
                   />
-                */}
+                </div>
+              </div>
+
+              {/* Thumbnail strip */}
+              <div className="mt-4 flex gap-2 justify-center">
+                {carouselImages.map((image, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`relative w-16 h-12 rounded-lg overflow-hidden transition-all duration-300 ${
+                      index === currentIndex
+                        ? "ring-2 ring-blue-500 ring-offset-2 ring-offset-white dark:ring-offset-slate-900 scale-105"
+                        : "opacity-50 hover:opacity-80"
+                    }`}
+                  >
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      fill
+                      className="object-cover"
+                    />
+                  </button>
+                ))}
               </div>
 
               {/* Background shapes */}
