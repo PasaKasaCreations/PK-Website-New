@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { sendContactNotification } from "@/lib/email";
 import { z } from "zod";
 
 const ContactMessageSchema = z.object({
@@ -41,6 +42,18 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
+
+    // Send email notification to admin (non-blocking)
+    // We don't want email failures to affect the user's submission
+    sendContactNotification({
+      name: validatedData.name,
+      email: validatedData.email,
+      phone: validatedData.phone,
+      message: validatedData.message,
+    }).catch((emailError) => {
+      // Log email errors but don't fail the request
+      console.error("Failed to send contact notification email:", emailError);
+    });
 
     return NextResponse.json(
       {
