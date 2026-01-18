@@ -38,9 +38,9 @@ const stats = [
   },
   {
     icon: GraduationCap,
-    value: "500+",
+    value: "15+",
     label: "Students",
-    description: "Trained in game dev",
+    description: "Trained in game and web dev",
     color: "from-orange-500 to-orange-600",
   },
   {
