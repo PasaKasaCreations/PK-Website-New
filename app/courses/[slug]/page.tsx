@@ -314,7 +314,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                         <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                         <span>{outcome}</span>
                       </div>
-                    )
+                    ),
                   )}
                 </div>
               </CardContent>
@@ -384,7 +384,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                                 {topic}
                               </span>
                             </li>
-                          )
+                          ),
                         )}
                       </ul>
                     </CardContent>
