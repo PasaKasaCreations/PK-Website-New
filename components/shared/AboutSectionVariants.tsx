@@ -145,7 +145,7 @@ export function AboutSectionVariants() {
                 </Link>
                 <div className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
                   <MapPin className="w-4 h-4" />
-                  <span>Kathmandu, Nepal</span>
+                  <span>Kshitij Marg, Kathmandu, Nepal</span>
                 </div>
               </motion.div>
             </motion.div>

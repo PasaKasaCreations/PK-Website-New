@@ -213,7 +213,7 @@ export function AboutSection() {
                       </div>
                       <div className="text-sm text-slate-400 flex items-center gap-1">
                         <MapPin className="w-3 h-3" />
-                        Kathmandu, Nepal
+                        Kshitij Marg, Kathmandu, Nepal
                       </div>
                     </div>
                   </div>

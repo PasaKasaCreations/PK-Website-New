@@ -4,7 +4,7 @@ import { ContactHero, ContactContent } from "@/components/contact";
 export const metadata: Metadata = {
   title: "Contact Us | Pasakasa Creations - Game Development Studio in Nepal",
   description:
-    "Reach out to Pasakasa Creations in Kathmandu, Nepal. Questions about game development courses, our mobile games, or partnership opportunities? We respond within 24 hours.",
+    "Reach out to Pasakasa Creations in Kshitij Marg, Kathmandu, Nepal. Questions about game development courses, our mobile games, or partnership opportunities? We respond within 24 hours.",
 };
 
 export default function ContactPage() {

@@ -44,16 +44,51 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { name: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/company/pasakasa-creations/", color: "blue" },
-  { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/pasakasacreations", color: "orange" },
-  { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/pasaKasaCreations/", color: "blue" },
-  { name: "YouTube", icon: Youtube, href: "https://www.youtube.com/@pasakasacreations", color: "orange" },
+  {
+    name: "LinkedIn",
+    icon: Linkedin,
+    href: "https://www.linkedin.com/company/pasakasa-creations/",
+    color: "blue",
+  },
+  {
+    name: "Instagram",
+    icon: Instagram,
+    href: "https://www.instagram.com/pasakasacreations",
+    color: "orange",
+  },
+  {
+    name: "Facebook",
+    icon: Facebook,
+    href: "https://www.facebook.com/pasaKasaCreations/",
+    color: "blue",
+  },
+  {
+    name: "YouTube",
+    icon: Youtube,
+    href: "https://www.youtube.com/@pasakasacreations",
+    color: "orange",
+  },
 ];
 
 const contactInfo = [
-  { icon: Mail, value: "contact@pasakasacreations.com", href: "mailto:contact@pasakasacreations.com", color: "blue" },
-  { icon: Phone, value: "+977-986-2751805", href: "tel:+9779862751805", color: "orange" },
-  { icon: MapPin, value: "Kathmandu, Nepal", href: null, color: "blue" },
+  {
+    icon: Mail,
+    value: "contact@pasakasacreations.com",
+    href: "mailto:contact@pasakasacreations.com",
+    color: "blue",
+  },
+  {
+    icon: Phone,
+    value: "+977-986-2751805",
+    href: "tel:+9779862751805",
+    color: "orange",
+  },
+  {
+    icon: MapPin,
+    value: "Kshitij Marg, Kathmandu, Nepal",
+    href: null,
+    color: "blue",
+  },
 ];
 
 const colorStyles = {

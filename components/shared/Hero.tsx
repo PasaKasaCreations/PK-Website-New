@@ -267,7 +267,7 @@ export function Hero() {
                   <Award className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                 </div>
                 <p className="font-bold text-xl text-slate-900 dark:text-white">
-                  100+
+                  10+
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   Projects
@@ -279,7 +279,7 @@ export function Hero() {
                   <Users className="h-6 w-6 text-orange-600 dark:text-orange-400" />
                 </div>
                 <p className="font-bold text-xl text-slate-900 dark:text-white">
-                  500+
+                  15+
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   Students
