@@ -364,6 +364,48 @@ export type Database = {
         };
         Relationships: [];
       };
+      site_settings: {
+        Row: {
+          id: string;
+          email: string;
+          contact_number: string;
+          location: string;
+          location_map_url: string | null;
+          linkedin_url: string | null;
+          instagram_url: string | null;
+          facebook_url: string | null;
+          youtube_url: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          email?: string;
+          contact_number?: string;
+          location?: string;
+          location_map_url?: string | null;
+          linkedin_url?: string | null;
+          instagram_url?: string | null;
+          facebook_url?: string | null;
+          youtube_url?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          email?: string;
+          contact_number?: string;
+          location?: string;
+          location_map_url?: string | null;
+          linkedin_url?: string | null;
+          instagram_url?: string | null;
+          facebook_url?: string | null;
+          youtube_url?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;

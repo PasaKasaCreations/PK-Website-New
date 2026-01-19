@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ExternalLink,
+  Settings,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -47,6 +48,11 @@ const navItems = [
     title: "Contact Messages",
     href: "/admin/contact-messages",
     icon: Mail,
+  },
+  {
+    title: "Settings",
+    href: "/admin/settings",
+    icon: Settings,
   },
 ];
 

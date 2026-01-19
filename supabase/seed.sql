@@ -462,6 +462,33 @@ INSERT INTO job_postings (
 );
 
 -- =====================================================
+-- SEED SITE SETTINGS
+-- =====================================================
+
+INSERT INTO site_settings (
+  email,
+  contact_number,
+  location,
+  location_map_url,
+  linkedin_url,
+  instagram_url,
+  facebook_url,
+  youtube_url
+)
+SELECT
+  'contact@pasakasacreations.com',
+  '+977-986-2751805',
+  'Kshitij Marg, Kathmandu, Nepal',
+  NULL,
+  'https://www.linkedin.com/company/pasakasa-creations/',
+  'https://www.instagram.com/pasakasacreations',
+  'https://www.facebook.com/pasaKasaCreations/',
+  'https://www.youtube.com/@pasakasacreations'
+WHERE NOT EXISTS (
+  SELECT 1 FROM site_settings LIMIT 1
+);
+
+-- =====================================================
 -- SEED COMPLETE
 -- =====================================================
 -- You can now query these tables to see the data

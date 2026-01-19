@@ -11,36 +11,7 @@ import {
   MessageCircle,
   ChevronRight,
 } from "lucide-react";
-
-const contactMethods = [
-  {
-    icon: Mail,
-    label: "Email Us",
-    value: "contact@pasakasacreations.com",
-    description: "Best for detailed inquiries",
-    href: "mailto:contact@pasakasacreations.com",
-    gradient: "from-blue-500 to-blue-600",
-    rotate: -3,
-  },
-  {
-    icon: Phone,
-    label: "Call Us",
-    value: "+977-986-2751805",
-    description: "Mon-Fri, 10am-6pm NPT",
-    href: "tel:+9779862751805",
-    gradient: "from-orange-500 to-orange-600",
-    rotate: 2,
-  },
-  {
-    icon: MapPin,
-    label: "Visit Us",
-    value: "Kathmandu, Nepal",
-    description: "By appointment only",
-    href: null,
-    gradient: "from-blue-600 via-purple-500 to-orange-500",
-    rotate: -1,
-  },
-];
+import type { SiteSettings } from "@/types/settings.interface";
 
 const faqs = [
   {
@@ -195,7 +166,42 @@ function FAQCard({
   );
 }
 
-export function ContactContent() {
+interface ContactContentProps {
+  settings: SiteSettings;
+}
+
+export function ContactContent({ settings }: ContactContentProps) {
+  // Build contact methods dynamically from settings
+  const contactMethods = [
+    {
+      icon: Mail,
+      label: "Email Us",
+      value: settings.email,
+      description: "Best for detailed inquiries",
+      href: `mailto:${settings.email}`,
+      gradient: "from-blue-500 to-blue-600",
+      rotate: -3,
+    },
+    {
+      icon: Phone,
+      label: "Call Us",
+      value: settings.contact_number,
+      description: "Mon-Fri, 10am-6pm NPT",
+      href: `tel:${settings.contact_number.replace(/[\s\-()]/g, "")}`,
+      gradient: "from-orange-500 to-orange-600",
+      rotate: 2,
+    },
+    {
+      icon: MapPin,
+      label: "Visit Us",
+      value: settings.location,
+      description: "By appointment only",
+      href: settings.location_map_url,
+      gradient: "from-blue-600 via-purple-500 to-orange-500",
+      rotate: -1,
+    },
+  ];
+
   return (
     <div className="relative overflow-hidden">
       {/* Contact Methods Section */}

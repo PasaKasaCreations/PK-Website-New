@@ -14,6 +14,7 @@ import {
   MapPin,
   ArrowUpRight,
 } from "lucide-react";
+import type { SiteSettings } from "@/types/settings.interface";
 
 const footerLinks = {
   Services: [
@@ -43,54 +44,6 @@ const footerLinks = {
   ],
 };
 
-const socialLinks = [
-  {
-    name: "LinkedIn",
-    icon: Linkedin,
-    href: "https://www.linkedin.com/company/pasakasa-creations/",
-    color: "blue",
-  },
-  {
-    name: "Instagram",
-    icon: Instagram,
-    href: "https://www.instagram.com/pasakasacreations",
-    color: "orange",
-  },
-  {
-    name: "Facebook",
-    icon: Facebook,
-    href: "https://www.facebook.com/pasaKasaCreations/",
-    color: "blue",
-  },
-  {
-    name: "YouTube",
-    icon: Youtube,
-    href: "https://www.youtube.com/@pasakasacreations",
-    color: "orange",
-  },
-];
-
-const contactInfo = [
-  {
-    icon: Mail,
-    value: "contact@pasakasacreations.com",
-    href: "mailto:contact@pasakasacreations.com",
-    color: "blue",
-  },
-  {
-    icon: Phone,
-    value: "+977-986-2751805",
-    href: "tel:+9779862751805",
-    color: "orange",
-  },
-  {
-    icon: MapPin,
-    value: "Kshitij Marg, Kathmandu, Nepal",
-    href: null,
-    color: "blue",
-  },
-];
-
 const colorStyles = {
   blue: {
     iconGradient: "from-blue-500 to-blue-600",
@@ -114,7 +67,66 @@ const colorStyles = {
   },
 };
 
-export function Footer() {
+interface FooterProps {
+  settings: SiteSettings;
+}
+
+export function Footer({ settings }: FooterProps) {
+  // Build social links dynamically from settings
+  const socialLinks = [
+    settings.linkedin_url && {
+      name: "LinkedIn",
+      icon: Linkedin,
+      href: settings.linkedin_url,
+      color: "blue" as const,
+    },
+    settings.instagram_url && {
+      name: "Instagram",
+      icon: Instagram,
+      href: settings.instagram_url,
+      color: "orange" as const,
+    },
+    settings.facebook_url && {
+      name: "Facebook",
+      icon: Facebook,
+      href: settings.facebook_url,
+      color: "blue" as const,
+    },
+    settings.youtube_url && {
+      name: "YouTube",
+      icon: Youtube,
+      href: settings.youtube_url,
+      color: "orange" as const,
+    },
+  ].filter(Boolean) as Array<{
+    name: string;
+    icon: typeof Linkedin;
+    href: string;
+    color: "blue" | "orange";
+  }>;
+
+  // Build contact info dynamically from settings
+  const contactInfo = [
+    {
+      icon: Mail,
+      value: settings.email,
+      href: `mailto:${settings.email}`,
+      color: "blue" as const,
+    },
+    {
+      icon: Phone,
+      value: settings.contact_number,
+      href: `tel:${settings.contact_number.replace(/[\s\-()]/g, "")}`,
+      color: "orange" as const,
+    },
+    {
+      icon: MapPin,
+      value: settings.location,
+      href: settings.location_map_url,
+      color: "blue" as const,
+    },
+  ];
+
   return (
     <footer className="relative border-t bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-background overflow-hidden">
       {/* Background decorative elements */}
