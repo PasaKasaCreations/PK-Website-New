@@ -25,7 +25,7 @@ export function ProductCard({ product }: ProductCardProps) {
             src={product.thumbnail_url || "/placeholder-game.jpg"}
             alt={product.name}
             fill
-            className="object-cover group-hover:scale-110 transition-transform duration-300"
+            className="object-contain group-hover:scale-105 transition-transform duration-300"
           />
           {product.status === "coming_soon" && (
             <div className="absolute top-4 right-4 bg-orange-500 text-white px-4 py-2 rounded-full text-xs font-semibold shadow-lg">
