@@ -28,19 +28,21 @@ export function CourseCard({ course }: CourseCardProps) {
             className="object-cover group-hover:scale-110 transition-transform duration-300"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-          <div className="absolute bottom-4 left-4 right-4">
-            <div className="flex items-center gap-2 text-white text-sm">
-              <Calendar className="h-4 w-4" />
-              <span className="font-medium">
-                Next:{" "}
-                {new Date(course.next_batch_date).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </span>
+          {course.next_batch_date && (
+            <div className="absolute bottom-4 left-4 right-4">
+              <div className="flex items-center gap-2 text-white text-sm">
+                <Calendar className="h-4 w-4" />
+                <span className="font-medium">
+                  Next:{" "}
+                  {new Date(course.next_batch_date).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </span>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <CardContent className="flex-1 p-6 bg-gradient-to-b from-white to-blue-50/30 dark:from-gray-900 dark:to-blue-950/10">

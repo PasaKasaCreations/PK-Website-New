@@ -1,36 +1,17 @@
-import { BaseEntity, Platform } from "./common.interface";
+import type { Tables } from "./database.types";
 
+// Typed structure for hero_stats JSONB field
 export interface HeroStats {
-  players: string;
+  reviews: string;
   rating: string;
+  downloads: string;
   feature: string;
 }
 
-export interface Product extends BaseEntity {
-  name: string;
-  slug: string;
-  tagline: string;
-  description: string;
-  thumbnail_url: string;
-  screenshots: readonly string[];
-  platforms: readonly Platform[];
-  category: "game" | "tool" | "service";
-  status: "released" | "coming_soon" | "in_development";
-  play_store_url?: string;
-  app_store_url?: string;
-  web_url?: string;
-  featured: boolean;
-  is_published: boolean;
-  // Hero section fields
-  hero_background_image?: string;
-  hero_stats?: HeroStats;
-  accent_color?: string;
-  // Trailer/Preview video
-  trailer_url?: string;
-}
+// Game type derived from database, with typed hero_stats
+export type Game = Omit<Tables<"games">, "hero_stats"> & {
+  hero_stats: HeroStats | null;
+};
 
-export interface GameStats {
-  downloads?: number;
-  rating?: number;
-  reviews_count?: number;
-}
+// Alias for backward compatibility
+export type Product = Game;

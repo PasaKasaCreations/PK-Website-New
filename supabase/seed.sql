@@ -5,6 +5,19 @@
 -- =====================================================
 
 -- =====================================================
+-- SEED ADMIN USER (Idempotent - only creates if not exists)
+-- =====================================================
+-- NOTE: After seeding, you must create this user in Supabase Auth
+-- with the same email address to enable login.
+-- =====================================================
+
+INSERT INTO admin_users (email, name, created_by)
+SELECT 'admin@pasakasacreations.com', 'Admin User', 'seed'
+WHERE NOT EXISTS (
+  SELECT 1 FROM admin_users WHERE email = 'admin@pasakasacreations.com'
+);
+
+-- =====================================================
 -- SEED GAMES/PRODUCTS
 -- =====================================================
 
@@ -17,7 +30,6 @@ INSERT INTO games (
   genre,
   thumbnail_url,
   screenshots,
-  platforms,
   category,
   status,
   play_store_url,
@@ -40,7 +52,6 @@ INSERT INTO games (
   'Card',
   '/games/teen-patti/TeenPattiFriendsLogo.png',
   ARRAY['/games/teen-patti/TeenPatti_Dashboard.png', '/games/teen-patti/TeenPatti_Gameplay.png', '/games/teen-patti/TeenPatti_FortuneWheel.png'],
-  ARRAY['android', 'ios'],
   'game',
   'released',
   'https://play.google.com/store/apps/details?id=com.PasakasaCreations.TeenpattiFriends',
@@ -50,8 +61,8 @@ INSERT INTO games (
   TRUE,
   '2023-11-01',
   '/games/teen-patti/TeenPatti_Gameplay.png',
-  '{"players": "50K+", "rating": "4.5", "feature": "Live Tables"}'::jsonb,
-  'orange',
+  '{"reviews": "50K+", "rating": "4.5", "downloads": "100K+", "feature": "Live Tables"}'::jsonb,
+  '#F97316',
   'https://www.youtube.com/watch?v=JgPu6f3X3U8'
 ),
 (
@@ -63,7 +74,6 @@ INSERT INTO games (
   'Card',
   '/games/callbreak/callbreaklogo.webp',
   ARRAY['/games/callbreak/CallbreakBanner.webp', '/games/callbreak/callbreakMainTable.webp', '/games/callbreak/callbreakMultiplayerLobby.webp'],
-  ARRAY['android'],
   'game',
   'released',
   'https://play.google.com/store/search?q=Callbreak%20Friends&c=apps',
@@ -73,8 +83,8 @@ INSERT INTO games (
   TRUE,
   '2023-10-01',
   '/games/callbreak/CallbreakBanner.webp',
-  '{"players": "100K+", "rating": "4.6", "feature": "Tournaments"}'::jsonb,
-  'blue',
+  '{"reviews": "100K+", "rating": "4.6", "downloads": "500K+", "feature": "Tournaments"}'::jsonb,
+  '#3B82F6',
   'https://www.youtube.com/watch?v=Z1p4-qBKqIc'
 ),
 (
@@ -86,7 +96,6 @@ INSERT INTO games (
   'Action',
   '/games/teen-patti/TeenPattiFriendsLogo.png',
   ARRAY['/games/space-defender-1.jpg'],
-  ARRAY['windows', 'mac'],
   'game',
   'coming_soon',
   NULL,
@@ -96,8 +105,8 @@ INSERT INTO games (
   FALSE,
   '2025-06-01',
   NULL,
-  '{"players": "0", "rating": "0", "feature": "Coming Soon"}'::jsonb,
-  'purple',
+  '{"reviews": "0", "rating": "0", "downloads": "0", "feature": "Coming Soon"}'::jsonb,
+  '#8B5CF6',
   NULL
 );
 

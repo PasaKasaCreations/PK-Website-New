@@ -11,7 +11,7 @@ import { ROUTES } from "@/lib/constants/routes.constants";
 // Images for the carousel
 const carouselImages = [
   {
-    src: "/career-page-1.png",
+    src: "/about/about_0.JPG",
     alt: "Team exploring new technologies",
   },
   {
@@ -27,12 +27,16 @@ const carouselImages = [
     alt: "Team at work",
   },
   {
-    src: "/about/about_4.jpeg",
-    alt: "Company culture",
+    src: "/about/about_4.jpg",
+    alt: "Brainstorming Ideas",
   },
   {
     src: "/about/about_5.jpeg",
     alt: "Team building",
+  },
+  {
+    src: "/about/about_6.jpeg",
+    alt: "Company culture",
   },
 ];
 
@@ -49,7 +53,7 @@ export function WhoWeAreSection() {
   const prevSlide = useCallback(() => {
     setDirection(-1);
     setCurrentIndex(
-      (prev) => (prev - 1 + carouselImages.length) % carouselImages.length
+      (prev) => (prev - 1 + carouselImages.length) % carouselImages.length,
     );
   }, []);
 

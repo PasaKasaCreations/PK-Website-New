@@ -13,34 +13,28 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const milestones = [
   {
-    year: "2018",
+    year: "2023",
     title: "The Beginning",
     description:
       "Started as a small team of passionate game developers in Kathmandu",
   },
   {
-    year: "2020",
-    title: "First Launch",
+    year: "2024",
+    title: "Callbreak Friends",
     description:
-      "Callbreak Multiplayer hits Play Store—our first published game",
+      "Launched Callbreak Friends on Play Store, Our first published multiplayer game",
   },
   {
-    year: "2022",
+    year: "2025",
     title: "Teen Patti Friends",
     description:
-      "Launched on both Play Store and App Store with cross-platform multiplayer",
+      "Built and launched Teen Patti Friends with cross-platform multiplayer",
   },
   {
-    year: "2023",
+    year: "2026",
     title: "Teaching What We Build",
     description:
       "Started live Unity and C# classes in Kathmandu for aspiring developers",
-  },
-  {
-    year: "2024",
-    title: "Growing Community",
-    description:
-      "Multiple batches running, students building real games, community thriving",
   },
 ];
 

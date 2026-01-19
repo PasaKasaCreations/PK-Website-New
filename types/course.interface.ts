@@ -1,50 +1,21 @@
-import { BaseEntity, SkillLevel } from "./common.interface";
+import type { Tables } from "./database.types";
 
-export interface Course extends BaseEntity {
-  title: string;
-  slug: string;
-  description: string;
-  long_description: string;
-  instructor: string;
-  duration: string;
-  skill_level: SkillLevel;
-  thumbnail_url: string;
-  syllabus: readonly SyllabusItem[];
-  learning_outcomes: readonly string[];
-  prerequisites: readonly string[];
-  is_published: boolean;
-  featured: boolean;
-  // Live Class Specific
-  sessions_running: number;
-  sessions_completed: number;
-  next_batch_date: string;
-  location: string;
-  max_students: number;
-  current_students?: number;
-  testimonials: readonly Testimonial[];
-}
-
+// Typed structure for syllabus JSONB field (matches admin form schema)
 export interface SyllabusItem {
-  module: number;
   title: string;
-  topics: readonly string[];
-  duration: string;
+  topics: string[];
 }
 
+// Typed structure for testimonials JSONB field (matches admin form schema)
 export interface Testimonial {
-  id: string;
-  student_name: string;
-  student_image?: string;
-  rating: number;
-  comment: string;
-  batch: string;
-  date: string;
+  name: string;
+  role?: string;
+  content: string;
+  avatar?: string;
 }
 
-export interface Enrollment extends BaseEntity {
-  user_id: string;
-  course_id: string;
-  payment_status: "pending" | "completed" | "failed";
-  payment_amount: number;
-  payment_id?: string;
-}
+// Course type derived from database, with typed JSONB fields
+export type Course = Omit<Tables<"courses">, "syllabus" | "testimonials"> & {
+  syllabus: SyllabusItem[];
+  testimonials: Testimonial[];
+};

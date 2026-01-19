@@ -52,7 +52,7 @@ export function FeaturedCoursesSection({
           </div>
 
           {/* Courses Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
             {courses.map((course, index) => (
               <motion.div
                 key={course.id}

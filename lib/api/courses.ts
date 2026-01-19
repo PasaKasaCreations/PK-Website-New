@@ -1,5 +1,26 @@
 import { createClient } from "@/lib/supabase/server";
 import { Course } from "@/types/course.interface";
+import { getImageUrl } from "@/lib/wasabi/utils";
+
+/**
+ * Transform course data to include signed URLs for S3 images
+ */
+async function transformCourseImages(course: Course): Promise<Course> {
+  // Get signed URL for thumbnail if it's an S3 key
+  const thumbnailUrl = await getImageUrl(course.thumbnail_url);
+
+  return {
+    ...course,
+    thumbnail_url: thumbnailUrl || course.thumbnail_url,
+  };
+}
+
+/**
+ * Transform multiple courses to include signed URLs
+ */
+async function transformCoursesImages(courses: Course[]): Promise<Course[]> {
+  return Promise.all(courses.map(transformCourseImages));
+}
 
 /**
  * Fetch all published courses from Supabase
@@ -19,7 +40,8 @@ export async function getPublishedCourses(): Promise<Course[]> {
     return [];
   }
 
-  return data as unknown as Course[];
+  const courses = data as unknown as Course[];
+  return transformCoursesImages(courses);
 }
 
 /**
@@ -42,7 +64,8 @@ export async function getFeaturedCourses(): Promise<Course[]> {
     return [];
   }
 
-  return data as unknown as Course[];
+  const courses = data as unknown as Course[];
+  return transformCoursesImages(courses);
 }
 
 /**
@@ -64,7 +87,8 @@ export async function getCourseBySlug(slug: string): Promise<Course | null> {
     return null;
   }
 
-  return data as unknown as Course;
+  const course = data as unknown as Course;
+  return transformCourseImages(course);
 }
 
 /**

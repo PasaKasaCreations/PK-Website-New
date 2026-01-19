@@ -25,9 +25,9 @@ const ContactSchema = z.object({
     .max(255, "Email is too long")
     .toLowerCase()
     .trim(),
-  subject: z
+  phone: z
     .string()
-    .max(200, "Subject is too long")
+    .max(20, "Phone number is too long")
     .optional()
     .nullable()
     .transform((val) => val || null),
@@ -96,7 +96,7 @@ export async function submitContactMessage(
       {
         name: validatedData.name,
         email: validatedData.email,
-        subject: validatedData.subject,
+        phone: validatedData.phone,
         message: validatedData.message,
         ip_address: ip,
         user_agent: userAgent,

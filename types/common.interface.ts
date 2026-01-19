@@ -14,7 +14,3 @@ export interface SocialLink {
   href: string;
   icon: string;
 }
-
-export type SkillLevel = "beginner" | "intermediate" | "advanced";
-
-export type Platform = "web" | "android" | "ios" | "windows" | "mac";

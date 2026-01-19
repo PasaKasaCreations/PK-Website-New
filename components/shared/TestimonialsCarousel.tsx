@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
-import { Quote, Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Testimonial } from "@/types/course.interface";
 
@@ -100,43 +100,31 @@ export function TestimonialsCarousel({
                     <Quote className="h-6 w-6 text-primary" />
                   </div>
 
-                  {/* Rating */}
-                  <div className="flex gap-1">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-5 w-5 ${
-                          i < currentTestimonial.rating
-                            ? "fill-yellow-400 text-yellow-400"
-                            : "text-gray-300"
-                        }`}
-                      />
-                    ))}
-                  </div>
-
                   {/* Testimonial Text */}
                   <blockquote className="text-lg md:text-xl font-medium leading-relaxed text-gray-700 dark:text-gray-300">
-                    "{currentTestimonial.comment}"
+                    &quot;{currentTestimonial.content}&quot;
                   </blockquote>
 
                   {/* Student Info */}
                   <div className="flex flex-col items-center gap-4 pt-4">
                     <Avatar className="h-16 w-16 border-4 border-primary/20">
                       <AvatarImage
-                        src={currentTestimonial.student_image}
-                        alt={currentTestimonial.student_name}
+                        src={currentTestimonial.avatar}
+                        alt={currentTestimonial.name}
                       />
                       <AvatarFallback className="bg-primary/10 text-primary font-semibold text-lg">
-                        {getInitials(currentTestimonial.student_name)}
+                        {getInitials(currentTestimonial.name)}
                       </AvatarFallback>
                     </Avatar>
                     <div>
                       <p className="font-semibold text-lg">
-                        {currentTestimonial.student_name}
+                        {currentTestimonial.name}
                       </p>
-                      <p className="text-sm text-muted-foreground">
-                        {currentTestimonial.batch} • {currentTestimonial.date}
-                      </p>
+                      {currentTestimonial.role && (
+                        <p className="text-sm text-muted-foreground">
+                          {currentTestimonial.role}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>

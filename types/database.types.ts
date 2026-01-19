@@ -14,6 +14,39 @@ export type Database = {
   };
   public: {
     Tables: {
+      admin_users: {
+        Row: {
+          created_at: string;
+          created_by: string | null;
+          email: string;
+          id: string;
+          is_active: boolean;
+          last_login: string | null;
+          name: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          created_by?: string | null;
+          email: string;
+          id?: string;
+          is_active?: boolean;
+          last_login?: string | null;
+          name?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string | null;
+          email?: string;
+          id?: string;
+          is_active?: boolean;
+          last_login?: string | null;
+          name?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       contact_messages: {
         Row: {
           created_at: string;
@@ -22,7 +55,7 @@ export type Database = {
           ip_address: string | null;
           message: string;
           name: string;
-          subject: string | null;
+          phone: string | null;
           user_agent: string | null;
         };
         Insert: {
@@ -32,7 +65,7 @@ export type Database = {
           ip_address?: string | null;
           message: string;
           name: string;
-          subject?: string | null;
+          phone?: string | null;
           user_agent?: string | null;
         };
         Update: {
@@ -42,7 +75,7 @@ export type Database = {
           ip_address?: string | null;
           message?: string;
           name?: string;
-          subject?: string | null;
+          phone?: string | null;
           user_agent?: string | null;
         };
         Relationships: [];
@@ -133,17 +166,19 @@ export type Database = {
       };
       games: {
         Row: {
+          accent_color: string;
           app_store_url: string | null;
           category: string;
           created_at: string;
           description: string;
           featured: boolean;
           genre: string;
+          hero_background_image: string | null;
+          hero_stats: Json;
           id: string;
           is_published: boolean;
           long_description: string;
           name: string;
-          platforms: string[];
           play_store_url: string | null;
           release_date: string | null;
           screenshots: string[];
@@ -151,21 +186,24 @@ export type Database = {
           status: Database["public"]["Enums"]["game_status"];
           tagline: string;
           thumbnail_url: string;
+          trailer_url: string | null;
           updated_at: string;
           web_url: string | null;
         };
         Insert: {
+          accent_color?: string;
           app_store_url?: string | null;
           category?: string;
           created_at?: string;
           description: string;
           featured?: boolean;
           genre: string;
+          hero_background_image?: string | null;
+          hero_stats?: Json;
           id?: string;
           is_published?: boolean;
           long_description: string;
           name: string;
-          platforms?: string[];
           play_store_url?: string | null;
           release_date?: string | null;
           screenshots?: string[];
@@ -173,21 +211,24 @@ export type Database = {
           status?: Database["public"]["Enums"]["game_status"];
           tagline: string;
           thumbnail_url: string;
+          trailer_url?: string | null;
           updated_at?: string;
           web_url?: string | null;
         };
         Update: {
+          accent_color?: string;
           app_store_url?: string | null;
           category?: string;
           created_at?: string;
           description?: string;
           featured?: boolean;
           genre?: string;
+          hero_background_image?: string | null;
+          hero_stats?: Json;
           id?: string;
           is_published?: boolean;
           long_description?: string;
           name?: string;
-          platforms?: string[];
           play_store_url?: string | null;
           release_date?: string | null;
           screenshots?: string[];
@@ -195,6 +236,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["game_status"];
           tagline?: string;
           thumbnail_url?: string;
+          trailer_url?: string | null;
           updated_at?: string;
           web_url?: string | null;
         };
@@ -247,7 +289,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "courses";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       job_postings: {
@@ -327,7 +369,7 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      is_admin: { Args: { user_email: string }; Returns: boolean };
     };
     Enums: {
       employment_type: "full_time" | "part_time" | "contract" | "internship";
@@ -358,7 +400,7 @@ export type Tables<
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals;
 }
@@ -369,14 +411,14 @@ export type Tables<
     ? R
     : never
   : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-      DefaultSchema["Views"])
-  ? (DefaultSchema["Tables"] &
-      DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-      Row: infer R;
-    }
-    ? R
-    : never
-  : never;
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R;
+      }
+      ? R
+      : never
+    : never;
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
@@ -386,7 +428,7 @@ export type TablesInsert<
     schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals;
 }
@@ -396,12 +438,12 @@ export type TablesInsert<
     ? I
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-  ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-      Insert: infer I;
-    }
-    ? I
-    : never
-  : never;
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I;
+      }
+      ? I
+      : never
+    : never;
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
@@ -411,7 +453,7 @@ export type TablesUpdate<
     schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals;
 }
@@ -421,12 +463,12 @@ export type TablesUpdate<
     ? U
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-  ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-      Update: infer U;
-    }
-    ? U
-    : never
-  : never;
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U;
+      }
+      ? U
+      : never
+    : never;
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
@@ -436,14 +478,14 @@ export type Enums<
     schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never
+    : never = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
-  ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-  : never;
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never;
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
@@ -453,14 +495,14 @@ export type CompositeTypes<
     schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never
+    : never = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
-  ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-  : never;
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never;
 
 export const Constants = {
   public: {

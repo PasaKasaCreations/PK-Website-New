@@ -28,7 +28,7 @@ export function GamesHeroVariants({ games }: GamesHeroVariantsProps) {
   const [imageError, setImageError] = useState(false);
   const [showTrailer, setShowTrailer] = useState(false);
   const [selectedScreenshot, setSelectedScreenshot] = useState<string | null>(
-    null
+    null,
   );
 
   const nextSlide = useCallback(() => {
@@ -67,8 +67,9 @@ export function GamesHeroVariants({ games }: GamesHeroVariantsProps) {
     currentGame.thumbnail_url ||
     "/placeholder-game.jpg";
   const stats = currentGame.hero_stats || {
-    players: "10K+",
+    reviews: "10K+",
     rating: "4.5",
+    downloads: "100K+",
     feature: "",
   };
   const rating = parseFloat(stats.rating) || 4.5;
@@ -187,7 +188,7 @@ export function GamesHeroVariants({ games }: GamesHeroVariantsProps) {
                           <Star className="h-4 w-4 text-white fill-white" />
                         </div>
                         <span className="text-gray-400 text-sm">
-                          {stats.players || "10K+"} reviews
+                          {stats.reviews || "10K+"} reviews
                         </span>
                       </div>
                     </div>
@@ -198,7 +199,7 @@ export function GamesHeroVariants({ games }: GamesHeroVariantsProps) {
                     {/* Downloads */}
                     <div className="flex flex-col items-center">
                       <span className="text-white font-semibold text-lg">
-                        100K+
+                        {stats.downloads || "100K+"}
                       </span>
                       <span className="text-gray-400 text-sm">Downloads</span>
                     </div>
@@ -448,7 +449,7 @@ export function GamesHeroVariants({ games }: GamesHeroVariantsProps) {
             </button>
             <iframe
               src={`https://www.youtube.com/embed/${getYouTubeVideoId(
-                currentGame.trailer_url!
+                currentGame.trailer_url!,
               )}?autoplay=1&rel=0`}
               title={`${currentGame.name} Trailer`}
               className="w-full h-full rounded-xl"

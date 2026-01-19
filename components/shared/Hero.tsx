@@ -252,7 +252,7 @@ export function Hero() {
             >
               We&apos;re a Nepal-based team passionate about creating software
               that makes a difference. Whether you need a stunning website, a
-              mobile app, or want to learn coding—we&apos;ve got you covered.
+              mobile app, or want to learn coding, we&apos;ve got you covered.
             </motion.p>
 
             {/* Stats Row */}
@@ -267,7 +267,7 @@ export function Hero() {
                   <Award className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                 </div>
                 <p className="font-bold text-xl text-slate-900 dark:text-white">
-                  10+
+                  5+
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   Projects

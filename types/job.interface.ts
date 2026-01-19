@@ -1,34 +1,34 @@
-import type { Enums } from "./database.types";
+import type { Tables } from "./database.types";
 
-export interface Job {
-  id: string;
-  slug: string;
-  title: string;
-  department: string;
-  location: string;
-  employment_type: Enums<"employment_type">;
-  salary?: string;
-  visaRequirements?: string;
+// Typed structure for company JSONB field
+export interface JobCompany {
+  name: string;
   description: string;
-  company: {
-    name: string;
-    description: string;
-  };
-  responsibilities: string[];
-  requirements: string[];
-  benefits?: string[];
-  contact?: {
-    name: string;
-    title: string;
-    email: string;
-    photo?: string;
-    linkedin?: string;
-  };
-  similarJobs?: {
-    id: string;
-    title: string;
-    location: string;
-    salary?: string;
-  }[];
-  postedDate?: string;
 }
+
+// Typed structure for contact JSONB field
+export interface JobContact {
+  name: string;
+  title: string;
+  email: string;
+  photo?: string;
+  linkedin?: string;
+}
+
+// Typed structure for similar_jobs JSONB field
+export interface SimilarJob {
+  id: string;
+  title: string;
+  location: string;
+  salary?: string;
+}
+
+// Job type derived from database, with typed JSONB fields
+export type Job = Omit<
+  Tables<"job_postings">,
+  "company" | "contact" | "similar_jobs"
+> & {
+  company: JobCompany;
+  contact: JobContact;
+  similar_jobs: SimilarJob[];
+};
