@@ -10,12 +10,19 @@ import { wasabiClient, WASABI_BUCKET, WasabiFolder } from "./client";
 import { nanoid } from "nanoid";
 
 // Allowed image types
-const ALLOWED_TYPES = [
+const ALLOWED_IMAGE_TYPES = [
   "image/jpeg",
   "image/png",
   "image/webp",
   "image/gif",
   "image/svg+xml",
+];
+
+// Allowed resume/document types
+const ALLOWED_RESUME_TYPES = [
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
 
 // Max file size: 10MB
@@ -48,10 +55,10 @@ export async function uploadImage(
     }
 
     // Validate file type
-    if (!ALLOWED_TYPES.includes(file.type)) {
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
       return {
         success: false,
-        error: `Invalid file type. Allowed: ${ALLOWED_TYPES.join(", ")}`,
+        error: `Invalid file type. Allowed: ${ALLOWED_IMAGE_TYPES.join(", ")}`,
       };
     }
 
@@ -261,6 +268,65 @@ export async function deleteMultipleImages(
     return {
       success: false,
       error: error instanceof Error ? error.message : "Delete failed",
+    };
+  }
+}
+
+/**
+ * Upload a resume document to Wasabi S3
+ * Supports PDF, DOC, and DOCX files
+ */
+export async function uploadResume(
+  formData: FormData,
+): Promise<UploadResult> {
+  try {
+    const file = formData.get("file") as File;
+
+    if (!file) {
+      return { success: false, error: "No file provided" };
+    }
+
+    // Validate file type
+    if (!ALLOWED_RESUME_TYPES.includes(file.type)) {
+      return {
+        success: false,
+        error: "Invalid file type. Please upload a PDF, DOC, or DOCX file.",
+      };
+    }
+
+    // Validate file size
+    if (file.size > MAX_FILE_SIZE) {
+      return {
+        success: false,
+        error: `File too large. Maximum size: ${MAX_FILE_SIZE / (1024 * 1024)}MB`,
+      };
+    }
+
+    // Generate unique filename with original extension
+    const extension = file.name.split(".").pop() || "pdf";
+    const uniqueId = nanoid(12);
+    const key = `resumes/${uniqueId}.${extension}`;
+
+    // Convert file to buffer
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    // Upload to Wasabi
+    const command = new PutObjectCommand({
+      Bucket: WASABI_BUCKET,
+      Key: key,
+      Body: buffer,
+      ContentType: file.type,
+    });
+
+    await wasabiClient.send(command);
+
+    return { success: true, key };
+  } catch (error) {
+    console.error("Resume upload error:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Upload failed",
     };
   }
 }

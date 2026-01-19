@@ -27,6 +27,7 @@ export const WASABI_FOLDERS = {
   thumbnails: "thumbnails",
   screenshots: "screenshots",
   testimonials: "testimonials",
+  resumes: "resumes",
 } as const;
 
 export type WasabiFolder = (typeof WASABI_FOLDERS)[keyof typeof WASABI_FOLDERS];

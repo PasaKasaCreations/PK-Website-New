@@ -15,6 +15,7 @@ import {
   ChevronRight,
   ExternalLink,
   Settings,
+  FileText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -38,6 +39,11 @@ const navItems = [
     title: "Job Postings",
     href: "/admin/job-postings",
     icon: Briefcase,
+  },
+  {
+    title: "Resumes",
+    href: "/admin/resumes",
+    icon: FileText,
   },
   {
     title: "Inquiries",
@@ -71,7 +77,7 @@ export function AdminSidebar({
     <aside
       className={cn(
         "h-screen bg-white border-r border-slate-200 flex flex-col transition-all duration-300 ease-in-out shadow-sm",
-        collapsed ? "w-[72px]" : "w-64"
+        collapsed ? "w-[72px]" : "w-64",
       )}
     >
       {/* Logo Section */}
@@ -105,7 +111,8 @@ export function AdminSidebar({
           onClick={onToggle}
           className={cn(
             "text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors",
-            collapsed && "hidden lg:flex absolute -right-3 top-5 bg-white border border-slate-200 shadow-sm rounded-full w-6 h-6"
+            collapsed &&
+              "hidden lg:flex absolute -right-3 top-5 bg-white border border-slate-200 shadow-sm rounded-full w-6 h-6",
           )}
         >
           {collapsed ? (
@@ -136,19 +143,17 @@ export function AdminSidebar({
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200",
                 isActive
                   ? "bg-primary/10 text-primary font-medium shadow-sm"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100",
               )}
               title={collapsed ? item.title : undefined}
             >
               <item.icon
                 className={cn(
                   "w-5 h-5 flex-shrink-0 transition-colors",
-                  isActive ? "text-primary" : "text-slate-400"
+                  isActive ? "text-primary" : "text-slate-400",
                 )}
               />
-              {!collapsed && (
-                <span className="text-sm">{item.title}</span>
-              )}
+              {!collapsed && <span className="text-sm">{item.title}</span>}
             </Link>
           );
         })}
@@ -161,7 +166,7 @@ export function AdminSidebar({
           target="_blank"
           className={cn(
             "flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-all duration-200",
-            collapsed && "justify-center"
+            collapsed && "justify-center",
           )}
           title={collapsed ? "View Website" : undefined}
         >

@@ -3,10 +3,14 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Mail, ArrowRight } from "lucide-react";
+import { ResumeSubmissionModal } from "./ResumeSubmissionModal";
 
 export function CareersCTASection() {
   return (
-    <section className="py-20 bg-white dark:bg-background overflow-hidden">
+    <section
+      id="careers-cta"
+      className="py-20 bg-white dark:bg-background overflow-hidden"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative">
           {/* Full Width CTA */}
@@ -37,9 +41,10 @@ export function CareersCTASection() {
                   transition={{ delay: 0.1 }}
                   className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed"
                 >
-                  That's okay. Send us your resume anyway and tell us what you're good at.
-                  We're always looking for talented people, and if something opens up that
-                  matches your skills, we'll reach out.
+                  That's okay. Send us your resume anyway and tell us what
+                  you're good at. We're always looking for talented people, and
+                  if something opens up that matches your skills, we'll reach
+                  out.
                 </motion.p>
 
                 <motion.div
@@ -48,14 +53,18 @@ export function CareersCTASection() {
                   viewport={{ once: true }}
                   transition={{ delay: 0.2 }}
                 >
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 transition-all px-8"
-                  >
-                    <Mail className="h-4 w-4 mr-2" />
-                    Send Your Resume
-                    <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
+                  <ResumeSubmissionModal
+                    trigger={
+                      <Button
+                        size="lg"
+                        className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 transition-all px-8"
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        Send Your Resume
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </Button>
+                    }
+                  />
                 </motion.div>
 
                 <motion.p
