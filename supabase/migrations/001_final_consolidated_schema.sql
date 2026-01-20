@@ -2,10 +2,13 @@
 -- Pasakasa Creations - Final Consolidated Database Schema
 -- =====================================================
 -- This is the single source of truth for the database schema.
--- Consolidated from migrations 001-005.
+-- Consolidated from all previous migrations (001-007).
 --
 -- Includes:
 -- - All tables with complete fields
+-- - Admin users and authentication
+-- - Site settings (singleton pattern)
+-- - Resume submissions for careers
 -- - Row Level Security (RLS) policies
 -- - Indexes for performance
 -- - Triggers for automation
@@ -73,7 +76,7 @@ CREATE TABLE IF NOT EXISTS courses (
 );
 
 -- Games Table (Public Read)
--- Includes hero section fields and trailer support
+-- Note: platforms column removed (no longer used)
 CREATE TABLE IF NOT EXISTS games (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -97,9 +100,6 @@ CREATE TABLE IF NOT EXISTS games (
   hero_background_image TEXT,
   hero_stats JSONB NOT NULL DEFAULT '{"players": "0", "rating": "0", "feature": ""}'::jsonb,
   accent_color TEXT NOT NULL DEFAULT 'orange',
-
-  -- Platforms
-  platforms TEXT[] NOT NULL DEFAULT '{}',
 
   -- Store Links
   play_store_url TEXT,
@@ -203,6 +203,68 @@ CREATE TABLE IF NOT EXISTS job_postings (
   application_deadline DATE
 );
 
+-- Admin Users Table (For admin portal access)
+CREATE TABLE IF NOT EXISTS admin_users (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+  -- Admin Info
+  email TEXT NOT NULL UNIQUE,
+  name TEXT,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+
+  -- Audit
+  created_by TEXT,
+  last_login TIMESTAMPTZ
+);
+
+-- Site Settings Table (Singleton Pattern - Only ONE row allowed)
+CREATE TABLE IF NOT EXISTS public.site_settings (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+  -- Contact Information
+  email TEXT NOT NULL DEFAULT 'contact@pasakasacreations.com',
+  contact_number TEXT NOT NULL DEFAULT '+977-986-2751805',
+  location TEXT NOT NULL DEFAULT 'Kshitij Marg, Kathmandu, Nepal',
+  location_map_url TEXT,
+
+  -- Social Media URLs
+  linkedin_url TEXT,
+  instagram_url TEXT,
+  facebook_url TEXT,
+  youtube_url TEXT,
+
+  -- WhatsApp (for course enrollment)
+  whatsapp_number TEXT,
+
+  -- Metadata
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- Resume Submissions Table (For careers page)
+CREATE TABLE IF NOT EXISTS public.resume_submissions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+  -- Applicant Information
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  role_looking_for TEXT NOT NULL,
+  cover_letter TEXT,
+
+  -- Resume File (S3 key stored in Wasabi bucket)
+  resume_key TEXT NOT NULL,
+
+  -- Application Status
+  status TEXT NOT NULL DEFAULT 'pending',
+  -- Possible statuses: pending, reviewed, contacted, rejected
+
+  -- Metadata
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 -- =====================================================
 -- INDEXES (Performance)
 -- =====================================================
@@ -217,7 +279,6 @@ CREATE INDEX idx_games_slug ON games(slug);
 CREATE INDEX idx_games_published ON games(is_published) WHERE is_published = TRUE;
 CREATE INDEX idx_games_featured ON games(featured) WHERE featured = TRUE;
 CREATE INDEX idx_games_category ON games(category);
-CREATE INDEX idx_games_platforms ON games USING GIN(platforms);
 
 -- Inquiries indexes
 CREATE INDEX idx_inquiries_created_at ON inquiries(created_at DESC);
@@ -232,10 +293,23 @@ CREATE INDEX idx_job_postings_slug ON job_postings(slug);
 CREATE INDEX idx_job_postings_published ON job_postings(is_published) WHERE is_published = TRUE;
 CREATE INDEX idx_job_postings_posted_date ON job_postings(posted_date DESC);
 
+-- Admin users indexes
+CREATE INDEX idx_admin_users_email ON admin_users(email);
+CREATE INDEX idx_admin_users_active ON admin_users(is_active) WHERE is_active = TRUE;
+
+-- Resume submissions indexes
+CREATE INDEX idx_resume_submissions_email ON public.resume_submissions(email);
+CREATE INDEX idx_resume_submissions_status ON public.resume_submissions(status);
+CREATE INDEX idx_resume_submissions_created_at ON public.resume_submissions(created_at DESC);
+
+-- Site settings singleton enforcement
+CREATE UNIQUE INDEX site_settings_singleton ON public.site_settings ((true));
+
 -- =====================================================
--- UPDATED_AT TRIGGERS
+-- FUNCTIONS
 -- =====================================================
 
+-- Updated_at trigger function
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -244,6 +318,48 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Admin check function
+CREATE OR REPLACE FUNCTION is_admin(user_email TEXT)
+RETURNS BOOLEAN AS $$
+BEGIN
+  RETURN EXISTS (
+    SELECT 1 FROM admin_users
+    WHERE email = user_email AND is_active = TRUE
+  );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Site settings singleton enforcement functions
+CREATE OR REPLACE FUNCTION prevent_site_settings_insert()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF (SELECT COUNT(*) FROM public.site_settings) > 0 THEN
+    RAISE EXCEPTION 'site_settings table can only have one row. Use UPDATE instead of INSERT.';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION prevent_site_settings_delete()
+RETURNS TRIGGER AS $$
+BEGIN
+  RAISE EXCEPTION 'Cannot delete site_settings. This row must always exist.';
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION update_site_settings_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = now();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- =====================================================
+-- TRIGGERS
+-- =====================================================
+
+-- Updated_at triggers
 CREATE TRIGGER update_courses_updated_at
   BEFORE UPDATE ON courses
   FOR EACH ROW
@@ -259,6 +375,60 @@ CREATE TRIGGER update_job_postings_updated_at
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
 
+CREATE TRIGGER update_admin_users_updated_at
+  BEFORE UPDATE ON admin_users
+  FOR EACH ROW
+  EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_resume_submissions_updated_at
+  BEFORE UPDATE ON public.resume_submissions
+  FOR EACH ROW
+  EXECUTE FUNCTION update_updated_at_column();
+
+-- Site settings triggers
+CREATE TRIGGER site_settings_updated_at
+  BEFORE UPDATE ON public.site_settings
+  FOR EACH ROW
+  EXECUTE FUNCTION update_site_settings_timestamp();
+
+CREATE TRIGGER prevent_site_settings_deletion
+  BEFORE DELETE ON public.site_settings
+  FOR EACH ROW
+  EXECUTE FUNCTION prevent_site_settings_delete();
+
+-- =====================================================
+-- SEED DATA (Before RLS is enabled)
+-- =====================================================
+
+-- Insert site settings seed data
+INSERT INTO public.site_settings (
+  email,
+  contact_number,
+  location,
+  location_map_url,
+  linkedin_url,
+  instagram_url,
+  facebook_url,
+  youtube_url,
+  whatsapp_number
+) VALUES (
+  'contact@pasakasacreations.com',
+  '+977-986-2751805',
+  'Kshitij Marg, Kathmandu, Nepal',
+  NULL,
+  'https://www.linkedin.com/company/pasakasa-creations/',
+  'https://www.instagram.com/pasakasacreations',
+  'https://www.facebook.com/pasaKasaCreations/',
+  'https://www.youtube.com/@pasakasacreations',
+  NULL
+) ON CONFLICT DO NOTHING;
+
+-- Now add singleton insert prevention trigger (after seed data)
+CREATE TRIGGER enforce_site_settings_singleton
+  BEFORE INSERT ON public.site_settings
+  FOR EACH ROW
+  EXECUTE FUNCTION prevent_site_settings_insert();
+
 -- =====================================================
 -- ROW LEVEL SECURITY (RLS)
 -- =====================================================
@@ -269,37 +439,36 @@ ALTER TABLE games ENABLE ROW LEVEL SECURITY;
 ALTER TABLE inquiries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE contact_messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE job_postings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE admin_users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.site_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.resume_submissions ENABLE ROW LEVEL SECURITY;
 
 -- =====================================================
 -- PERMISSIONS
 -- =====================================================
--- Grant INSERT permissions to anon and authenticated roles
--- for public form submissions
 
+-- Grant INSERT permissions to anon and authenticated roles for public form submissions
 GRANT INSERT ON TABLE contact_messages TO anon, authenticated;
 GRANT INSERT ON TABLE inquiries TO anon, authenticated;
+GRANT INSERT ON TABLE public.resume_submissions TO anon, authenticated;
 
 -- =====================================================
--- RLS POLICIES
+-- RLS POLICIES - Public Access
 -- =====================================================
 
 -- COURSES POLICIES
--- Public can READ published courses (SEO-friendly)
 CREATE POLICY "Public can read published courses"
   ON courses
   FOR SELECT
   USING (is_published = TRUE);
 
 -- GAMES POLICIES
--- Public can READ published games
 CREATE POLICY "Public can read published games"
   ON games
   FOR SELECT
   USING (is_published = TRUE);
 
 -- INQUIRIES POLICIES
--- Public can INSERT inquiries (with strict validation)
--- Note: No SELECT policy - form submissions are write-only for security
 CREATE POLICY "Public can submit inquiries"
   ON inquiries
   FOR INSERT
@@ -314,8 +483,6 @@ CREATE POLICY "Public can submit inquiries"
   );
 
 -- CONTACT MESSAGES POLICIES
--- Public can INSERT contact messages (with validation)
--- Note: No SELECT policy - form submissions are write-only for security
 CREATE POLICY "Public can submit contact messages"
   ON contact_messages
   FOR INSERT
@@ -328,11 +495,121 @@ CREATE POLICY "Public can submit contact messages"
   );
 
 -- JOB POSTINGS POLICIES
--- Public can READ published job postings
 CREATE POLICY "Public can read published job postings"
   ON job_postings
   FOR SELECT
   USING (is_published = TRUE);
+
+-- SITE SETTINGS POLICIES
+CREATE POLICY "Site settings are viewable by everyone"
+  ON public.site_settings
+  FOR SELECT
+  USING (true);
+
+CREATE POLICY "No new settings rows can be created"
+  ON public.site_settings
+  FOR INSERT
+  WITH CHECK (false);
+
+CREATE POLICY "Settings row cannot be deleted"
+  ON public.site_settings
+  FOR DELETE
+  USING (false);
+
+-- RESUME SUBMISSIONS POLICIES
+CREATE POLICY "Public can submit resumes"
+  ON public.resume_submissions
+  FOR INSERT
+  TO anon, authenticated
+  WITH CHECK (true);
+
+-- =====================================================
+-- RLS POLICIES - Admin Access
+-- =====================================================
+
+-- Admin users can check their own admin status
+CREATE POLICY "Users can check own admin status"
+  ON admin_users
+  FOR SELECT
+  TO authenticated
+  USING (email = auth.jwt() ->> 'email');
+
+-- Admins have full access to courses
+CREATE POLICY "Admins have full access to courses"
+  ON courses
+  FOR ALL
+  TO authenticated
+  USING (is_admin(auth.jwt() ->> 'email'))
+  WITH CHECK (is_admin(auth.jwt() ->> 'email'));
+
+-- Admins have full access to games
+CREATE POLICY "Admins have full access to games"
+  ON games
+  FOR ALL
+  TO authenticated
+  USING (is_admin(auth.jwt() ->> 'email'))
+  WITH CHECK (is_admin(auth.jwt() ->> 'email'));
+
+-- Admins have full access to job_postings
+CREATE POLICY "Admins have full access to job_postings"
+  ON job_postings
+  FOR ALL
+  TO authenticated
+  USING (is_admin(auth.jwt() ->> 'email'))
+  WITH CHECK (is_admin(auth.jwt() ->> 'email'));
+
+-- Admins can read and update inquiries
+CREATE POLICY "Admins can read inquiries"
+  ON inquiries
+  FOR SELECT
+  TO authenticated
+  USING (is_admin(auth.jwt() ->> 'email'));
+
+CREATE POLICY "Admins can update inquiries"
+  ON inquiries
+  FOR UPDATE
+  TO authenticated
+  USING (is_admin(auth.jwt() ->> 'email'))
+  WITH CHECK (is_admin(auth.jwt() ->> 'email'));
+
+-- Admins can read contact messages
+CREATE POLICY "Admins can read contact_messages"
+  ON contact_messages
+  FOR SELECT
+  TO authenticated
+  USING (is_admin(auth.jwt() ->> 'email'));
+
+-- Admins can manage other admins
+CREATE POLICY "Admins can manage admin_users"
+  ON admin_users
+  FOR ALL
+  TO authenticated
+  USING (is_admin(auth.jwt() ->> 'email'))
+  WITH CHECK (is_admin(auth.jwt() ->> 'email'));
+
+-- Admins can update site settings
+CREATE POLICY "Only admins can update site settings"
+  ON public.site_settings
+  FOR UPDATE
+  USING (is_admin(auth.jwt() ->> 'email'))
+  WITH CHECK (is_admin(auth.jwt() ->> 'email'));
+
+-- Admins can view, update, and delete resume submissions
+CREATE POLICY "Only admins can view resume submissions"
+  ON public.resume_submissions
+  FOR SELECT
+  USING (is_admin(auth.jwt() ->> 'email'));
+
+CREATE POLICY "Only admins can update resume submissions"
+  ON public.resume_submissions
+  FOR UPDATE
+  USING (is_admin(auth.jwt() ->> 'email'))
+  WITH CHECK (is_admin(auth.jwt() ->> 'email'));
+
+CREATE POLICY "Only admins can delete resume submissions"
+  ON public.resume_submissions
+  FOR DELETE
+  USING (is_admin(auth.jwt() ->> 'email'));
 
 -- =====================================================
 -- COLUMN COMMENTS (Documentation)
@@ -340,7 +617,6 @@ CREATE POLICY "Public can read published job postings"
 
 -- Games table comments
 COMMENT ON COLUMN games.tagline IS 'Short one-line description of the game/product';
-COMMENT ON COLUMN games.platforms IS 'Array of platforms: android, ios, web, windows, mac, linux';
 COMMENT ON COLUMN games.category IS 'Product category: game, tool, or service';
 COMMENT ON COLUMN games.web_url IS 'URL for web-based games or demo';
 COMMENT ON COLUMN games.hero_background_image IS 'Full-width background image URL for hero carousel section';
@@ -357,23 +633,46 @@ COMMENT ON COLUMN job_postings.benefits IS 'Array of job benefits and perks';
 COMMENT ON COLUMN job_postings.contact IS 'Contact person JSON: {name, title, email, photo, linkedin}';
 COMMENT ON COLUMN job_postings.similar_jobs IS 'Array of similar job postings: [{id, title, location, salary}]';
 
+-- Admin users table comments
+COMMENT ON TABLE admin_users IS 'Whitelist of admin email addresses for admin portal access';
+COMMENT ON COLUMN admin_users.email IS 'Email address that must match Supabase Auth user email';
+COMMENT ON COLUMN admin_users.is_active IS 'Set to false to disable admin access without deleting';
+COMMENT ON COLUMN admin_users.last_login IS 'Updated when admin logs in (for audit purposes)';
+
+-- Site settings table comments
+COMMENT ON COLUMN site_settings.whatsapp_number IS 'WhatsApp number with country code for course enrollment inquiries (e.g., +977-986-XXXXXXX)';
+
+-- Resume submissions table comments
+COMMENT ON TABLE public.resume_submissions IS 'Stores job applications and resume submissions from the careers page';
+COMMENT ON COLUMN public.resume_submissions.name IS 'Full name of the applicant';
+COMMENT ON COLUMN public.resume_submissions.email IS 'Email address of the applicant';
+COMMENT ON COLUMN public.resume_submissions.role_looking_for IS 'The position/role the applicant is interested in';
+COMMENT ON COLUMN public.resume_submissions.cover_letter IS 'Optional cover letter or introduction message';
+COMMENT ON COLUMN public.resume_submissions.resume_key IS 'S3 key for the uploaded resume file in Wasabi bucket';
+COMMENT ON COLUMN public.resume_submissions.status IS 'Application status: pending, reviewed, contacted, rejected';
+
 -- =====================================================
 -- MIGRATION COMPLETE
 -- =====================================================
 -- What's included:
--- [x] All tables with complete schema
+-- [x] All tables with complete schema (courses, games, inquiries, contact_messages, job_postings)
+-- [x] Admin users table and authentication
+-- [x] Site settings with singleton pattern
+-- [x] Resume submissions for careers
 -- [x] All enums and types
 -- [x] Performance indexes
 -- [x] Auto-update triggers
 -- [x] Row Level Security enabled
--- [x] Security policies configured
+-- [x] Security policies configured (public + admin access)
 -- [x] Permissions for form submissions
 -- [x] Documentation comments
+-- [x] Seed data for site settings
 --
 -- Security model:
 -- [x] Public can only read published content
 -- [x] Public can submit forms (with validation)
 -- [x] No unauthorized data access
 -- [x] Form submissions are write-only (no public SELECT)
--- [x] Admin access via service role key
+-- [x] Admin access via authenticated email whitelist
+-- [x] Site settings are singleton (one row only)
 -- =====================================================

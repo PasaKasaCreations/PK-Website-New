@@ -464,6 +464,8 @@ INSERT INTO job_postings (
 -- =====================================================
 -- SEED SITE SETTINGS
 -- =====================================================
+-- Note: Site settings are also seeded in the migration file.
+-- This is a fallback in case migration seed was skipped.
 
 INSERT INTO site_settings (
   email,
@@ -473,7 +475,8 @@ INSERT INTO site_settings (
   linkedin_url,
   instagram_url,
   facebook_url,
-  youtube_url
+  youtube_url,
+  whatsapp_number
 )
 SELECT
   'contact@pasakasacreations.com',
@@ -483,7 +486,8 @@ SELECT
   'https://www.linkedin.com/company/pasakasa-creations/',
   'https://www.instagram.com/pasakasacreations',
   'https://www.facebook.com/pasaKasaCreations/',
-  'https://www.youtube.com/@pasakasacreations'
+  'https://www.youtube.com/@pasakasacreations',
+  NULL
 WHERE NOT EXISTS (
   SELECT 1 FROM site_settings LIMIT 1
 );

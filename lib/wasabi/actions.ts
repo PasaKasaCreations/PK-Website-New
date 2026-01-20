@@ -276,9 +276,7 @@ export async function deleteMultipleImages(
  * Upload a resume document to Wasabi S3
  * Supports PDF, DOC, and DOCX files
  */
-export async function uploadResume(
-  formData: FormData,
-): Promise<UploadResult> {
+export async function uploadResume(formData: FormData): Promise<UploadResult> {
   try {
     const file = formData.get("file") as File;
 

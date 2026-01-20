@@ -1,22 +1,23 @@
 import { createClient } from "@/lib/supabase/server";
 import { Game } from "@/types/product.interface";
-import { getImageUrl, getImageUrls } from "@/lib/wasabi/utils";
+import { getProxyImageUrl, getProxyImageUrls } from "@/lib/wasabi/proxy-utils";
 
 /**
- * Transform game data to include signed URLs for S3 images
+ * Transform game data to include proxy URLs for S3 images
+ * Uses proxy URLs instead of signed URLs for stable caching with Vercel
  */
-async function transformGameImages(game: Game): Promise<Game> {
-  // Get signed URL for thumbnail if it's an S3 key
-  const thumbnailUrl = await getImageUrl(game.thumbnail_url);
+function transformGameImages(game: Game): Game {
+  // Get proxy URL for thumbnail if it's an S3 key
+  const thumbnailUrl = getProxyImageUrl(game.thumbnail_url);
 
-  // Get signed URLs for screenshots
+  // Get proxy URLs for screenshots
   const screenshotUrls = game.screenshots
-    ? await getImageUrls(game.screenshots)
+    ? getProxyImageUrls(game.screenshots)
     : [];
 
-  // Get signed URL for hero background if exists
+  // Get proxy URL for hero background if exists
   const heroBackgroundUrl = game.hero_background_image
-    ? await getImageUrl(game.hero_background_image)
+    ? getProxyImageUrl(game.hero_background_image)
     : null;
 
   return {
@@ -28,10 +29,10 @@ async function transformGameImages(game: Game): Promise<Game> {
 }
 
 /**
- * Transform multiple games to include signed URLs
+ * Transform multiple games to include proxy URLs
  */
-async function transformGamesImages(games: Game[]): Promise<Game[]> {
-  return Promise.all(games.map(transformGameImages));
+function transformGamesImages(games: Game[]): Game[] {
+  return games.map(transformGameImages);
 }
 
 /**
@@ -82,7 +83,7 @@ export async function getFeaturedGames(): Promise<Game[]> {
  * Fetch games by status
  */
 export async function getGamesByStatus(
-  status: "released" | "coming_soon" | "in_development"
+  status: "released" | "coming_soon" | "in_development",
 ): Promise<Game[]> {
   const supabase = createClient();
 

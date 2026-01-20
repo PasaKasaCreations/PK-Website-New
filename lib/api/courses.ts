@@ -1,13 +1,14 @@
 import { createClient } from "@/lib/supabase/server";
 import { Course } from "@/types/course.interface";
-import { getImageUrl } from "@/lib/wasabi/utils";
+import { getProxyImageUrl } from "@/lib/wasabi/proxy-utils";
 
 /**
- * Transform course data to include signed URLs for S3 images
+ * Transform course data to include proxy URLs for S3 images
+ * Uses proxy URLs instead of signed URLs for stable caching with Vercel
  */
-async function transformCourseImages(course: Course): Promise<Course> {
-  // Get signed URL for thumbnail if it's an S3 key
-  const thumbnailUrl = await getImageUrl(course.thumbnail_url);
+function transformCourseImages(course: Course): Course {
+  // Get proxy URL for thumbnail if it's an S3 key
+  const thumbnailUrl = getProxyImageUrl(course.thumbnail_url);
 
   return {
     ...course,
@@ -16,10 +17,10 @@ async function transformCourseImages(course: Course): Promise<Course> {
 }
 
 /**
- * Transform multiple courses to include signed URLs
+ * Transform multiple courses to include proxy URLs
  */
-async function transformCoursesImages(courses: Course[]): Promise<Course[]> {
-  return Promise.all(courses.map(transformCourseImages));
+function transformCoursesImages(courses: Course[]): Course[] {
+  return courses.map(transformCourseImages);
 }
 
 /**
