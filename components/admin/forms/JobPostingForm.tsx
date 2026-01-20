@@ -17,17 +17,25 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DynamicListInput } from "../ui/DynamicListInput";
+import { FieldError } from "../ui/FieldError";
 import { Loader2 } from "lucide-react";
 import {
   createJobPosting,
   updateJobPosting,
   checkJobPostingSlugExists,
 } from "@/lib/admin/actions/job-postings";
-import type {
-  JobPostingFormData,
-  Company,
-  Contact,
+import {
+  jobPostingFormSchema,
+  type JobPostingFormData,
+  type Company,
+  type Contact,
 } from "@/lib/admin/schemas/job-posting.schema";
+import {
+  validateFormData,
+  parseServerError,
+  type FieldErrors,
+} from "@/lib/utils/form-validation";
+import { cn } from "@/lib/utils";
 import type { Tables } from "@/types/database.types";
 
 interface JobPostingFormProps {
@@ -38,6 +46,7 @@ export function JobPostingForm({ jobPosting }: JobPostingFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   // Form state
   const [title, setTitle] = useState(jobPosting?.title || "");
@@ -96,23 +105,7 @@ export function JobPostingForm({ jobPosting }: JobPostingFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-
-    // Check slug uniqueness
-    if (!slug) {
-      setError("Slug is required");
-      return;
-    }
-
-    try {
-      const slugExists = await checkJobPostingSlugExists(slug, jobPosting?.id);
-      if (slugExists) {
-        setError("A job posting with this slug already exists. Please use a different title.");
-        return;
-      }
-    } catch {
-      setError("Failed to validate slug. Please try again.");
-      return;
-    }
+    setFieldErrors({});
 
     const formData: JobPostingFormData = {
       title,
@@ -135,6 +128,27 @@ export function JobPostingForm({ jobPosting }: JobPostingFormProps) {
       is_published: isPublished,
     };
 
+    // Client-side validation
+    const validation = validateFormData(jobPostingFormSchema, formData);
+    if (!validation.success && validation.errors) {
+      setFieldErrors(validation.errors);
+      setError("Please fix the validation errors below.");
+      return;
+    }
+
+    // Check slug uniqueness
+    try {
+      const slugExists = await checkJobPostingSlugExists(slug, jobPosting?.id);
+      if (slugExists) {
+        setFieldErrors({ slug: "A job posting with this slug already exists" });
+        setError("A job posting with this slug already exists. Please use a different title.");
+        return;
+      }
+    } catch {
+      setError("Failed to validate slug. Please try again.");
+      return;
+    }
+
     startTransition(async () => {
       try {
         if (jobPosting) {
@@ -143,11 +157,13 @@ export function JobPostingForm({ jobPosting }: JobPostingFormProps) {
           await createJobPosting(formData);
         }
       } catch (err) {
-        // Ignore NEXT_REDIRECT errors (these are expected when redirect() is called)
-        if (err instanceof Error && err.message.includes("NEXT_REDIRECT")) {
-          return;
+        const { message, fieldErrors: serverFieldErrors } = parseServerError(err);
+        if (serverFieldErrors) {
+          setFieldErrors(serverFieldErrors);
+          setError("Please fix the validation errors below.");
+        } else if (message) {
+          setError(message);
         }
-        setError(err instanceof Error ? err.message : "An error occurred");
       }
     });
   };
@@ -183,8 +199,9 @@ export function JobPostingForm({ jobPosting }: JobPostingFormProps) {
                     value={title}
                     onChange={(e) => handleTitleChange(e.target.value)}
                     placeholder="e.g., Senior Game Developer"
-                    required
+                    className={cn(fieldErrors.title && "border-red-500")}
                   />
+                  <FieldError error={fieldErrors.title} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="slug">Slug *</Label>
@@ -192,8 +209,9 @@ export function JobPostingForm({ jobPosting }: JobPostingFormProps) {
                     id="slug"
                     value={slug}
                     disabled
-                    className="bg-slate-100 cursor-not-allowed"
+                    className={cn("bg-slate-100 cursor-not-allowed", fieldErrors.slug && "border-red-500")}
                   />
+                  <FieldError error={fieldErrors.slug} />
                   <p className="text-xs text-slate-500">
                     Auto-generated from title
                   </p>
@@ -207,8 +225,9 @@ export function JobPostingForm({ jobPosting }: JobPostingFormProps) {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={6}
-                  required
+                  className={cn(fieldErrors.description && "border-red-500")}
                 />
+                <FieldError error={fieldErrors.description} />
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
@@ -219,8 +238,9 @@ export function JobPostingForm({ jobPosting }: JobPostingFormProps) {
                     value={department}
                     onChange={(e) => setDepartment(e.target.value)}
                     placeholder="e.g., Engineering"
-                    required
+                    className={cn(fieldErrors.department && "border-red-500")}
                   />
+                  <FieldError error={fieldErrors.department} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="location">Location *</Label>
@@ -229,8 +249,9 @@ export function JobPostingForm({ jobPosting }: JobPostingFormProps) {
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="e.g., Remote / Kathmandu"
-                    required
+                    className={cn(fieldErrors.location && "border-red-500")}
                   />
+                  <FieldError error={fieldErrors.location} />
                 </div>
               </div>
 
@@ -241,7 +262,7 @@ export function JobPostingForm({ jobPosting }: JobPostingFormProps) {
                     value={employmentType}
                     onValueChange={(v) => setEmploymentType(v as typeof employmentType)}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className={cn(fieldErrors.employment_type && "border-red-500")}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -251,6 +272,7 @@ export function JobPostingForm({ jobPosting }: JobPostingFormProps) {
                       <SelectItem value="internship">Internship</SelectItem>
                     </SelectContent>
                   </Select>
+                  <FieldError error={fieldErrors.employment_type} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="salary">Salary</Label>

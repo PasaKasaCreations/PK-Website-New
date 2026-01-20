@@ -18,6 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DynamicListInput } from "../ui/DynamicListInput";
 import { ImageUpload } from "../ui/ImageUpload";
+import { FieldError } from "../ui/FieldError";
 import { WASABI_FOLDERS } from "@/lib/wasabi/client";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import {
@@ -25,11 +26,18 @@ import {
   updateCourse,
   checkCourseSlugExists,
 } from "@/lib/admin/actions/courses";
-import type {
-  CourseFormData,
-  SyllabusModule,
-  Testimonial,
+import {
+  courseFormSchema,
+  type CourseFormData,
+  type SyllabusModule,
+  type Testimonial,
 } from "@/lib/admin/schemas/course.schema";
+import {
+  validateFormData,
+  parseServerError,
+  type FieldErrors,
+} from "@/lib/utils/form-validation";
+import { cn } from "@/lib/utils";
 import type { Tables } from "@/types/database.types";
 
 interface CourseFormProps {
@@ -40,6 +48,7 @@ export function CourseForm({ course }: CourseFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   // Form state
   const [title, setTitle] = useState(course?.title || "");
@@ -144,23 +153,7 @@ export function CourseForm({ course }: CourseFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-
-    // Check slug uniqueness
-    if (!slug) {
-      setError("Slug is required");
-      return;
-    }
-
-    try {
-      const slugExists = await checkCourseSlugExists(slug, course?.id);
-      if (slugExists) {
-        setError("A course with this slug already exists. Please use a different title.");
-        return;
-      }
-    } catch {
-      setError("Failed to validate slug. Please try again.");
-      return;
-    }
+    setFieldErrors({});
 
     const formData: CourseFormData = {
       title,
@@ -187,6 +180,27 @@ export function CourseForm({ course }: CourseFormProps) {
       featured,
     };
 
+    // Client-side validation
+    const validation = validateFormData(courseFormSchema, formData);
+    if (!validation.success && validation.errors) {
+      setFieldErrors(validation.errors);
+      setError("Please fix the validation errors below.");
+      return;
+    }
+
+    // Check slug uniqueness
+    try {
+      const slugExists = await checkCourseSlugExists(slug, course?.id);
+      if (slugExists) {
+        setFieldErrors({ slug: "A course with this slug already exists" });
+        setError("A course with this slug already exists. Please use a different title.");
+        return;
+      }
+    } catch {
+      setError("Failed to validate slug. Please try again.");
+      return;
+    }
+
     startTransition(async () => {
       try {
         if (course) {
@@ -195,11 +209,13 @@ export function CourseForm({ course }: CourseFormProps) {
           await createCourse(formData);
         }
       } catch (err) {
-        // Ignore NEXT_REDIRECT errors (these are expected when redirect() is called)
-        if (err instanceof Error && err.message.includes("NEXT_REDIRECT")) {
-          return;
+        const { message, fieldErrors: serverFieldErrors } = parseServerError(err);
+        if (serverFieldErrors) {
+          setFieldErrors(serverFieldErrors);
+          setError("Please fix the validation errors below.");
+        } else if (message) {
+          setError(message);
         }
-        setError(err instanceof Error ? err.message : "An error occurred");
       }
     });
   };
@@ -234,8 +250,9 @@ export function CourseForm({ course }: CourseFormProps) {
                     id="title"
                     value={title}
                     onChange={(e) => handleTitleChange(e.target.value)}
-                    required
+                    className={cn(fieldErrors.title && "border-red-500")}
                   />
+                  <FieldError error={fieldErrors.title} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="slug">Slug *</Label>
@@ -243,8 +260,9 @@ export function CourseForm({ course }: CourseFormProps) {
                     id="slug"
                     value={slug}
                     disabled
-                    className="bg-slate-100 cursor-not-allowed"
+                    className={cn("bg-slate-100 cursor-not-allowed", fieldErrors.slug && "border-red-500")}
                   />
+                  <FieldError error={fieldErrors.slug} />
                   <p className="text-xs text-slate-500">
                     Auto-generated from title
                   </p>
@@ -258,8 +276,9 @@ export function CourseForm({ course }: CourseFormProps) {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={3}
-                  required
+                  className={cn(fieldErrors.description && "border-red-500")}
                 />
+                <FieldError error={fieldErrors.description} />
               </div>
 
               <div className="space-y-2">
@@ -269,8 +288,9 @@ export function CourseForm({ course }: CourseFormProps) {
                   value={longDescription}
                   onChange={(e) => setLongDescription(e.target.value)}
                   rows={6}
-                  required
+                  className={cn(fieldErrors.long_description && "border-red-500")}
                 />
+                <FieldError error={fieldErrors.long_description} />
               </div>
 
               <div className="space-y-2">
@@ -281,6 +301,7 @@ export function CourseForm({ course }: CourseFormProps) {
                   folder={WASABI_FOLDERS.courses}
                   placeholder="Upload course thumbnail image"
                 />
+                <FieldError error={fieldErrors.thumbnail_url} />
               </div>
             </CardContent>
           </Card>
@@ -300,8 +321,9 @@ export function CourseForm({ course }: CourseFormProps) {
                     id="instructor"
                     value={instructor}
                     onChange={(e) => setInstructor(e.target.value)}
-                    required
+                    className={cn(fieldErrors.instructor && "border-red-500")}
                   />
+                  <FieldError error={fieldErrors.instructor} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="duration">Duration *</Label>
@@ -310,8 +332,9 @@ export function CourseForm({ course }: CourseFormProps) {
                     value={duration}
                     onChange={(e) => setDuration(e.target.value)}
                     placeholder="e.g., 8 weeks"
-                    required
+                    className={cn(fieldErrors.duration && "border-red-500")}
                   />
+                  <FieldError error={fieldErrors.duration} />
                 </div>
               </div>
 
@@ -319,7 +342,7 @@ export function CourseForm({ course }: CourseFormProps) {
                 <div className="space-y-2">
                   <Label htmlFor="skill_level">Skill Level *</Label>
                   <Select value={skillLevel} onValueChange={(v) => setSkillLevel(v as typeof skillLevel)}>
-                    <SelectTrigger>
+                    <SelectTrigger className={cn(fieldErrors.skill_level && "border-red-500")}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -328,6 +351,7 @@ export function CourseForm({ course }: CourseFormProps) {
                       <SelectItem value="advanced">Advanced</SelectItem>
                     </SelectContent>
                   </Select>
+                  <FieldError error={fieldErrors.skill_level} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="location">Location *</Label>
@@ -336,8 +360,9 @@ export function CourseForm({ course }: CourseFormProps) {
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="e.g., Online / Kathmandu"
-                    required
+                    className={cn(fieldErrors.location && "border-red-500")}
                   />
+                  <FieldError error={fieldErrors.location} />
                 </div>
               </div>
 
@@ -350,8 +375,9 @@ export function CourseForm({ course }: CourseFormProps) {
                     value={price}
                     onChange={(e) => setPrice(Number(e.target.value))}
                     min={0}
-                    required
+                    className={cn(fieldErrors.price && "border-red-500")}
                   />
+                  <FieldError error={fieldErrors.price} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="currency">Currency</Label>

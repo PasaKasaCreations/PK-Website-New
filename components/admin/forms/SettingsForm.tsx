@@ -24,9 +24,19 @@ import {
   MapPinned,
   MessageCircle,
 } from "lucide-react";
+import { FieldError } from "../ui/FieldError";
 import { updateSiteSettings } from "@/lib/admin/actions/settings";
+import {
+  settingsFormSchema,
+  type SettingsFormData,
+} from "@/lib/admin/schemas/settings.schema";
+import {
+  validateFormData,
+  parseServerError,
+  type FieldErrors,
+} from "@/lib/utils/form-validation";
+import { cn } from "@/lib/utils";
 import type { SiteSettings } from "@/types/settings.interface";
-import type { SettingsFormData } from "@/lib/admin/schemas/settings.schema";
 
 interface SettingsFormProps {
   settings: SiteSettings;
@@ -35,6 +45,7 @@ interface SettingsFormProps {
 export function SettingsForm({ settings }: SettingsFormProps) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [success, setSuccess] = useState(false);
 
   // Form state
@@ -57,6 +68,7 @@ export function SettingsForm({ settings }: SettingsFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setFieldErrors({});
     setSuccess(false);
 
     const formData: SettingsFormData = {
@@ -71,6 +83,14 @@ export function SettingsForm({ settings }: SettingsFormProps) {
       youtube_url: youtubeUrl || null,
     };
 
+    // Client-side validation
+    const validation = validateFormData(settingsFormSchema, formData);
+    if (!validation.success && validation.errors) {
+      setFieldErrors(validation.errors);
+      setError("Please fix the validation errors below.");
+      return;
+    }
+
     startTransition(async () => {
       try {
         await updateSiteSettings(formData);
@@ -78,9 +98,15 @@ export function SettingsForm({ settings }: SettingsFormProps) {
         // Clear success message after 3 seconds
         setTimeout(() => setSuccess(false), 3000);
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to update settings"
-        );
+        const { message, fieldErrors: serverFieldErrors } = parseServerError(err);
+        if (serverFieldErrors) {
+          setFieldErrors(serverFieldErrors);
+          setError("Please fix the validation errors below.");
+        } else if (message) {
+          setError(message);
+        } else {
+          setError("Failed to update settings");
+        }
       }
     });
   };
@@ -121,8 +147,9 @@ export function SettingsForm({ settings }: SettingsFormProps) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="contact@example.com"
-              required
+              className={cn(fieldErrors.email && "border-red-500")}
             />
+            <FieldError error={fieldErrors.email} />
           </div>
 
           <div className="space-y-2">
@@ -136,8 +163,9 @@ export function SettingsForm({ settings }: SettingsFormProps) {
               value={contactNumber}
               onChange={(e) => setContactNumber(e.target.value)}
               placeholder="+977-XXX-XXXXXXX"
-              required
+              className={cn(fieldErrors.contact_number && "border-red-500")}
             />
+            <FieldError error={fieldErrors.contact_number} />
           </div>
 
           <div className="space-y-2">
@@ -150,8 +178,9 @@ export function SettingsForm({ settings }: SettingsFormProps) {
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               placeholder="City, Country"
-              required
+              className={cn(fieldErrors.location && "border-red-500")}
             />
+            <FieldError error={fieldErrors.location} />
           </div>
 
           <div className="space-y-2">

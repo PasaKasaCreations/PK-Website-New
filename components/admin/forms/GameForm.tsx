@@ -18,6 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ImageUpload } from "../ui/ImageUpload";
 import { MultiImageUpload } from "../ui/MultiImageUpload";
+import { FieldError } from "../ui/FieldError";
 import { WASABI_FOLDERS } from "@/lib/wasabi/client";
 import { Loader2 } from "lucide-react";
 import {
@@ -25,7 +26,16 @@ import {
   updateGame,
   checkGameSlugExists,
 } from "@/lib/admin/actions/games";
-import type { GameFormData } from "@/lib/admin/schemas/game.schema";
+import {
+  gameFormSchema,
+  type GameFormData,
+} from "@/lib/admin/schemas/game.schema";
+import {
+  validateFormData,
+  parseServerError,
+  type FieldErrors,
+} from "@/lib/utils/form-validation";
+import { cn } from "@/lib/utils";
 import type { Tables } from "@/types/database.types";
 
 interface GameFormProps {
@@ -43,6 +53,7 @@ export function GameForm({ game }: GameFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   // Parse hero_stats from game if it exists
   const initialHeroStats: HeroStats = game?.hero_stats
@@ -112,25 +123,7 @@ export function GameForm({ game }: GameFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-
-    // Check slug uniqueness
-    if (!slug) {
-      setError("Slug is required");
-      return;
-    }
-
-    try {
-      const slugExists = await checkGameSlugExists(slug, game?.id);
-      if (slugExists) {
-        setError(
-          "A game with this slug already exists. Please use a different name.",
-        );
-        return;
-      }
-    } catch {
-      setError("Failed to validate slug. Please try again.");
-      return;
-    }
+    setFieldErrors({});
 
     // Build hero_stats object
     const heroStats =
@@ -166,6 +159,27 @@ export function GameForm({ game }: GameFormProps) {
       hero_background_image: heroBackgroundImage || null,
     };
 
+    // Client-side validation
+    const validation = validateFormData(gameFormSchema, formData);
+    if (!validation.success && validation.errors) {
+      setFieldErrors(validation.errors);
+      setError("Please fix the validation errors below.");
+      return;
+    }
+
+    // Check slug uniqueness
+    try {
+      const slugExists = await checkGameSlugExists(slug, game?.id);
+      if (slugExists) {
+        setFieldErrors({ slug: "A game with this slug already exists" });
+        setError("A game with this slug already exists. Please use a different name.");
+        return;
+      }
+    } catch {
+      setError("Failed to validate slug. Please try again.");
+      return;
+    }
+
     startTransition(async () => {
       try {
         if (game) {
@@ -174,11 +188,13 @@ export function GameForm({ game }: GameFormProps) {
           await createGame(formData);
         }
       } catch (err) {
-        // Ignore NEXT_REDIRECT errors (these are expected when redirect() is called)
-        if (err instanceof Error && err.message.includes("NEXT_REDIRECT")) {
-          return;
+        const { message, fieldErrors: serverFieldErrors } = parseServerError(err);
+        if (serverFieldErrors) {
+          setFieldErrors(serverFieldErrors);
+          setError("Please fix the validation errors below.");
+        } else if (message) {
+          setError(message);
         }
-        setError(err instanceof Error ? err.message : "An error occurred");
       }
     });
   };
@@ -213,8 +229,9 @@ export function GameForm({ game }: GameFormProps) {
                     id="name"
                     value={name}
                     onChange={(e) => handleNameChange(e.target.value)}
-                    required
+                    className={cn(fieldErrors.name && "border-red-500")}
                   />
+                  <FieldError error={fieldErrors.name} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="slug">Slug *</Label>
@@ -222,8 +239,9 @@ export function GameForm({ game }: GameFormProps) {
                     id="slug"
                     value={slug}
                     disabled
-                    className="bg-slate-100 cursor-not-allowed"
+                    className={cn("bg-slate-100 cursor-not-allowed", fieldErrors.slug && "border-red-500")}
                   />
+                  <FieldError error={fieldErrors.slug} />
                   <p className="text-xs text-slate-500">
                     Auto-generated from name
                   </p>
@@ -237,8 +255,9 @@ export function GameForm({ game }: GameFormProps) {
                   value={tagline}
                   onChange={(e) => setTagline(e.target.value)}
                   placeholder="A short catchy phrase..."
-                  required
+                  className={cn(fieldErrors.tagline && "border-red-500")}
                 />
+                <FieldError error={fieldErrors.tagline} />
               </div>
 
               <div className="space-y-2">
@@ -248,8 +267,9 @@ export function GameForm({ game }: GameFormProps) {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={3}
-                  required
+                  className={cn(fieldErrors.description && "border-red-500")}
                 />
+                <FieldError error={fieldErrors.description} />
               </div>
 
               <div className="space-y-2">
@@ -259,8 +279,9 @@ export function GameForm({ game }: GameFormProps) {
                   value={longDescription}
                   onChange={(e) => setLongDescription(e.target.value)}
                   rows={6}
-                  required
+                  className={cn(fieldErrors.long_description && "border-red-500")}
                 />
+                <FieldError error={fieldErrors.long_description} />
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
@@ -271,8 +292,9 @@ export function GameForm({ game }: GameFormProps) {
                     value={genre}
                     onChange={(e) => setGenre(e.target.value)}
                     placeholder="e.g., Puzzle, Action, RPG"
-                    required
+                    className={cn(fieldErrors.genre && "border-red-500")}
                   />
+                  <FieldError error={fieldErrors.genre} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="category">Category</Label>
@@ -355,6 +377,7 @@ export function GameForm({ game }: GameFormProps) {
                   folder={WASABI_FOLDERS.games}
                   placeholder="Upload game thumbnail image"
                 />
+                <FieldError error={fieldErrors.thumbnail_url} />
               </div>
             </CardContent>
           </Card>
@@ -476,7 +499,7 @@ export function GameForm({ game }: GameFormProps) {
                     value={status}
                     onValueChange={(v) => setStatus(v as typeof status)}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className={cn(fieldErrors.status && "border-red-500")}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -487,6 +510,7 @@ export function GameForm({ game }: GameFormProps) {
                       <SelectItem value="released">Released</SelectItem>
                     </SelectContent>
                   </Select>
+                  <FieldError error={fieldErrors.status} />
                 </div>
 
                 <div className="space-y-2">
