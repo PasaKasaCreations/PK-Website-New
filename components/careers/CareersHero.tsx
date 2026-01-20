@@ -277,7 +277,7 @@ export function CareersHero() {
                 </Button>
               </motion.div>
             </Link>
-            <Link href="#culture">
+            <Link href="/about#who-we-are">
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}

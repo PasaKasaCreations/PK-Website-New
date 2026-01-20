@@ -19,7 +19,7 @@ export function OpenPositionsSection({ positions }: OpenPositionsSectionProps) {
   };
 
   return (
-    <section className="py-20 bg-white dark:bg-background overflow-hidden">
+    <section id="open-positions" className="py-20 bg-white dark:bg-background overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative">
           {/* Header - Centered */}
