@@ -25,7 +25,11 @@ export async function getAdminSiteSettings(): Promise<SiteSettings> {
     .single();
 
   if (error) throw error;
-  if (!data) throw new Error("Site settings not found. Please run the database migration.");
+  if (!data) {
+    throw new Error(
+      "Site settings not found. Please run the database migration.",
+    );
+  }
 
   return data;
 }
@@ -40,7 +44,7 @@ export async function getAdminSiteSettings(): Promise<SiteSettings> {
  * - The database has triggers and RLS policies to prevent INSERT/DELETE
  */
 export async function updateSiteSettings(
-  formData: SettingsFormData
+  formData: SettingsFormData,
 ): Promise<void> {
   await requireAdmin();
   const adminSupabase = await createAdminClient();
@@ -58,7 +62,7 @@ export async function updateSiteSettings(
   if (fetchError || !existing) {
     throw new Error(
       "Site settings not found. The database may not be seeded. " +
-      "Please run the migration: supabase/migrations/004_site_settings.sql"
+        "Please run the migration: supabase/migrations/004_site_settings.sql",
     );
   }
 
@@ -70,7 +74,7 @@ export async function updateSiteSettings(
   if (!countError && count !== null && count !== 1) {
     throw new Error(
       `Database integrity error: site_settings should have exactly 1 row, found ${count}. ` +
-      "Please check database constraints."
+        "Please check database constraints.",
     );
   }
 
@@ -82,6 +86,7 @@ export async function updateSiteSettings(
       contact_number: validated.contact_number,
       location: validated.location,
       location_map_url: validated.location_map_url || null,
+      whatsapp_number: validated.whatsapp_number || null,
       linkedin_url: validated.linkedin_url || null,
       instagram_url: validated.instagram_url || null,
       facebook_url: validated.facebook_url || null,

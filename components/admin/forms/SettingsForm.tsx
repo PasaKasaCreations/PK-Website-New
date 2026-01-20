@@ -22,6 +22,7 @@ import {
   Youtube,
   Check,
   MapPinned,
+  MessageCircle,
 } from "lucide-react";
 import { updateSiteSettings } from "@/lib/admin/actions/settings";
 import type { SiteSettings } from "@/types/settings.interface";
@@ -43,6 +44,9 @@ export function SettingsForm({ settings }: SettingsFormProps) {
   const [locationMapUrl, setLocationMapUrl] = useState(
     settings.location_map_url || ""
   );
+  const [whatsappNumber, setWhatsappNumber] = useState(
+    settings.whatsapp_number || ""
+  );
   const [linkedinUrl, setLinkedinUrl] = useState(settings.linkedin_url || "");
   const [instagramUrl, setInstagramUrl] = useState(
     settings.instagram_url || ""
@@ -60,6 +64,7 @@ export function SettingsForm({ settings }: SettingsFormProps) {
       contact_number: contactNumber,
       location,
       location_map_url: locationMapUrl || null,
+      whatsapp_number: whatsappNumber || null,
       linkedin_url: linkedinUrl || null,
       instagram_url: instagramUrl || null,
       facebook_url: facebookUrl || null,
@@ -163,6 +168,23 @@ export function SettingsForm({ settings }: SettingsFormProps) {
             />
             <p className="text-xs text-slate-500">
               Link to your location on Google Maps for the contact page
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="whatsapp_number" className="flex items-center gap-2">
+              <MessageCircle className="w-4 h-4 text-green-500" />
+              WhatsApp Number (optional)
+            </Label>
+            <Input
+              id="whatsapp_number"
+              type="tel"
+              value={whatsappNumber}
+              onChange={(e) => setWhatsappNumber(e.target.value)}
+              placeholder="+977-XXX-XXXXXXX"
+            />
+            <p className="text-xs text-slate-500">
+              Used for &quot;Enroll Now&quot; button on course pages. Include country code (e.g., +977).
             </p>
           </div>
         </CardContent>

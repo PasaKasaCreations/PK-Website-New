@@ -10,6 +10,7 @@ export interface SiteSettings {
   contact_number: string;
   location: string;
   location_map_url: string | null;
+  whatsapp_number: string | null;
 
   // Social Media URLs
   linkedin_url: string | null;
@@ -31,6 +32,7 @@ export interface SiteSettingsFormData {
   contact_number: string;
   location: string;
   location_map_url: string | null;
+  whatsapp_number: string | null;
   linkedin_url: string | null;
   instagram_url: string | null;
   facebook_url: string | null;
@@ -47,6 +49,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   contact_number: "+977-986-2751805",
   location: "Kshitij Marg, Kathmandu, Nepal",
   location_map_url: null,
+  whatsapp_number: "+977-986-2751805",
   linkedin_url: "https://www.linkedin.com/company/pasakasa-creations/",
   instagram_url: "https://www.instagram.com/pasakasacreations",
   facebook_url: "https://www.facebook.com/pasaKasaCreations/",

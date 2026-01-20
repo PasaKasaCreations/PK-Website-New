@@ -145,10 +145,10 @@ export default async function CoursesPage() {
               </p>
 
               <div className="flex flex-wrap items-center justify-center gap-8 pt-4">
-                <div className="flex items-center gap-2">
+                {/* <div className="flex items-center gap-2">
                   <GraduationCap className="h-6 w-6" />
                   <span className="text-lg">15,000+ Alumni</span>
-                </div>
+                </div> */}
                 <div className="flex items-center gap-2">
                   <BookOpen className="h-6 w-6" />
                   <span className="text-lg">Industry-Led Curriculum</span>

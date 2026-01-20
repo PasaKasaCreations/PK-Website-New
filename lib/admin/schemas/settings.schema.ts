@@ -9,6 +9,15 @@ const optionalUrlSchema = z
   .or(z.literal(""))
   .transform((val) => (val === "" ? null : val || null));
 
+// Optional phone number validation
+const optionalPhoneSchema = z
+  .string()
+  .regex(/^[\d\s\-+()]*$/, "Invalid phone number format")
+  .nullable()
+  .optional()
+  .or(z.literal(""))
+  .transform((val) => (val === "" ? null : val || null));
+
 export const settingsFormSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email format"),
 
@@ -23,6 +32,7 @@ export const settingsFormSchema = z.object({
     .max(200, "Location too long"),
 
   location_map_url: optionalUrlSchema,
+  whatsapp_number: optionalPhoneSchema,
   linkedin_url: optionalUrlSchema,
   instagram_url: optionalUrlSchema,
   facebook_url: optionalUrlSchema,

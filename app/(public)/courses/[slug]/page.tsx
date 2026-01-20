@@ -1,20 +1,20 @@
 import { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedWrapper } from "@/components/shared/AnimatedWrapper";
 import { ConsultationModal } from "@/components/shared/ConsultationModal";
 import { TestimonialsCarousel } from "@/components/shared/TestimonialsCarousel";
+import { WhatsAppEnrollButton } from "@/components/shared/WhatsAppEnrollButton";
 import {
   CheckCircle2,
   Clock,
-  TrendingUp,
   BookOpen,
   GraduationCap,
   Sparkles,
 } from "lucide-react";
 import { getCourseBySlug, getAllCourseSlugs } from "@/lib/api/courses";
+import { getSiteSettings } from "@/lib/api/settings";
 
 interface CoursePageProps {
   params: Promise<{
@@ -229,7 +229,10 @@ export async function generateMetadata({
 
 export default async function CoursePage({ params }: CoursePageProps) {
   const { slug } = await params;
-  const course = await getCourseBySlug(slug);
+  const [course, settings] = await Promise.all([
+    getCourseBySlug(slug),
+    getSiteSettings(),
+  ]);
 
   if (!course) {
     notFound();
@@ -287,12 +290,10 @@ export default async function CoursePage({ params }: CoursePageProps) {
                   courseName={course.title}
                   courseId={course.id}
                 />
-                <Button
-                  size="lg"
-                  className="bg-white text-blue-900 hover:bg-blue-50 h-12 px-8 font-semibold shadow-lg hover:shadow-xl transition-all"
-                >
-                  ENROLL NOW
-                </Button>
+                <WhatsAppEnrollButton
+                  whatsappNumber={settings.whatsapp_number}
+                  courseName={course.title}
+                />
               </div>
             </div>
           </AnimatedWrapper>
