@@ -25,6 +25,7 @@ import {
   Pencil,
   Trash2,
   Eye,
+  Download,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -43,6 +44,7 @@ interface DataTableProps<T> {
   onEdit?: (item: T) => void;
   onDelete?: (item: T) => void;
   onView?: (item: T) => void;
+  onDownload?: (item: T) => void;
   editHref?: (item: T) => string;
   viewHref?: (item: T) => string;
   pageSize?: number;
@@ -57,6 +59,7 @@ export function DataTable<T extends { id: string }>({
   onEdit,
   onDelete,
   onView,
+  onDownload,
   editHref,
   viewHref,
   pageSize = 10,
@@ -81,7 +84,7 @@ export function DataTable<T extends { id: string }>({
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedData = filteredData.slice(startIndex, startIndex + pageSize);
 
-  const hasActions = onEdit || onDelete || onView || editHref || viewHref;
+  const hasActions = onEdit || onDelete || onView || onDownload || editHref || viewHref;
 
   return (
     <div className="space-y-4">
@@ -174,6 +177,12 @@ export function DataTable<T extends { id: string }>({
                                 Edit
                               </DropdownMenuItem>
                             )
+                          )}
+                          {onDownload && (
+                            <DropdownMenuItem onClick={() => onDownload(item)}>
+                              <Download className="w-4 h-4 mr-2" />
+                              Download PDF
+                            </DropdownMenuItem>
                           )}
                           {onDelete && (
                             <DropdownMenuItem

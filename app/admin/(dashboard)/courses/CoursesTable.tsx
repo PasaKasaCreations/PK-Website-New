@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { DataTable, Column } from "@/components/admin/tables/DataTable";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { deleteCourse, toggleCoursePublished } from "@/lib/admin/actions/courses";
 import {
   AlertDialog,
@@ -15,6 +16,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Download } from "lucide-react";
+import { generateCoursePDF, generateAllCoursesPDF } from "@/lib/pdf/course-pdf";
 import type { Tables } from "@/types/database.types";
 
 interface CoursesTableProps {
@@ -88,8 +91,24 @@ export function CoursesTable({ courses }: CoursesTableProps) {
     },
   ];
 
+  const handleDownloadPDF = async (course: Tables<"courses">) => {
+    await generateCoursePDF(course);
+  };
+
+  const handleDownloadAllPDF = async () => {
+    await generateAllCoursesPDF(courses);
+  };
+
   return (
     <>
+      {courses.length > 0 && (
+        <div className="flex justify-end mb-4">
+          <Button variant="outline" onClick={handleDownloadAllPDF}>
+            <Download className="w-4 h-4 mr-2" />
+            Download All as PDF
+          </Button>
+        </div>
+      )}
       <DataTable
         data={courses}
         columns={columns}
@@ -97,6 +116,7 @@ export function CoursesTable({ courses }: CoursesTableProps) {
         searchPlaceholder="Search courses..."
         viewHref={(course) => `/admin/courses/${course.id}/view`}
         editHref={(course) => `/admin/courses/${course.id}`}
+        onDownload={handleDownloadPDF}
         onDelete={(course) => setDeleteId(course.id)}
         emptyMessage="No courses found. Create your first course!"
       />

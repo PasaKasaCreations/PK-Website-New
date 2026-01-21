@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { getCourses, deleteCourse } from "@/lib/admin/actions/courses";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";
 import { CoursesTable } from "./CoursesTable";
 
