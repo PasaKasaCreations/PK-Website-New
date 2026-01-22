@@ -1,25 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
-import { ROUTES } from "@/lib/constants/routes.constants";
 import { ProductCard } from "@/components/shared/ProductCard";
-import { Button } from "@/components/ui/button";
 import type { Product } from "@/types/product.interface";
-import {
-  ArrowRight,
-  Sparkles,
-  Gamepad2,
-  Trophy,
-  Dices,
-  Star,
-} from "lucide-react";
+import { Sparkles, Gamepad2, Trophy, Star } from "lucide-react";
 
-interface FeaturedGamesSectionProps {
+interface GamesGridSectionProps {
   games: Product[];
 }
 
-export function FeaturedGamesSection({ games }: FeaturedGamesSectionProps) {
+export function GamesGridSection({ games }: GamesGridSectionProps) {
+  if (!games || games.length === 0) {
+    return null;
+  }
+
   return (
     <section className="py-20 bg-slate-50 dark:bg-slate-900/50 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -38,7 +32,6 @@ export function FeaturedGamesSection({ games }: FeaturedGamesSectionProps) {
             </div>
           </motion.div>
 
-          {/* Trophy icon - bottom right */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -57,7 +50,6 @@ export function FeaturedGamesSection({ games }: FeaturedGamesSectionProps) {
             </div>
           </motion.div>
 
-          {/* Star icon - top left area */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -85,7 +77,7 @@ export function FeaturedGamesSection({ games }: FeaturedGamesSectionProps) {
               className="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 rounded-full text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4"
             >
               <Sparkles className="w-3.5 h-3.5 text-orange-500" />
-              15K+ DOWNLOADS
+              OUR GAMES
             </motion.div>
             <motion.h2
               initial={{ opacity: 0, y: 10 }}
@@ -94,7 +86,7 @@ export function FeaturedGamesSection({ games }: FeaturedGamesSectionProps) {
               transition={{ delay: 0.1 }}
               className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4"
             >
-              Games we've built
+              Explore all our games
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 10 }}
@@ -103,8 +95,8 @@ export function FeaturedGamesSection({ games }: FeaturedGamesSectionProps) {
               transition={{ delay: 0.2 }}
               className="text-slate-600 dark:text-slate-400 text-lg"
             >
-              Thousands of players compete daily. Real-time multiplayer
-              experiences, crafted in Nepal.
+              Explore our growing collection of games. Download free on Android
+              and iOS.
             </motion.p>
           </div>
 
@@ -127,41 +119,6 @@ export function FeaturedGamesSection({ games }: FeaturedGamesSectionProps) {
               </motion.div>
             ))}
           </div>
-
-          {/* CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-            className="mt-10 relative z-10 flex items-center gap-6"
-          >
-            <Link href={ROUTES.GAMES}>
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 transition-all"
-              >
-                View All Games
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </Button>
-            </Link>
-
-            {/* Dice icon - next to CTA */}
-            <motion.div
-              animate={{ y: [0, -6, 0], rotate: [0, -8, 0, 8, 0] }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 1,
-              }}
-              className="hidden sm:block"
-            >
-              <div className="w-11 h-11 bg-gradient-to-br from-red-500 to-red-600 rounded-xl shadow-lg shadow-red-500/25 flex items-center justify-center">
-                <Dices className="w-5 h-5 text-white" />
-              </div>
-            </motion.div>
-          </motion.div>
 
           {/* Bottom decorative line */}
           <motion.div

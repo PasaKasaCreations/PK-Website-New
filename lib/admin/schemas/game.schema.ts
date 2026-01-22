@@ -1,22 +1,25 @@
 import { z } from "zod";
 
 // Custom validation for image paths (accepts both URLs and S3 keys)
-const imagePathSchema = z.string().min(1, "Image is required").refine(
-  (val) => {
-    // Accept URLs (http:// or https://)
-    if (val.startsWith("http://") || val.startsWith("https://")) {
-      try {
-        new URL(val);
-        return true;
-      } catch {
-        return false;
+const imagePathSchema = z
+  .string()
+  .min(1, "Image is required")
+  .refine(
+    (val) => {
+      // Accept URLs (http:// or https://)
+      if (val.startsWith("http://") || val.startsWith("https://")) {
+        try {
+          new URL(val);
+          return true;
+        } catch {
+          return false;
+        }
       }
-    }
-    // Accept S3 keys (folder/filename pattern)
-    return /^[a-zA-Z0-9_-]+\/[a-zA-Z0-9_.-]+$/.test(val);
-  },
-  { message: "Invalid image path or URL" }
-);
+      // Accept S3 keys (folder/filename pattern)
+      return /^[a-zA-Z0-9_-]+\/[a-zA-Z0-9_.-]+$/.test(val);
+    },
+    { message: "Invalid image path or URL" },
+  );
 
 // Optional image path (for screenshots array items)
 const optionalImagePathSchema = z.string().refine(
@@ -34,7 +37,7 @@ const optionalImagePathSchema = z.string().refine(
     // Accept S3 keys (folder/filename pattern)
     return /^[a-zA-Z0-9_-]+\/[a-zA-Z0-9_.-]+$/.test(val);
   },
-  { message: "Invalid image path or URL" }
+  { message: "Invalid image path or URL" },
 );
 
 // Hero stats schema for game hero section
@@ -63,7 +66,12 @@ export const gameFormSchema = z.object({
   status: z.enum(["in_development", "coming_soon", "released"]),
   is_published: z.boolean().default(false),
   featured: z.boolean().default(false),
-  hero_stats: heroStatsSchema.nullable().optional(),
+  hero_stats: heroStatsSchema.default({
+    reviews: "0",
+    rating: "0",
+    downloads: "0",
+    feature: "",
+  }),
   accent_color: z.string().default("#3B82F6"),
   hero_background_image: optionalImagePathSchema.nullable().optional(),
 });

@@ -36,8 +36,26 @@ function transformGamesImages(games: Game[]): Game[] {
 }
 
 /**
+ * Sort games with coming_soon at the end
+ * Order: released first, then coming_soon
+ */
+function sortGamesByStatus(games: Game[]): Game[] {
+  const statusOrder: Record<string, number> = {
+    released: 0,
+    coming_soon: 1,
+  };
+
+  return [...games].sort((a, b) => {
+    const orderA = statusOrder[a.status] ?? 0;
+    const orderB = statusOrder[b.status] ?? 0;
+    return orderA - orderB;
+  });
+}
+
+/**
  * Fetch all games/products from Supabase
  * Used in games listing page
+ * Excludes in_development games, sorted with released first, coming_soon at the end
  */
 export async function getAllGames(): Promise<Game[]> {
   const supabase = createClient();
@@ -45,6 +63,7 @@ export async function getAllGames(): Promise<Game[]> {
   const { data, error } = await supabase
     .from("games")
     .select("*")
+    .in("status", ["released", "coming_soon"])
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -53,12 +72,14 @@ export async function getAllGames(): Promise<Game[]> {
   }
 
   const games = data as unknown as Game[];
-  return transformGamesImages(games);
+  const transformedGames = transformGamesImages(games);
+  return sortGamesByStatus(transformedGames);
 }
 
 /**
  * Fetch featured games from Supabase
  * Used in homepage
+ * Excludes in_development games, sorted with released first, coming_soon at the end
  */
 export async function getFeaturedGames(): Promise<Game[]> {
   const supabase = createClient();
@@ -67,8 +88,9 @@ export async function getFeaturedGames(): Promise<Game[]> {
     .from("games")
     .select("*")
     .eq("featured", true)
+    .in("status", ["released", "coming_soon"])
     .order("created_at", { ascending: false })
-    .limit(3);
+    .limit(6); // Fetch more to allow for sorting, will display top 3 after sort
 
   if (error) {
     console.error("Error fetching featured games:", error);
@@ -76,7 +98,8 @@ export async function getFeaturedGames(): Promise<Game[]> {
   }
 
   const games = data as unknown as Game[];
-  return transformGamesImages(games);
+  const transformedGames = transformGamesImages(games);
+  return sortGamesByStatus(transformedGames).slice(0, 3);
 }
 
 /**

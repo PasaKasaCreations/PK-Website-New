@@ -166,57 +166,59 @@ export function GamesHeroVariants({ games }: GamesHeroVariantsProps) {
                     {currentGame.tagline}
                   </p>
 
-                  {/* Stats Row - Play Store Style */}
-                  <div className="flex items-center gap-4 md:gap-6 mb-8 flex-wrap">
-                    {/* Game Icon + Rating */}
-                    <div className="flex items-center gap-3">
-                      <div className="relative w-14 h-14 rounded-xl overflow-hidden border border-gray-600">
-                        <Image
-                          src={
-                            currentGame.thumbnail_url || "/placeholder-game.jpg"
-                          }
-                          alt={`${currentGame.name} icon`}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-1">
-                          <span className="text-white font-semibold text-lg">
-                            {rating.toFixed(1)}
-                          </span>
-                          <Star className="h-4 w-4 text-white fill-white" />
+                  {/* Stats Row - Play Store Style (Only show for released games) */}
+                  {currentGame.status === "released" ? (
+                    <div className="flex items-center gap-4 md:gap-6 mb-8 flex-wrap">
+                      {/* Game Icon + Rating */}
+                      <div className="flex items-center gap-3">
+                        <div className="relative w-14 h-14 rounded-xl overflow-hidden border border-gray-600">
+                          <Image
+                            src={
+                              currentGame.thumbnail_url ||
+                              "/placeholder-game.jpg"
+                            }
+                            alt={`${currentGame.name} icon`}
+                            fill
+                            className="object-cover"
+                          />
                         </div>
-                        <span className="text-gray-400 text-sm">
-                          {stats.reviews || "10K+"} reviews
+                        <div>
+                          <div className="flex items-center gap-1">
+                            <span className="text-white font-semibold text-lg">
+                              {rating.toFixed(1)}
+                            </span>
+                            <Star className="h-4 w-4 text-white fill-white" />
+                          </div>
+                          <span className="text-gray-400 text-sm">
+                            {stats.reviews || "10K+"} reviews
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Divider */}
+                      <div className="h-12 w-px bg-gray-600 hidden sm:block" />
+
+                      {/* Downloads */}
+                      <div className="flex flex-col items-center">
+                        <span className="text-white font-semibold text-lg">
+                          {stats.downloads || "100K+"}
+                        </span>
+                        <span className="text-gray-400 text-sm">Downloads</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-4 mb-8">
+                      {/* Status Badge for non-released games */}
+                      <div className="flex items-center gap-2 bg-orange-500/20 px-3 py-2 rounded-lg">
+                        <Clock className="h-4 w-4 text-orange-400" />
+                        <span className="text-orange-400 font-medium text-sm">
+                          {currentGame.status === "coming_soon"
+                            ? "Coming Soon"
+                            : "In Development"}
                         </span>
                       </div>
                     </div>
-
-                    {/* Divider */}
-                    <div className="h-12 w-px bg-gray-600 hidden sm:block" />
-
-                    {/* Downloads */}
-                    <div className="flex flex-col items-center">
-                      <span className="text-white font-semibold text-lg">
-                        {stats.downloads || "100K+"}
-                      </span>
-                      <span className="text-gray-400 text-sm">Downloads</span>
-                    </div>
-
-                    {/* Status Badge */}
-                    {currentGame.status === "coming_soon" && (
-                      <>
-                        <div className="h-12 w-px bg-gray-600 hidden sm:block" />
-                        <div className="flex items-center gap-2 bg-orange-500/20 px-3 py-2 rounded-lg">
-                          <Clock className="h-4 w-4 text-orange-400" />
-                          <span className="text-orange-400 font-medium text-sm">
-                            Coming Soon
-                          </span>
-                        </div>
-                      </>
-                    )}
-                  </div>
+                  )}
 
                   {/* Action Buttons */}
                   <div className="flex items-center gap-4 flex-wrap">

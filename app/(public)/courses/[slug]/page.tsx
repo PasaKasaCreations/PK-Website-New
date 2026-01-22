@@ -367,39 +367,41 @@ export default async function CoursePage({ params }: CoursePageProps) {
               Array.isArray(course.syllabus) &&
               course.syllabus.length > 0 && (
                 <div className="space-y-4">
-                  {course.syllabus.slice(0, 4).map(
-                    (
-                      module: { title: string; topics: string[] },
-                      moduleIndex: number,
-                    ) => (
-                      <Card key={moduleIndex} className="border-2">
-                        <CardContent className="p-6">
-                          <div className="flex items-start justify-between mb-4">
-                            <div className="flex-1">
-                              <h3 className="text-xl font-bold mb-2">
-                                Lesson {moduleIndex + 1}: {module.title}
-                              </h3>
+                  {course.syllabus
+                    .slice(0, 4)
+                    .map(
+                      (
+                        module: { title: string; topics: string[] },
+                        moduleIndex: number,
+                      ) => (
+                        <Card key={moduleIndex} className="border-2">
+                          <CardContent className="p-6">
+                            <div className="flex items-start justify-between mb-4">
+                              <div className="flex-1">
+                                <h3 className="text-xl font-bold mb-2">
+                                  Lesson {moduleIndex + 1}: {module.title}
+                                </h3>
+                              </div>
                             </div>
-                          </div>
-                          <ul className="space-y-3">
-                            {module.topics.map(
-                              (topic: string, index: number) => (
-                                <li
-                                  key={index}
-                                  className="flex items-start gap-3"
-                                >
-                                  <div className="h-1.5 w-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
-                                  <span className="text-sm leading-relaxed">
-                                    {topic}
-                                  </span>
-                                </li>
-                              ),
-                            )}
-                          </ul>
-                        </CardContent>
-                      </Card>
-                    ),
-                  )}
+                            <ul className="space-y-3">
+                              {module.topics.map(
+                                (topic: string, index: number) => (
+                                  <li
+                                    key={index}
+                                    className="flex items-start gap-3"
+                                  >
+                                    <div className="h-1.5 w-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
+                                    <span className="text-sm leading-relaxed">
+                                      {topic}
+                                    </span>
+                                  </li>
+                                ),
+                              )}
+                            </ul>
+                          </CardContent>
+                        </Card>
+                      ),
+                    )}
 
                   {/* Show remaining modules count */}
                   {course.syllabus.length > 4 && (

@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/types/product.interface";
 import { motion } from "framer-motion";
-import { Smartphone, Apple } from "lucide-react";
+import { Smartphone, Apple, Clock, ArrowRight } from "lucide-react";
 
 interface ProductCardProps {
   product: Product;
@@ -81,6 +81,21 @@ export function ProductCard({ product }: ProductCardProps) {
                 </Button>
               </Link>
             )}
+            {/* Coming Soon button - shown when no store URLs available */}
+            {product.status === "coming_soon" &&
+              !product.play_store_url &&
+              !product.app_store_url && (
+                <Link href="/games" className="flex-1">
+                  <Button
+                    size="lg"
+                    className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white group/btn shadow-md hover:shadow-lg"
+                  >
+                    <Clock className="h-4 w-4 mr-2" />
+                    <span>Coming Soon</span>
+                    <ArrowRight className="h-4 w-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+              )}
           </div>
         </CardFooter>
       </Card>

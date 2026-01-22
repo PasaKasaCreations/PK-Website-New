@@ -244,62 +244,70 @@ export function GamesHero({ games }: GamesHeroProps) {
                   {currentGame.description}
                 </p>
 
-                {/* Stats */}
-                <div className="flex flex-wrap items-center gap-6 mb-8">
-                  {stats.downloads && stats.downloads !== "0" && (
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`h-10 w-10 rounded-full ${accent.statBg} flex items-center justify-center`}
-                      >
-                        <Users className={`h-5 w-5 ${accent.statText}`} />
+                {/* Stats - Hidden for games in development or coming soon */}
+                {currentGame.status === "released" && (
+                  <div className="flex flex-wrap items-center gap-6 mb-8">
+                    {stats.downloads && stats.downloads !== "0" && (
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`h-10 w-10 rounded-full ${accent.statBg} flex items-center justify-center`}
+                        >
+                          <Users className={`h-5 w-5 ${accent.statText}`} />
+                        </div>
+                        <div>
+                          <p className="font-bold text-white">
+                            {stats.downloads}
+                          </p>
+                          <p className="text-xs text-gray-400">Downloads</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-bold text-white">{stats.downloads}</p>
-                        <p className="text-xs text-gray-400">Downloads</p>
-                      </div>
-                    </div>
-                  )}
+                    )}
 
-                  {stats.rating && stats.rating !== "0" && (
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                        <Star className="h-5 w-5 text-yellow-400 fill-yellow-400" />
+                    {stats.rating && stats.rating !== "0" && (
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                          <Star className="h-5 w-5 text-yellow-400 fill-yellow-400" />
+                        </div>
+                        <div>
+                          <p className="font-bold text-white">{stats.rating}</p>
+                          <p className="text-xs text-gray-400">Rating</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-bold text-white">{stats.rating}</p>
-                        <p className="text-xs text-gray-400">Rating</p>
-                      </div>
-                    </div>
-                  )}
+                    )}
 
-                  {stats.reviews && stats.reviews !== "0" && (
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`h-10 w-10 rounded-full ${accent.statBg} flex items-center justify-center`}
-                      >
-                        <Star className={`h-5 w-5 ${accent.statText}`} />
+                    {stats.reviews && stats.reviews !== "0" && (
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`h-10 w-10 rounded-full ${accent.statBg} flex items-center justify-center`}
+                        >
+                          <Star className={`h-5 w-5 ${accent.statText}`} />
+                        </div>
+                        <div>
+                          <p className="font-bold text-white">
+                            {stats.reviews}
+                          </p>
+                          <p className="text-xs text-gray-400">Reviews</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-bold text-white">{stats.reviews}</p>
-                        <p className="text-xs text-gray-400">Reviews</p>
-                      </div>
-                    </div>
-                  )}
+                    )}
 
-                  {stats.feature && (
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`h-10 w-10 rounded-full ${accent.statBg} flex items-center justify-center`}
-                      >
-                        <Trophy className={`h-5 w-5 ${accent.statText}`} />
+                    {stats.feature && (
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`h-10 w-10 rounded-full ${accent.statBg} flex items-center justify-center`}
+                        >
+                          <Trophy className={`h-5 w-5 ${accent.statText}`} />
+                        </div>
+                        <div>
+                          <p className="font-bold text-white">
+                            {stats.feature}
+                          </p>
+                          <p className="text-xs text-gray-400">Featured</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-bold text-white">{stats.feature}</p>
-                        <p className="text-xs text-gray-400">Featured</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                    )}
+                  </div>
+                )}
 
                 {/* CTA Buttons */}
                 <div className="flex flex-wrap gap-4">

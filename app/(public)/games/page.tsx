@@ -1,5 +1,9 @@
 import { Metadata } from "next";
-import { GamesHeroVariants, ComingSoonSection } from "@/components/games";
+import {
+  GamesHeroVariants,
+  GamesGridSection,
+  ComingSoonSection,
+} from "@/components/games";
 import { getAllGames } from "@/lib/api/games";
 
 export const metadata: Metadata = {
@@ -18,6 +22,9 @@ export default async function GamesPage() {
     <div className="min-h-screen bg-background">
       {/* Games Hero - Play Store Style */}
       <GamesHeroVariants games={publishedGames} />
+
+      {/* Games Grid Section */}
+      <GamesGridSection games={publishedGames} />
 
       {/* Enhanced Coming Soon Section */}
       <ComingSoonSection />
