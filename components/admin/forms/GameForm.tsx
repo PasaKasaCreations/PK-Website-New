@@ -126,15 +126,12 @@ export function GameForm({ game }: GameFormProps) {
     setFieldErrors({});
 
     // Build hero_stats object
-    const heroStats =
-      heroReviews || heroRating || heroDownloads || heroFeature
-        ? {
-            reviews: heroReviews || "0",
-            rating: heroRating || "0",
-            downloads: heroDownloads || "0",
-            feature: heroFeature || "",
-          }
-        : null;
+    const heroStats = {
+      reviews: heroReviews || "0",
+      rating: heroRating || "0",
+      downloads: heroDownloads || "0",
+      feature: heroFeature || "",
+    };
 
     const formData: GameFormData = {
       name,
