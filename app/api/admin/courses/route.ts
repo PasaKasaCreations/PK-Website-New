@@ -27,14 +27,10 @@ const CourseSchema = z.object({
   is_published: z.boolean().optional(),
   featured: z.boolean().optional(),
   sessions_running: z.number().optional(),
-  sessions_completed: z.number().optional(),
   next_batch_date: z.string().optional().nullable(),
   location: z.string().min(1),
   max_students: z.number().optional(),
-  current_students: z.number().optional().nullable(),
   testimonials: z.any().optional(), // JSONB
-  price: z.number().optional(),
-  currency: z.string().optional(),
 });
 
 /**
@@ -98,14 +94,10 @@ export const POST = withAuth(async (req: NextRequest) => {
       is_published: validatedData.is_published ?? false,
       featured: validatedData.featured ?? false,
       sessions_running: validatedData.sessions_running ?? 0,
-      sessions_completed: validatedData.sessions_completed ?? 0,
       next_batch_date: validatedData.next_batch_date ?? null,
       location: validatedData.location,
       max_students: validatedData.max_students ?? 20,
-      current_students: validatedData.current_students ?? 0,
       testimonials: validatedData.testimonials ?? [],
-      price: validatedData.price ?? 0,
-      currency: validatedData.currency ?? "INR",
     };
 
     const { data: course, error } = await supabase

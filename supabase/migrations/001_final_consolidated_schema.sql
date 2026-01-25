@@ -55,20 +55,22 @@ CREATE TABLE IF NOT EXISTS courses (
   learning_outcomes TEXT[] NOT NULL DEFAULT '{}',
   prerequisites TEXT[] NOT NULL DEFAULT '{}',
 
-  -- Publishing
+  -- Publishing & Display
   is_published BOOLEAN NOT NULL DEFAULT FALSE,
   featured BOOLEAN NOT NULL DEFAULT FALSE,
+  display_order INTEGER NOT NULL DEFAULT 0,
 
   -- Live Class Info
   sessions_running INTEGER NOT NULL DEFAULT 0,
-  sessions_completed INTEGER NOT NULL DEFAULT 0,
   next_batch_date TEXT,
   location TEXT NOT NULL,
   max_students INTEGER NOT NULL DEFAULT 20,
-  current_students INTEGER DEFAULT 0,
 
   -- Social Proof
   testimonials JSONB NOT NULL DEFAULT '[]',
+
+  -- Course Projects (hands-on projects students will build)
+  projects JSONB NOT NULL DEFAULT '[]',
 
   -- Pricing
   price NUMERIC(10, 2) NOT NULL DEFAULT 0,
@@ -273,6 +275,7 @@ CREATE TABLE IF NOT EXISTS public.resume_submissions (
 CREATE INDEX idx_courses_slug ON courses(slug);
 CREATE INDEX idx_courses_published ON courses(is_published) WHERE is_published = TRUE;
 CREATE INDEX idx_courses_featured ON courses(featured) WHERE featured = TRUE;
+CREATE INDEX idx_courses_display_order ON courses(display_order);
 
 -- Games indexes
 CREATE INDEX idx_games_slug ON games(slug);
@@ -614,6 +617,10 @@ CREATE POLICY "Only admins can delete resume submissions"
 -- =====================================================
 -- COLUMN COMMENTS (Documentation)
 -- =====================================================
+
+-- Courses table comments
+COMMENT ON COLUMN courses.projects IS 'JSON array of course projects: [{title, description, thumbnail_url, youtube_url?}]';
+COMMENT ON COLUMN courses.display_order IS 'Display order for sorting courses (lower numbers appear first)';
 
 -- Games table comments
 COMMENT ON COLUMN games.tagline IS 'Short one-line description of the game/product';

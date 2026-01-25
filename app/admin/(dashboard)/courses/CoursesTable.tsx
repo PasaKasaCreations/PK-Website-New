@@ -64,15 +64,6 @@ export function CoursesTable({ courses }: CoursesTableProps) {
       ),
     },
     {
-      key: "price",
-      header: "Price",
-      cell: (course) => (
-        <span>
-          {course.currency} {course.price.toLocaleString()}
-        </span>
-      ),
-    },
-    {
       key: "is_published",
       header: "Status",
       cell: (course) => (

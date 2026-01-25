@@ -31,6 +31,7 @@ import {
   type CourseFormData,
   type SyllabusModule,
   type Testimonial,
+  type CourseProject,
 } from "@/lib/admin/schemas/course.schema";
 import {
   validateFormData,
@@ -55,44 +56,40 @@ export function CourseForm({ course }: CourseFormProps) {
   const [slug, setSlug] = useState(course?.slug || "");
   const [description, setDescription] = useState(course?.description || "");
   const [longDescription, setLongDescription] = useState(
-    course?.long_description || ""
+    course?.long_description || "",
   );
   const [instructor, setInstructor] = useState(course?.instructor || "");
   const [duration, setDuration] = useState(course?.duration || "");
-  const [skillLevel, setSkillLevel] = useState<"beginner" | "intermediate" | "advanced">(
-    course?.skill_level || "beginner"
-  );
+  const [skillLevel, setSkillLevel] = useState<
+    "beginner" | "intermediate" | "advanced"
+  >(course?.skill_level || "beginner");
   const [thumbnailUrl, setThumbnailUrl] = useState(course?.thumbnail_url || "");
   const [location, setLocation] = useState(course?.location || "");
-  const [price, setPrice] = useState(course?.price || 0);
-  const [currency, setCurrency] = useState(course?.currency || "INR");
   const [maxStudents, setMaxStudents] = useState(course?.max_students || 20);
-  const [currentStudents, setCurrentStudents] = useState(
-    course?.current_students || 0
-  );
   const [nextBatchDate, setNextBatchDate] = useState(
-    course?.next_batch_date || ""
-  );
-  const [sessionsCompleted, setSessionsCompleted] = useState(
-    course?.sessions_completed || 0
+    course?.next_batch_date || "",
   );
   const [sessionsRunning, setSessionsRunning] = useState(
-    course?.sessions_running || 0
+    course?.sessions_running || 0,
   );
   const [learningOutcomes, setLearningOutcomes] = useState<string[]>(
-    course?.learning_outcomes || []
+    course?.learning_outcomes || [],
   );
   const [prerequisites, setPrerequisites] = useState<string[]>(
-    course?.prerequisites || []
+    course?.prerequisites || [],
   );
   const [syllabus, setSyllabus] = useState<SyllabusModule[]>(
-    (course?.syllabus as SyllabusModule[]) || []
+    (course?.syllabus as SyllabusModule[]) || [],
   );
   const [testimonials, setTestimonials] = useState<Testimonial[]>(
-    (course?.testimonials as Testimonial[]) || []
+    (course?.testimonials as Testimonial[]) || [],
+  );
+  const [projects, setProjects] = useState<CourseProject[]>(
+    (course?.projects as CourseProject[]) || [],
   );
   const [isPublished, setIsPublished] = useState(course?.is_published || false);
   const [featured, setFeatured] = useState(course?.featured || false);
+  const [displayOrder, setDisplayOrder] = useState(course?.display_order || 0);
 
   // Auto-generate slug from title
   const generateSlug = (text: string) => {
@@ -117,7 +114,7 @@ export function CourseForm({ course }: CourseFormProps) {
   const updateSyllabusModule = (
     index: number,
     field: keyof SyllabusModule,
-    value: string | string[]
+    value: string | string[],
   ) => {
     const updated = [...syllabus];
     updated[index] = { ...updated[index], [field]: value };
@@ -139,7 +136,7 @@ export function CourseForm({ course }: CourseFormProps) {
   const updateTestimonial = (
     index: number,
     field: keyof Testimonial,
-    value: string
+    value: string,
   ) => {
     const updated = [...testimonials];
     updated[index] = { ...updated[index], [field]: value };
@@ -148,6 +145,34 @@ export function CourseForm({ course }: CourseFormProps) {
 
   const removeTestimonial = (index: number) => {
     setTestimonials(testimonials.filter((_, i) => i !== index));
+  };
+
+  // Project helpers
+  const addProject = () => {
+    setProjects([
+      ...projects,
+      {
+        title: "",
+        description: "",
+        thumbnail_url: "",
+        youtube_url: "",
+        display_order: projects.length,
+      },
+    ]);
+  };
+
+  const updateProject = (
+    index: number,
+    field: keyof CourseProject,
+    value: string | number,
+  ) => {
+    const updated = [...projects];
+    updated[index] = { ...updated[index], [field]: value };
+    setProjects(updated);
+  };
+
+  const removeProject = (index: number) => {
+    setProjects(projects.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -165,19 +190,17 @@ export function CourseForm({ course }: CourseFormProps) {
       skill_level: skillLevel,
       thumbnail_url: thumbnailUrl,
       location,
-      price,
-      currency,
       max_students: maxStudents,
-      current_students: currentStudents,
       next_batch_date: nextBatchDate || null,
-      sessions_completed: sessionsCompleted,
       sessions_running: sessionsRunning,
       learning_outcomes: learningOutcomes,
       prerequisites,
       syllabus,
       testimonials,
+      projects,
       is_published: isPublished,
       featured,
+      display_order: displayOrder,
     };
 
     // Client-side validation
@@ -193,7 +216,9 @@ export function CourseForm({ course }: CourseFormProps) {
       const slugExists = await checkCourseSlugExists(slug, course?.id);
       if (slugExists) {
         setFieldErrors({ slug: "A course with this slug already exists" });
-        setError("A course with this slug already exists. Please use a different title.");
+        setError(
+          "A course with this slug already exists. Please use a different title.",
+        );
         return;
       }
     } catch {
@@ -209,7 +234,8 @@ export function CourseForm({ course }: CourseFormProps) {
           await createCourse(formData);
         }
       } catch (err) {
-        const { message, fieldErrors: serverFieldErrors } = parseServerError(err);
+        const { message, fieldErrors: serverFieldErrors } =
+          parseServerError(err);
         if (serverFieldErrors) {
           setFieldErrors(serverFieldErrors);
           setError("Please fix the validation errors below.");
@@ -260,7 +286,10 @@ export function CourseForm({ course }: CourseFormProps) {
                     id="slug"
                     value={slug}
                     disabled
-                    className={cn("bg-slate-100 cursor-not-allowed", fieldErrors.slug && "border-red-500")}
+                    className={cn(
+                      "bg-slate-100 cursor-not-allowed",
+                      fieldErrors.slug && "border-red-500",
+                    )}
                   />
                   <FieldError error={fieldErrors.slug} />
                   <p className="text-xs text-slate-500">
@@ -288,7 +317,9 @@ export function CourseForm({ course }: CourseFormProps) {
                   value={longDescription}
                   onChange={(e) => setLongDescription(e.target.value)}
                   rows={6}
-                  className={cn(fieldErrors.long_description && "border-red-500")}
+                  className={cn(
+                    fieldErrors.long_description && "border-red-500",
+                  )}
                 />
                 <FieldError error={fieldErrors.long_description} />
               </div>
@@ -341,8 +372,15 @@ export function CourseForm({ course }: CourseFormProps) {
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="skill_level">Skill Level *</Label>
-                  <Select value={skillLevel} onValueChange={(v) => setSkillLevel(v as typeof skillLevel)}>
-                    <SelectTrigger className={cn(fieldErrors.skill_level && "border-red-500")}>
+                  <Select
+                    value={skillLevel}
+                    onValueChange={(v) => setSkillLevel(v as typeof skillLevel)}
+                  >
+                    <SelectTrigger
+                      className={cn(
+                        fieldErrors.skill_level && "border-red-500",
+                      )}
+                    >
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -366,27 +404,7 @@ export function CourseForm({ course }: CourseFormProps) {
                 </div>
               </div>
 
-              <div className="grid gap-4 md:grid-cols-3">
-                <div className="space-y-2">
-                  <Label htmlFor="price">Price *</Label>
-                  <Input
-                    id="price"
-                    type="number"
-                    value={price}
-                    onChange={(e) => setPrice(Number(e.target.value))}
-                    min={0}
-                    className={cn(fieldErrors.price && "border-red-500")}
-                  />
-                  <FieldError error={fieldErrors.price} />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="currency">Currency</Label>
-                  <Input
-                    id="currency"
-                    value={currency}
-                    onChange={(e) => setCurrency(e.target.value)}
-                  />
-                </div>
+              <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="max_students">Max Students</Label>
                   <Input
@@ -395,29 +413,6 @@ export function CourseForm({ course }: CourseFormProps) {
                     value={maxStudents}
                     onChange={(e) => setMaxStudents(Number(e.target.value))}
                     min={1}
-                  />
-                </div>
-              </div>
-
-              <div className="grid gap-4 md:grid-cols-3">
-                <div className="space-y-2">
-                  <Label htmlFor="current_students">Current Students</Label>
-                  <Input
-                    id="current_students"
-                    type="number"
-                    value={currentStudents}
-                    onChange={(e) => setCurrentStudents(Number(e.target.value))}
-                    min={0}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="sessions_completed">Sessions Completed</Label>
-                  <Input
-                    id="sessions_completed"
-                    type="number"
-                    value={sessionsCompleted}
-                    onChange={(e) => setSessionsCompleted(Number(e.target.value))}
-                    min={0}
                   />
                 </div>
                 <div className="space-y-2">
@@ -447,6 +442,106 @@ export function CourseForm({ course }: CourseFormProps) {
 
         {/* Content Tab */}
         <TabsContent value="content" className="space-y-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Course Projects</CardTitle>
+              <Button type="button" onClick={addProject} size="sm">
+                <Plus className="w-4 h-4 mr-2" />
+                Add Project
+              </Button>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {projects.length === 0 ? (
+                <p className="text-sm text-slate-500 text-center py-4">
+                  No projects added yet. Add projects that students will build
+                  during this course.
+                </p>
+              ) : (
+                projects.map((project, index) => (
+                  <div
+                    key={index}
+                    className="p-4 border rounded-lg space-y-4 relative"
+                  >
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute top-2 right-2 text-red-500"
+                      onClick={() => removeProject(index)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                    <div className="space-y-2">
+                      <Label>Project Title</Label>
+                      <Input
+                        value={project.title}
+                        onChange={(e) =>
+                          updateProject(index, "title", e.target.value)
+                        }
+                        placeholder="e.g., 2D Platformer Game"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Description</Label>
+                      <Textarea
+                        value={project.description}
+                        onChange={(e) =>
+                          updateProject(index, "description", e.target.value)
+                        }
+                        placeholder="Brief description of what students will build..."
+                        rows={2}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Thumbnail</Label>
+                      <ImageUpload
+                        value={project.thumbnail_url}
+                        onChange={(key) =>
+                          updateProject(index, "thumbnail_url", key || "")
+                        }
+                        folder={WASABI_FOLDERS.courses}
+                        placeholder="Upload project thumbnail"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>YouTube URL (Optional)</Label>
+                      <Input
+                        value={project.youtube_url || ""}
+                        onChange={(e) =>
+                          updateProject(index, "youtube_url", e.target.value)
+                        }
+                        placeholder="https://youtube.com/watch?v=..."
+                      />
+                      <p className="text-xs text-slate-500">
+                        If provided, a video preview will be shown instead of
+                        the thumbnail
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Display Order</Label>
+                      <Input
+                        type="number"
+                        min="0"
+                        value={project.display_order ?? 0}
+                        onChange={(e) =>
+                          updateProject(
+                            index,
+                            "display_order",
+                            parseInt(e.target.value) || 0,
+                          )
+                        }
+                        placeholder="0"
+                      />
+                      <p className="text-xs text-slate-500">
+                        Lower numbers appear first (0, 1, 2...)
+                      </p>
+                    </div>
+                  </div>
+                ))
+              )}
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader>
               <CardTitle>Learning Outcomes & Prerequisites</CardTitle>
@@ -611,7 +706,10 @@ export function CourseForm({ course }: CourseFormProps) {
                     Make this course visible on the public site
                   </p>
                 </div>
-                <Switch checked={isPublished} onCheckedChange={setIsPublished} />
+                <Switch
+                  checked={isPublished}
+                  onCheckedChange={setIsPublished}
+                />
               </div>
               <div className="flex items-center justify-between">
                 <div>
@@ -621,6 +719,21 @@ export function CourseForm({ course }: CourseFormProps) {
                   </p>
                 </div>
                 <Switch checked={featured} onCheckedChange={setFeatured} />
+              </div>
+              <div className="space-y-2 pt-4 border-t">
+                <Label>Display Order</Label>
+                <Input
+                  type="number"
+                  min="0"
+                  value={displayOrder}
+                  onChange={(e) =>
+                    setDisplayOrder(parseInt(e.target.value) || 0)
+                  }
+                  className="w-32"
+                />
+                <p className="text-sm text-slate-500">
+                  Lower numbers appear first on the courses page (0, 1, 2, ...)
+                </p>
               </div>
             </CardContent>
           </Card>

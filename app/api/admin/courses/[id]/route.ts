@@ -26,14 +26,10 @@ const UpdateCourseSchema = z.object({
   is_published: z.boolean().optional(),
   featured: z.boolean().optional(),
   sessions_running: z.number().optional(),
-  sessions_completed: z.number().optional(),
   next_batch_date: z.string().optional().nullable(),
   location: z.string().min(1).optional(),
   max_students: z.number().optional(),
-  current_students: z.number().optional().nullable(),
   testimonials: z.any().optional(),
-  price: z.number().optional(),
-  currency: z.string().optional(),
 });
 
 /**

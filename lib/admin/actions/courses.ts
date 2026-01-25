@@ -3,7 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createAdminClient, requireAdmin } from "@/lib/supabase/admin-client";
-import { courseFormSchema, type CourseFormData } from "../schemas/course.schema";
+import {
+  courseFormSchema,
+  type CourseFormData,
+} from "../schemas/course.schema";
 
 export async function getCourses() {
   await requireAdmin();
@@ -36,10 +39,7 @@ export async function checkCourseSlugExists(slug: string, excludeId?: string) {
   await requireAdmin();
   const supabase = await createAdminClient();
 
-  let query = supabase
-    .from("courses")
-    .select("id")
-    .eq("slug", slug);
+  let query = supabase.from("courses").select("id").eq("slug", slug);
 
   if (excludeId) {
     query = query.neq("id", excludeId);
@@ -67,19 +67,19 @@ export async function createCourse(formData: CourseFormData) {
     skill_level: validated.skill_level,
     thumbnail_url: validated.thumbnail_url,
     location: validated.location,
-    price: validated.price,
-    currency: validated.currency,
     max_students: validated.max_students,
-    current_students: validated.current_students,
     next_batch_date: validated.next_batch_date || null,
-    sessions_completed: validated.sessions_completed,
     sessions_running: validated.sessions_running,
     learning_outcomes: validated.learning_outcomes,
     prerequisites: validated.prerequisites,
     syllabus: validated.syllabus,
     testimonials: validated.testimonials,
+    projects: validated.projects,
     is_published: validated.is_published,
     featured: validated.featured,
+    display_order: validated.display_order,
+    price: 0,
+    currency: "NPR",
   });
 
   if (error) throw error;
@@ -107,19 +107,17 @@ export async function updateCourse(id: string, formData: CourseFormData) {
       skill_level: validated.skill_level,
       thumbnail_url: validated.thumbnail_url,
       location: validated.location,
-      price: validated.price,
-      currency: validated.currency,
       max_students: validated.max_students,
-      current_students: validated.current_students,
       next_batch_date: validated.next_batch_date || null,
-      sessions_completed: validated.sessions_completed,
       sessions_running: validated.sessions_running,
       learning_outcomes: validated.learning_outcomes,
       prerequisites: validated.prerequisites,
       syllabus: validated.syllabus,
       testimonials: validated.testimonials,
+      projects: validated.projects,
       is_published: validated.is_published,
       featured: validated.featured,
+      display_order: validated.display_order,
       updated_at: new Date().toISOString(),
     })
     .eq("id", id);

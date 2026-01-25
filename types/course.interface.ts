@@ -14,8 +14,18 @@ export interface Testimonial {
   avatar?: string;
 }
 
+// Typed structure for course projects JSONB field
+export interface CourseProject {
+  title: string;
+  description: string;
+  thumbnail_url: string;
+  youtube_url?: string;
+  display_order?: number;
+}
+
 // Course type derived from database, with typed JSONB fields
 export type Course = Omit<Tables<"courses">, "syllabus" | "testimonials"> & {
   syllabus: SyllabusItem[];
   testimonials: Testimonial[];
+  projects?: CourseProject[];
 };

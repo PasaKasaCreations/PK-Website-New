@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { Course } from "@/types/course.interface";
+import { Course, CourseProject } from "@/types/course.interface";
 import { getProxyImageUrl } from "@/lib/wasabi/proxy-utils";
 
 /**
@@ -10,9 +10,19 @@ function transformCourseImages(course: Course): Course {
   // Get proxy URL for thumbnail if it's an S3 key
   const thumbnailUrl = getProxyImageUrl(course.thumbnail_url);
 
+  // Transform project thumbnails
+  const transformedProjects = course.projects?.map(
+    (project: CourseProject) => ({
+      ...project,
+      thumbnail_url:
+        getProxyImageUrl(project.thumbnail_url) || project.thumbnail_url,
+    }),
+  );
+
   return {
     ...course,
     thumbnail_url: thumbnailUrl || course.thumbnail_url,
+    projects: transformedProjects,
   };
 }
 
@@ -26,6 +36,7 @@ function transformCoursesImages(courses: Course[]): Course[] {
 /**
  * Fetch all published courses from Supabase
  * Used in courses listing page
+ * Sorted by display_order (ascending), then created_at (descending)
  */
 export async function getPublishedCourses(): Promise<Course[]> {
   const supabase = createClient();
@@ -34,6 +45,7 @@ export async function getPublishedCourses(): Promise<Course[]> {
     .from("courses")
     .select("*")
     .eq("is_published", true)
+    .order("display_order", { ascending: true })
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -48,6 +60,7 @@ export async function getPublishedCourses(): Promise<Course[]> {
 /**
  * Fetch featured courses from Supabase
  * Used in homepage
+ * Sorted by display_order (ascending), then created_at (descending)
  */
 export async function getFeaturedCourses(): Promise<Course[]> {
   const supabase = createClient();
@@ -57,6 +70,7 @@ export async function getFeaturedCourses(): Promise<Course[]> {
     .select("*")
     .eq("is_published", true)
     .eq("featured", true)
+    .order("display_order", { ascending: true })
     .order("created_at", { ascending: false })
     .limit(3);
 

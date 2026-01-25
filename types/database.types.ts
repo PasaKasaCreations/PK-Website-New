@@ -4,487 +4,490 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
 
 export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.1"
-  }
+    PostgrestVersion: "14.1";
+  };
   public: {
     Tables: {
       admin_users: {
         Row: {
-          created_at: string
-          created_by: string | null
-          email: string
-          id: string
-          is_active: boolean
-          last_login: string | null
-          name: string | null
-          updated_at: string
-        }
+          created_at: string;
+          created_by: string | null;
+          email: string;
+          id: string;
+          is_active: boolean;
+          last_login: string | null;
+          name: string | null;
+          updated_at: string;
+        };
         Insert: {
-          created_at?: string
-          created_by?: string | null
-          email: string
-          id?: string
-          is_active?: boolean
-          last_login?: string | null
-          name?: string | null
-          updated_at?: string
-        }
+          created_at?: string;
+          created_by?: string | null;
+          email: string;
+          id?: string;
+          is_active?: boolean;
+          last_login?: string | null;
+          name?: string | null;
+          updated_at?: string;
+        };
         Update: {
-          created_at?: string
-          created_by?: string | null
-          email?: string
-          id?: string
-          is_active?: boolean
-          last_login?: string | null
-          name?: string | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
+          created_at?: string;
+          created_by?: string | null;
+          email?: string;
+          id?: string;
+          is_active?: boolean;
+          last_login?: string | null;
+          name?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       contact_messages: {
         Row: {
-          created_at: string
-          email: string
-          id: string
-          ip_address: string | null
-          message: string
-          name: string
-          phone: string | null
-          user_agent: string | null
-        }
+          created_at: string;
+          email: string;
+          id: string;
+          ip_address: string | null;
+          message: string;
+          name: string;
+          phone: string | null;
+          user_agent: string | null;
+        };
         Insert: {
-          created_at?: string
-          email: string
-          id?: string
-          ip_address?: string | null
-          message: string
-          name: string
-          phone?: string | null
-          user_agent?: string | null
-        }
+          created_at?: string;
+          email: string;
+          id?: string;
+          ip_address?: string | null;
+          message: string;
+          name: string;
+          phone?: string | null;
+          user_agent?: string | null;
+        };
         Update: {
-          created_at?: string
-          email?: string
-          id?: string
-          ip_address?: string | null
-          message?: string
-          name?: string
-          phone?: string | null
-          user_agent?: string | null
-        }
-        Relationships: []
-      }
+          created_at?: string;
+          email?: string;
+          id?: string;
+          ip_address?: string | null;
+          message?: string;
+          name?: string;
+          phone?: string | null;
+          user_agent?: string | null;
+        };
+        Relationships: [];
+      };
       courses: {
         Row: {
-          created_at: string
-          currency: string
-          current_students: number | null
-          description: string
-          duration: string
-          featured: boolean
-          id: string
-          instructor: string
-          is_published: boolean
-          learning_outcomes: string[]
-          location: string
-          long_description: string
-          max_students: number
-          next_batch_date: string | null
-          prerequisites: string[]
-          price: number
-          sessions_completed: number
-          sessions_running: number
-          skill_level: Database["public"]["Enums"]["skill_level"]
-          slug: string
-          syllabus: Json
-          testimonials: Json
-          thumbnail_url: string
-          title: string
-          updated_at: string
-        }
+          created_at: string;
+          currency: string;
+          description: string;
+          display_order: number;
+          duration: string;
+          featured: boolean;
+          id: string;
+          instructor: string;
+          is_published: boolean;
+          learning_outcomes: string[];
+          location: string;
+          long_description: string;
+          max_students: number;
+          next_batch_date: string | null;
+          prerequisites: string[];
+          price: number;
+          projects: Json;
+          sessions_running: number;
+          skill_level: Database["public"]["Enums"]["skill_level"];
+          slug: string;
+          syllabus: Json;
+          testimonials: Json;
+          thumbnail_url: string;
+          title: string;
+          updated_at: string;
+        };
         Insert: {
-          created_at?: string
-          currency?: string
-          current_students?: number | null
-          description: string
-          duration: string
-          featured?: boolean
-          id?: string
-          instructor: string
-          is_published?: boolean
-          learning_outcomes?: string[]
-          location: string
-          long_description: string
-          max_students?: number
-          next_batch_date?: string | null
-          prerequisites?: string[]
-          price?: number
-          sessions_completed?: number
-          sessions_running?: number
-          skill_level?: Database["public"]["Enums"]["skill_level"]
-          slug: string
-          syllabus?: Json
-          testimonials?: Json
-          thumbnail_url: string
-          title: string
-          updated_at?: string
-        }
+          created_at?: string;
+          currency?: string;
+          description: string;
+          display_order?: number;
+          duration: string;
+          featured?: boolean;
+          id?: string;
+          instructor: string;
+          is_published?: boolean;
+          learning_outcomes?: string[];
+          location: string;
+          long_description: string;
+          max_students?: number;
+          next_batch_date?: string | null;
+          prerequisites?: string[];
+          price?: number;
+          projects?: Json;
+          sessions_running?: number;
+          skill_level?: Database["public"]["Enums"]["skill_level"];
+          slug: string;
+          syllabus?: Json;
+          testimonials?: Json;
+          thumbnail_url: string;
+          title: string;
+          updated_at?: string;
+        };
         Update: {
-          created_at?: string
-          currency?: string
-          current_students?: number | null
-          description?: string
-          duration?: string
-          featured?: boolean
-          id?: string
-          instructor?: string
-          is_published?: boolean
-          learning_outcomes?: string[]
-          location?: string
-          long_description?: string
-          max_students?: number
-          next_batch_date?: string | null
-          prerequisites?: string[]
-          price?: number
-          sessions_completed?: number
-          sessions_running?: number
-          skill_level?: Database["public"]["Enums"]["skill_level"]
-          slug?: string
-          syllabus?: Json
-          testimonials?: Json
-          thumbnail_url?: string
-          title?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
+          created_at?: string;
+          currency?: string;
+          description?: string;
+          display_order?: number;
+          duration?: string;
+          featured?: boolean;
+          id?: string;
+          instructor?: string;
+          is_published?: boolean;
+          learning_outcomes?: string[];
+          location?: string;
+          long_description?: string;
+          max_students?: number;
+          next_batch_date?: string | null;
+          prerequisites?: string[];
+          price?: number;
+          projects?: Json;
+          sessions_running?: number;
+          skill_level?: Database["public"]["Enums"]["skill_level"];
+          slug?: string;
+          syllabus?: Json;
+          testimonials?: Json;
+          thumbnail_url?: string;
+          title?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       games: {
         Row: {
-          accent_color: string
-          app_store_url: string | null
-          category: string
-          created_at: string
-          description: string
-          featured: boolean
-          genre: string
-          hero_background_image: string | null
-          hero_stats: Json
-          id: string
-          is_published: boolean
-          long_description: string
-          name: string
-          play_store_url: string | null
-          release_date: string | null
-          screenshots: string[]
-          slug: string
-          status: Database["public"]["Enums"]["game_status"]
-          tagline: string
-          thumbnail_url: string
-          trailer_url: string | null
-          updated_at: string
-          web_url: string | null
-        }
+          accent_color: string;
+          app_store_url: string | null;
+          category: string;
+          created_at: string;
+          description: string;
+          featured: boolean;
+          genre: string;
+          hero_background_image: string | null;
+          hero_stats: Json;
+          id: string;
+          is_published: boolean;
+          long_description: string;
+          name: string;
+          play_store_url: string | null;
+          release_date: string | null;
+          screenshots: string[];
+          slug: string;
+          status: Database["public"]["Enums"]["game_status"];
+          tagline: string;
+          thumbnail_url: string;
+          trailer_url: string | null;
+          updated_at: string;
+          web_url: string | null;
+        };
         Insert: {
-          accent_color?: string
-          app_store_url?: string | null
-          category?: string
-          created_at?: string
-          description: string
-          featured?: boolean
-          genre: string
-          hero_background_image?: string | null
-          hero_stats?: Json
-          id?: string
-          is_published?: boolean
-          long_description: string
-          name: string
-          play_store_url?: string | null
-          release_date?: string | null
-          screenshots?: string[]
-          slug: string
-          status?: Database["public"]["Enums"]["game_status"]
-          tagline: string
-          thumbnail_url: string
-          trailer_url?: string | null
-          updated_at?: string
-          web_url?: string | null
-        }
+          accent_color?: string;
+          app_store_url?: string | null;
+          category?: string;
+          created_at?: string;
+          description: string;
+          featured?: boolean;
+          genre: string;
+          hero_background_image?: string | null;
+          hero_stats?: Json;
+          id?: string;
+          is_published?: boolean;
+          long_description: string;
+          name: string;
+          play_store_url?: string | null;
+          release_date?: string | null;
+          screenshots?: string[];
+          slug: string;
+          status?: Database["public"]["Enums"]["game_status"];
+          tagline: string;
+          thumbnail_url: string;
+          trailer_url?: string | null;
+          updated_at?: string;
+          web_url?: string | null;
+        };
         Update: {
-          accent_color?: string
-          app_store_url?: string | null
-          category?: string
-          created_at?: string
-          description?: string
-          featured?: boolean
-          genre?: string
-          hero_background_image?: string | null
-          hero_stats?: Json
-          id?: string
-          is_published?: boolean
-          long_description?: string
-          name?: string
-          play_store_url?: string | null
-          release_date?: string | null
-          screenshots?: string[]
-          slug?: string
-          status?: Database["public"]["Enums"]["game_status"]
-          tagline?: string
-          thumbnail_url?: string
-          trailer_url?: string | null
-          updated_at?: string
-          web_url?: string | null
-        }
-        Relationships: []
-      }
+          accent_color?: string;
+          app_store_url?: string | null;
+          category?: string;
+          created_at?: string;
+          description?: string;
+          featured?: boolean;
+          genre?: string;
+          hero_background_image?: string | null;
+          hero_stats?: Json;
+          id?: string;
+          is_published?: boolean;
+          long_description?: string;
+          name?: string;
+          play_store_url?: string | null;
+          release_date?: string | null;
+          screenshots?: string[];
+          slug?: string;
+          status?: Database["public"]["Enums"]["game_status"];
+          tagline?: string;
+          thumbnail_url?: string;
+          trailer_url?: string | null;
+          updated_at?: string;
+          web_url?: string | null;
+        };
+        Relationships: [];
+      };
       inquiries: {
         Row: {
-          course_id: string | null
-          created_at: string
-          email: string
-          id: string
-          inquiry_type: Database["public"]["Enums"]["inquiry_type"]
-          ip_address: string | null
-          message: string
-          name: string
-          phone: string | null
-          status: Database["public"]["Enums"]["inquiry_status"]
-          user_agent: string | null
-        }
+          course_id: string | null;
+          created_at: string;
+          email: string;
+          id: string;
+          inquiry_type: Database["public"]["Enums"]["inquiry_type"];
+          ip_address: string | null;
+          message: string;
+          name: string;
+          phone: string | null;
+          status: Database["public"]["Enums"]["inquiry_status"];
+          user_agent: string | null;
+        };
         Insert: {
-          course_id?: string | null
-          created_at?: string
-          email: string
-          id?: string
-          inquiry_type: Database["public"]["Enums"]["inquiry_type"]
-          ip_address?: string | null
-          message: string
-          name: string
-          phone?: string | null
-          status?: Database["public"]["Enums"]["inquiry_status"]
-          user_agent?: string | null
-        }
+          course_id?: string | null;
+          created_at?: string;
+          email: string;
+          id?: string;
+          inquiry_type: Database["public"]["Enums"]["inquiry_type"];
+          ip_address?: string | null;
+          message: string;
+          name: string;
+          phone?: string | null;
+          status?: Database["public"]["Enums"]["inquiry_status"];
+          user_agent?: string | null;
+        };
         Update: {
-          course_id?: string | null
-          created_at?: string
-          email?: string
-          id?: string
-          inquiry_type?: Database["public"]["Enums"]["inquiry_type"]
-          ip_address?: string | null
-          message?: string
-          name?: string
-          phone?: string | null
-          status?: Database["public"]["Enums"]["inquiry_status"]
-          user_agent?: string | null
-        }
+          course_id?: string | null;
+          created_at?: string;
+          email?: string;
+          id?: string;
+          inquiry_type?: Database["public"]["Enums"]["inquiry_type"];
+          ip_address?: string | null;
+          message?: string;
+          name?: string;
+          phone?: string | null;
+          status?: Database["public"]["Enums"]["inquiry_status"];
+          user_agent?: string | null;
+        };
         Relationships: [
           {
-            foreignKeyName: "inquiries_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
+            foreignKeyName: "inquiries_course_id_fkey";
+            columns: ["course_id"];
+            isOneToOne: false;
+            referencedRelation: "courses";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       job_postings: {
         Row: {
-          application_deadline: string | null
-          benefits: string[]
-          company: Json
-          contact: Json
-          created_at: string
-          department: string
-          description: string
-          employment_type: Database["public"]["Enums"]["employment_type"]
-          id: string
-          is_published: boolean
-          location: string
-          nice_to_have: string[]
-          posted_date: string | null
-          requirements: string[]
-          responsibilities: string[]
-          salary: string | null
-          similar_jobs: Json
-          slug: string
-          title: string
-          updated_at: string
-          visa_requirements: string | null
-        }
+          application_deadline: string | null;
+          benefits: string[];
+          company: Json;
+          contact: Json;
+          created_at: string;
+          department: string;
+          description: string;
+          employment_type: Database["public"]["Enums"]["employment_type"];
+          id: string;
+          is_published: boolean;
+          location: string;
+          nice_to_have: string[];
+          posted_date: string | null;
+          requirements: string[];
+          responsibilities: string[];
+          salary: string | null;
+          similar_jobs: Json;
+          slug: string;
+          title: string;
+          updated_at: string;
+          visa_requirements: string | null;
+        };
         Insert: {
-          application_deadline?: string | null
-          benefits?: string[]
-          company?: Json
-          contact?: Json
-          created_at?: string
-          department: string
-          description: string
-          employment_type: Database["public"]["Enums"]["employment_type"]
-          id?: string
-          is_published?: boolean
-          location: string
-          nice_to_have?: string[]
-          posted_date?: string | null
-          requirements?: string[]
-          responsibilities?: string[]
-          salary?: string | null
-          similar_jobs?: Json
-          slug: string
-          title: string
-          updated_at?: string
-          visa_requirements?: string | null
-        }
+          application_deadline?: string | null;
+          benefits?: string[];
+          company?: Json;
+          contact?: Json;
+          created_at?: string;
+          department: string;
+          description: string;
+          employment_type: Database["public"]["Enums"]["employment_type"];
+          id?: string;
+          is_published?: boolean;
+          location: string;
+          nice_to_have?: string[];
+          posted_date?: string | null;
+          requirements?: string[];
+          responsibilities?: string[];
+          salary?: string | null;
+          similar_jobs?: Json;
+          slug: string;
+          title: string;
+          updated_at?: string;
+          visa_requirements?: string | null;
+        };
         Update: {
-          application_deadline?: string | null
-          benefits?: string[]
-          company?: Json
-          contact?: Json
-          created_at?: string
-          department?: string
-          description?: string
-          employment_type?: Database["public"]["Enums"]["employment_type"]
-          id?: string
-          is_published?: boolean
-          location?: string
-          nice_to_have?: string[]
-          posted_date?: string | null
-          requirements?: string[]
-          responsibilities?: string[]
-          salary?: string | null
-          similar_jobs?: Json
-          slug?: string
-          title?: string
-          updated_at?: string
-          visa_requirements?: string | null
-        }
-        Relationships: []
-      }
+          application_deadline?: string | null;
+          benefits?: string[];
+          company?: Json;
+          contact?: Json;
+          created_at?: string;
+          department?: string;
+          description?: string;
+          employment_type?: Database["public"]["Enums"]["employment_type"];
+          id?: string;
+          is_published?: boolean;
+          location?: string;
+          nice_to_have?: string[];
+          posted_date?: string | null;
+          requirements?: string[];
+          responsibilities?: string[];
+          salary?: string | null;
+          similar_jobs?: Json;
+          slug?: string;
+          title?: string;
+          updated_at?: string;
+          visa_requirements?: string | null;
+        };
+        Relationships: [];
+      };
       resume_submissions: {
         Row: {
-          cover_letter: string | null
-          created_at: string
-          email: string
-          id: string
-          name: string
-          resume_key: string
-          role_looking_for: string
-          status: string
-          updated_at: string
-        }
+          cover_letter: string | null;
+          created_at: string;
+          email: string;
+          id: string;
+          name: string;
+          resume_key: string;
+          role_looking_for: string;
+          status: string;
+          updated_at: string;
+        };
         Insert: {
-          cover_letter?: string | null
-          created_at?: string
-          email: string
-          id?: string
-          name: string
-          resume_key: string
-          role_looking_for: string
-          status?: string
-          updated_at?: string
-        }
+          cover_letter?: string | null;
+          created_at?: string;
+          email: string;
+          id?: string;
+          name: string;
+          resume_key: string;
+          role_looking_for: string;
+          status?: string;
+          updated_at?: string;
+        };
         Update: {
-          cover_letter?: string | null
-          created_at?: string
-          email?: string
-          id?: string
-          name?: string
-          resume_key?: string
-          role_looking_for?: string
-          status?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
+          cover_letter?: string | null;
+          created_at?: string;
+          email?: string;
+          id?: string;
+          name?: string;
+          resume_key?: string;
+          role_looking_for?: string;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       site_settings: {
         Row: {
-          contact_number: string
-          created_at: string
-          email: string
-          facebook_url: string | null
-          id: string
-          instagram_url: string | null
-          linkedin_url: string | null
-          location: string
-          location_map_url: string | null
-          updated_at: string
-          whatsapp_number: string | null
-          youtube_url: string | null
-        }
+          contact_number: string;
+          created_at: string;
+          email: string;
+          facebook_url: string | null;
+          id: string;
+          instagram_url: string | null;
+          linkedin_url: string | null;
+          location: string;
+          location_map_url: string | null;
+          updated_at: string;
+          whatsapp_number: string | null;
+          youtube_url: string | null;
+        };
         Insert: {
-          contact_number?: string
-          created_at?: string
-          email?: string
-          facebook_url?: string | null
-          id?: string
-          instagram_url?: string | null
-          linkedin_url?: string | null
-          location?: string
-          location_map_url?: string | null
-          updated_at?: string
-          whatsapp_number?: string | null
-          youtube_url?: string | null
-        }
+          contact_number?: string;
+          created_at?: string;
+          email?: string;
+          facebook_url?: string | null;
+          id?: string;
+          instagram_url?: string | null;
+          linkedin_url?: string | null;
+          location?: string;
+          location_map_url?: string | null;
+          updated_at?: string;
+          whatsapp_number?: string | null;
+          youtube_url?: string | null;
+        };
         Update: {
-          contact_number?: string
-          created_at?: string
-          email?: string
-          facebook_url?: string | null
-          id?: string
-          instagram_url?: string | null
-          linkedin_url?: string | null
-          location?: string
-          location_map_url?: string | null
-          updated_at?: string
-          whatsapp_number?: string | null
-          youtube_url?: string | null
-        }
-        Relationships: []
-      }
-    }
+          contact_number?: string;
+          created_at?: string;
+          email?: string;
+          facebook_url?: string | null;
+          id?: string;
+          instagram_url?: string | null;
+          linkedin_url?: string | null;
+          location?: string;
+          location_map_url?: string | null;
+          updated_at?: string;
+          whatsapp_number?: string | null;
+          youtube_url?: string | null;
+        };
+        Relationships: [];
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
-      is_admin: { Args: { user_email: string }; Returns: boolean }
-    }
+      is_admin: { Args: { user_email: string }; Returns: boolean };
+    };
     Enums: {
-      employment_type: "full_time" | "part_time" | "contract" | "internship"
-      game_status: "in_development" | "coming_soon" | "released"
-      inquiry_status: "new" | "in_progress" | "resolved"
-      inquiry_type: "general" | "course" | "career" | "partnership"
-      skill_level: "beginner" | "intermediate" | "advanced"
-    }
+      employment_type: "full_time" | "part_time" | "contract" | "internship";
+      game_status: "in_development" | "coming_soon" | "released";
+      inquiry_status: "new" | "in_progress" | "resolved";
+      inquiry_type: "general" | "course" | "career" | "partnership";
+      skill_level: "beginner" | "intermediate" | "advanced";
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-}
+      [_ in never]: never;
+    };
+  };
+};
 
-type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">;
 
-type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+type DefaultSchema = DatabaseWithoutInternals[Extract<
+  keyof Database,
+  "public"
+>];
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
       DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
@@ -492,95 +495,95 @@ export type Tables<
         DefaultSchema["Views"])
     ? (DefaultSchema["Tables"] &
         DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-        Row: infer R
+        Row: infer R;
       }
       ? R
       : never
-    : never
+    : never;
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
     ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Insert: infer I
+        Insert: infer I;
       }
       ? I
       : never
-    : never
+    : never;
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
     ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Update: infer U
+        Update: infer U;
       }
       ? U
       : never
-    : never
+    : never;
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
 > = DefaultSchemaEnumNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-    : never
+    : never;
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
 > = PublicCompositeTypeNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never
+    : never;
 
 export const Constants = {
   public: {
@@ -592,4 +595,4 @@ export const Constants = {
       skill_level: ["beginner", "intermediate", "advanced"],
     },
   },
-} as const
+} as const;

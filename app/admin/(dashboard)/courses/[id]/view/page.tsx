@@ -161,19 +161,9 @@ export default async function ViewCoursePage({ params }: ViewCoursePageProps) {
             />
           </DetailSection>
 
-          {/* Pricing */}
-          <DetailSection title="Pricing">
-            <div className="text-3xl font-bold text-slate-900">
-              {course.currency} {course.price.toLocaleString()}
-            </div>
-          </DetailSection>
-
           {/* Enrollment */}
           <DetailSection title="Enrollment">
-            <DetailGrid columns={2}>
-              <DetailField label="Max Students" value={course.max_students} />
-              <DetailField label="Current Students" value={course.current_students} />
-            </DetailGrid>
+            <DetailField label="Max Students" value={course.max_students} />
           </DetailSection>
 
           {/* Schedule */}
@@ -182,10 +172,7 @@ export default async function ViewCoursePage({ params }: ViewCoursePageProps) {
               <DetailField label="Next Batch Date">
                 <DetailDate date={course.next_batch_date} />
               </DetailField>
-              <DetailGrid columns={2}>
-                <DetailField label="Sessions Completed" value={course.sessions_completed} />
-                <DetailField label="Sessions Running" value={course.sessions_running} />
-              </DetailGrid>
+              <DetailField label="Sessions Running" value={course.sessions_running} />
             </div>
           </DetailSection>
 

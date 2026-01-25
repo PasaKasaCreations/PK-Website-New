@@ -128,13 +128,13 @@ INSERT INTO courses (
   prerequisites,
   is_published,
   featured,
+  display_order,
   sessions_running,
-  sessions_completed,
   next_batch_date,
   location,
   max_students,
-  current_students,
   testimonials,
+  projects,
   price,
   currency
 ) VALUES
@@ -186,12 +186,16 @@ INSERT INTO courses (
   TRUE,
   TRUE,
   1,
-  2,
+  1,
   '2025-02-15',
   'Online Live Classes',
   30,
-  15,
   '[]'::jsonb,
+  '[
+    {"title": "Foodies Community App", "description": "Build a full-stack food sharing platform with image uploads, recipes, and community features", "thumbnail_url": "/courses/projects/foodies-app.jpg", "youtube_url": null, "display_order": 0},
+    {"title": "Events Platform", "description": "Create an events discovery and booking application with authentication and database", "thumbnail_url": "/courses/projects/events-app.jpg", "youtube_url": null, "display_order": 1},
+    {"title": "Personal Blog", "description": "Develop a modern blog with markdown support, SEO optimization, and dynamic routing", "thumbnail_url": "/courses/projects/blog-app.jpg", "youtube_url": null, "display_order": 2}
+  ]'::jsonb,
   0,
   'NPR'
 ),
@@ -251,6 +255,7 @@ INSERT INTO courses (
 ],
   TRUE,
   TRUE,
+  2,
   3,
   8,
   '2025-01-20',
@@ -258,6 +263,12 @@ INSERT INTO courses (
   35,
   28,
   '[]'::jsonb,
+  '[
+    {"title": "Tic-Tac-Toe Game", "description": "Build an interactive Tic-Tac-Toe game with state management and game logic", "thumbnail_url": "/courses/projects/tictactoe.jpg", "youtube_url": null, "display_order": 0},
+    {"title": "Quiz Application", "description": "Create a timed quiz app with score tracking, animations, and multiple question types", "thumbnail_url": "/courses/projects/quiz-app.jpg", "youtube_url": null, "display_order": 1},
+    {"title": "Project Management App", "description": "Develop a Trello-like project management tool with drag-and-drop and task organization", "thumbnail_url": "/courses/projects/project-mgmt.jpg", "youtube_url": null, "display_order": 2},
+    {"title": "E-Commerce Store", "description": "Build a complete shopping cart with Redux, routing, and checkout flow", "thumbnail_url": "/courses/projects/ecommerce.jpg", "youtube_url": null, "display_order": 3}
+  ]'::jsonb,
   0,
   'NPR'
 ),
@@ -307,6 +318,7 @@ INSERT INTO courses (
 ],
   TRUE,
   TRUE,
+  3,
   2,
   4,
   '2025-02-10',
@@ -314,6 +326,12 @@ INSERT INTO courses (
   30,
   22,
   '[]'::jsonb,
+  '[
+    {"title": "Delivery Dash", "description": "Build a fun delivery driving game with physics, camera follow, and pickup mechanics", "thumbnail_url": "/courses/projects/delivery-dash.jpg", "youtube_url": null, "display_order": 0},
+    {"title": "Snow Surfer", "description": "Create an endless snowboard runner with terrain generation and particle effects", "thumbnail_url": "/courses/projects/snow-surfer.jpg", "youtube_url": null, "display_order": 1},
+    {"title": "Tilevania Platformer", "description": "Develop a complete platformer with tilemap levels, enemies, and collectibles", "thumbnail_url": "/courses/projects/tilevania.jpg", "youtube_url": null, "display_order": 2},
+    {"title": "Star Blaster", "description": "Build a space shooter with enemy waves, powerups, and boss battles", "thumbnail_url": "/courses/projects/star-blaster.jpg", "youtube_url": null, "display_order": 3}
+  ]'::jsonb,
   0,
   'NPR'
 );

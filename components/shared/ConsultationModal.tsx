@@ -15,15 +15,19 @@ import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, User, Sparkles, MessageSquare } from "lucide-react";
 
 interface ConsultationModalProps {
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   courseName?: string;
   courseId?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 export function ConsultationModal({
   trigger,
   courseName,
   courseId,
+  open,
+  onOpenChange,
 }: ConsultationModalProps) {
   const [formData, setFormData] = useState({
     name: "",
@@ -69,10 +73,16 @@ export function ConsultationModal({
           const errorMessages = data.details
             .map((issue: { path: string[]; message: string }) => {
               const field = issue.path[0];
-              const fieldName = field === "phone" ? "Phone number" :
-                               field === "name" ? "Name" :
-                               field === "email" ? "Email" :
-                               field === "message" ? "Message" : field;
+              const fieldName =
+                field === "phone"
+                  ? "Phone number"
+                  : field === "name"
+                    ? "Name"
+                    : field === "email"
+                      ? "Email"
+                      : field === "message"
+                        ? "Message"
+                        : field;
               return `${fieldName}: ${issue.message}`;
             })
             .join("\n");
@@ -94,8 +104,8 @@ export function ConsultationModal({
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <div className="flex items-center gap-2 mb-2">
@@ -115,7 +125,9 @@ export function ConsultationModal({
           <form onSubmit={handleSubmit} className="space-y-4 mt-4">
             {error && (
               <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
-                <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+                <p className="text-sm text-red-600 dark:text-red-400">
+                  {error}
+                </p>
               </div>
             )}
 
@@ -178,7 +190,9 @@ export function ConsultationModal({
               <label className="text-sm font-medium flex items-center gap-2">
                 <MessageSquare className="h-4 w-4 text-primary" />
                 Additional Notes
-                <span className="text-xs text-muted-foreground">(Optional)</span>
+                <span className="text-xs text-muted-foreground">
+                  (Optional)
+                </span>
               </label>
               <Textarea
                 placeholder="Any specific questions or requirements?"
